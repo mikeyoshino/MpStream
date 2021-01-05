@@ -36,6 +36,35 @@
                     <div class="mt-5">
                         <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline" value="Save">Save</button>
                     </div>
+                    <div class="bg-gray-100 shadow m-3">
+                        <div class="p-3">
+                                <button @onclick="AddSeason" class="border border-green-500 bg-green-500 text-white rounded-md px-2 py-1 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">เพิ่มซี่ซั่น</button>
+                                @if (SeasonList != null)
+                                {
+                                    @foreach (var eachSeason in SeasonList)
+                                    {
+                                        <div class="w-full m-2 bg-indigo-100 flex">
+                                            <div class="w-9/12">ซีซั่นที่ @eachSeason.Name @*Id: @eachSeason.Name*@</div>
+                                            <div class="w-2/12"><button @onclick="() => AddEpisode(eachSeason.Name)" class="border border-green-500 bg-green-500 text-white rounded-md px-2 py-1 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">เพิ่มจำนวนตอน</button></div>
+                                            <div class="w-1/12"><button @onclick="() => RemoveSeason(eachSeason.Name)" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">ลบ</button></div>
+                                        </div>
+                                        @foreach (var eachEpisode in EpisodeList)
+                                        {
+                                            if (eachEpisode.SeasonNumber == eachSeason.Name)
+                                            {
+                                            <div class="w-full m-2 bg-indigo-100">
+                                                <div class="p-3 flex">
+                                                    <div class="w-1/12">ตอนที่ @eachEpisode.Name @*Season Id : @eachSeason.Name*@</div>
+                                                    <div class="w-9/12"> <InputText @bind-Value="TvShowEntity.Status" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText></div>
+                                                    <div class="w-2/12"><button @onclick="() => RemoveEpisode(eachSeason.Name, eachEpisode.SeasonNumber)" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">ลบ</button></div>
+                                                </div>
+                                            </div>
+                                            }
+                                        }
+                                        }
+                                }
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="-mx-8 w-4/12 hidden lg:block">

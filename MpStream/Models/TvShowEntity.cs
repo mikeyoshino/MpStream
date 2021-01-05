@@ -68,6 +68,7 @@ namespace MpStream.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public string SeasonNumber { get; set; }
         public Season Season { get; set; }
         [Required]
         public int SeasonId { get; set; }

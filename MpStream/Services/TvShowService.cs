@@ -133,5 +133,29 @@ namespace MpStream.Services
             return Task.FromResult(aDatabase.TvShowGenres.SingleOrDefault(s => s.Id == Id));
         }
         #endregion
+
+        #region Season Service
+        public Task<bool> CreateSeason(Season seasonModel)
+        {
+            if(seasonModel != null)
+            {
+                aDatabase.Seasons.Add(seasonModel);
+                aDatabase.SaveChanges();
+                return Task.FromResult(true);
+            }else
+            {
+                return Task.FromResult(false);
+            }
+        }
+        public List<Season> GetSeasonList()
+        {
+            return aDatabase.Seasons.ToList();
+        }
+        public void RemoveSeasonById(int Id)
+        {
+            var season = aDatabase.Seasons.SingleOrDefault(s => s.Id == Id);
+            var result = aDatabase.Seasons.Remove(season);
+        }
+        #endregion
     }
 }
