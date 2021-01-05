@@ -18,7 +18,7 @@ namespace MpStream.Services
         }
         public MovieGenreService(ApplicationDbContext database)
         {
-            database = aDatabase;
+            aDatabase = database;
         }
         public List<MovieGenreEntity> GetGenreList()
         {

@@ -14,5 +14,11 @@ namespace MpStream.Data
         public DbSet<MovieGenreEntity> MovieGenreEntities { get; set; }
         public DbSet<MoviePlayer> MoviePlayers { get; set; }
         public DbSet<MovieWithGenre> MovieWithGenres { get; set; }
+        public DbSet<TvShowEntity> TvShowEntities { get; set; }
+        public DbSet<TvShowGenre>  TvShowGenres { get; set; }
+        public DbSet<TvShowWithGenre> TvShowWithGenres { get; set; }
+        public DbSet<Season> Seasons { get; set; }
+        public DbSet<Episode> Episodes { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }

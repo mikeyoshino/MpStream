@@ -113,7 +113,6 @@ namespace MpStream.Services
             {
                 movieWithGenreMapById.Add(eachGenreInDb.MovieGenreEntityId, eachGenreInDb.MovieEntityId);
             }
-
             //add new select to list before puting to db.
             foreach (var newGenre in newSelectGenreList)
             {
@@ -125,7 +124,6 @@ namespace MpStream.Services
                 movieGenreInDbMapById.Add(newGenre.Id, Id);
             }
             aDatabase.MovieWithGenres.AddRange(ToAddMovieWithGenre);
-
             foreach (var oldGenre in genreDb)
             {
                 if (!movieGenreInDbMapById.ContainsKey(oldGenre.MovieGenreEntityId))

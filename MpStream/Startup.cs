@@ -33,6 +33,7 @@ namespace MpStream
             services.AddServerSideBlazor();
             services.AddScoped<MovieService>();
             services.AddScoped<MovieGenreService>();
+            services.AddScoped<TvShowService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
