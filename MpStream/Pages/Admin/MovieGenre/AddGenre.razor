@@ -1,0 +1,17 @@
+﻿
+@page "/admin/moviegenre/add"
+<h3>Add Genre</h3>
+
+<EditForm Model="MovieGenreEntity" OnSubmit="SaveGenre">
+    <div class="mb-5">
+        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ชื้อประเภท</label>
+        <InputText @bind-Value="MovieGenreEntity.Name" class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+    </div>
+    <div class="mb-5">
+        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ป้าย</label>
+        <InputText @bind-Value="MovieGenreEntity.Tag" class="w-full px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+    </div>
+
+    <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline" value="Save">Save</button>
+
+</EditForm>
