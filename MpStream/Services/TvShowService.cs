@@ -92,11 +92,12 @@ namespace MpStream.Services
             return Task.FromResult(aDatabase.TvShowGenres.ToList());
         }
 
-        public Task<bool> CreateTvShow(TvShowGenre tvShowGenreModel)
+        public Task<bool> CreateTvShowGenre(TvShowGenre tvShowGenreModel)
         {
             if(tvShowGenreModel != null)
             {
                 aDatabase.TvShowGenres.Add(tvShowGenreModel);
+                aDatabase.SaveChanges();
                 return Task.FromResult(true);
             } else
             {

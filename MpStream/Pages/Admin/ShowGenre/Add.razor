@@ -1,0 +1,31 @@
+﻿@page "/admin/tvshowgenre/add"
+
+
+<EditForm Model="TvShowGenre" OnValidSubmit="SaveShowGenre">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="px-6 py-8">
+        <a href="/admin/movie" class="border border-gray-500 bg-gray-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-600 focus:outline-none focus:shadow-outline">กลับ</a>
+        <div class="flex justify-between container mx-auto mt-5">
+            <div class="w-full lg:w-8/12">
+                <div class="bg-white shadow-lg p-5">
+                    <div class="mb-5">
+                        <label for="firstname" class="font-weight-normal mb-1 text-gray-700 block">ชื่อเรื่อง</label>
+                        <InputText @bind-Value="TvShowGenre.Name" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                    </div>
+                    <div class="mb-5">
+                        <label for="firstname" class="font-weight-normal mb-1 text-gray-700 h-32">เรื่องย่อ</label>
+                        <InputTextArea @bind-Value="TvShowGenre.Description" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputTextArea>
+                    </div>
+                    <div class="mt-5">
+                        <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline" value="Save">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</EditForm>
+
+

@@ -1,27 +1,27 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MpStream.Models;
 using MpStream.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace MpStream.Pages.Admin.TvShow
+namespace MpStream.Pages.Admin.ShowGenre
 {
     public partial class Index : ComponentBase
     {
         [Inject]
         public TvShowService TvShowService { get; set; }
-        public List<TvShowEntity> TvShowEntities { get; set; } = new List<TvShowEntity>();
+        public List<TvShowGenre> TvShowGenres { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
-            TvShowEntities = await TvShowService.GetTvShowList();
+            TvShowGenres = await TvShowService.TvShowGenreList();
         }
 
         public async Task Remove(int Id)
         {
 
         }
+
         public async Task Edit(int Id)
         {
 

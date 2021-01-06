@@ -13,7 +13,7 @@ namespace MpStream.Models
         [MinLength(3)]
         [MaxLength(120)]
         public string Title { get; set; }
-        public string Poster { get; set; }
+        public byte[] PosterImage { get; set; }
         public ICollection<MovieWithGenre> MovieWithGenres { get; set; }
         public string Player { get; set; }
         public string Tag { get; set; }

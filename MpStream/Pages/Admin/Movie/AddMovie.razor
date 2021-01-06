@@ -11,23 +11,23 @@
                 <div class="bg-white shadow-lg p-5">
                     <div class="mb-5">
                         <label for="firstname" class="font-weight-normal mb-1 text-gray-700 block">ชื่อเรื่อง</label>
-                        <InputText @bind-Value="MovieEntity.Title" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                        <InputText @bind-Value="MovieEntity.Title" class="focus:ring-2 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
                     </div>
                     <div class="mb-5">
                         <label for="firstname" class="font-weight-normal mb-1 text-gray-700 h-32">เรื่องย่อ</label>
-                        <InputTextArea @bind-Value="MovieEntity.Title" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputTextArea>
+                        <InputTextArea @bind-Value="MovieEntity.Title" class="focus:ring-2 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputTextArea>
                     </div>
                     <div class="mb-5">
                         <label for="firstname" class="font-weight-normal mb-1 text-gray-700 block">ตัวเล่น</label>
-                        <InputTextArea @bind-Value="MovieEntity.Player" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputTextArea>
+                        <InputTextArea @bind-Value="MovieEntity.Player" class="focus:ring-2 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputTextArea>
                     </div>
                     <div class="mb-5">
                         <label for="firstname" class="font-weight-normal mb-1 text-gray-700 block">เสียง</label>
-                        <InputText @bind-Value="MovieEntity.Sound" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                        <InputText @bind-Value="MovieEntity.Sound" class="focus:ring-2 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
                     </div>
                     <div class="mb-5">
                         <label for="firstname" class="font-bold mb-1 text-gray-700 block">ป้าย</label>
-                        <InputText @bind-Value="MovieEntity.Tag" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                        <InputText @bind-Value="MovieEntity.Tag" class="focus:ring-2 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
                     </div>
                     <div class="mt-5">
                         <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline" value="Save">Save</button>
@@ -55,11 +55,7 @@
                             </label>
 
                             <div class="mx-auto w-48 text-gray-500 text-xs text-center mt-1">Click to add profile picture</div>
-
-                            <input name="photo" id="fileInput" accept="image/*" class="hidden" type="file" @change="let file = document.getElementById('fileInput').files[0];
-                                   var reader=new FileReader();
-                                   reader.onload=(e) => image = e.target.result; reader.readAsDataURL(file);">
-
+                            <InputFile id="fileInput" class="hidden" OnChange="HandleFileSelected"></InputFile>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,26 @@
 ﻿@page "/admin/tvshow"
-<h3>Index</h3>
-
-@code {
-
-}
+<a href="/admin/tvshow/add" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">เพิ่มหนัง</a>
+<table class="w-full text-md bg-white shadow-md rounded mb-4">
+    <tbody>
+        <tr class="border-b">
+            <th class="text-left p-3 px-5">Check</th>
+            <th class="text-left p-3 px-5">Title</th>
+            <th class="text-left p-3 px-5">SS Number</th>
+            <th class="text-left p-3 px-5">Sound</th>
+            <th></th>
+        </tr>
+        @foreach (var eachMovie in TvShowEntities)
+        {
+    <tr class="border-b hover:bg-orange-100 bg-gray-100">
+        <td class="p-3 px-1"><input type="checkbox" /></td>
+        <td class="p-3 px-5">@eachMovie.Title</td>
+        <td class="p-3 px-5">@eachMovie.NumberOfSeason</td>
+        <td class="p-3 px-5">@eachMovie.Sound</td>
+        <td>
+            <Button @onclick="() => Edit(eachMovie.Id)" class="bg-green-800 text-white p-2 px-3 hover:bg-green-600">แก้ไข</Button>
+            <Button @onclick="() => Remove(eachMovie.Id)" class="bg-red-800 text-white p-2 px-3 hover:bg-red-600">ลบ</Button>
+        </td>
+    </tr>
+        }
+    </tbody>
+</table>

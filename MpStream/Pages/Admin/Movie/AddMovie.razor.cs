@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorInputFile;
+using Microsoft.AspNetCore.Components;
 using MpStream.Models;
 using MpStream.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,6 +21,7 @@ namespace MpStream.Pages.Admin.Movie
         public NavigationManager NavigationManager { get; set; }
         public List<MovieGenreEntity> MovieGenres { get; private set; } = new List<MovieGenreEntity>();
         public List<string> SelectedGenreIds { get; set; } = new List<string>();
+        public byte[] PosterImage { get; set; }
         protected override void OnInitialized()
         {
             MovieGenres = MovieService.MovieGenreList();
@@ -28,11 +31,23 @@ namespace MpStream.Pages.Admin.Movie
         {
             MovieEntity.PublishedDate = DateTime.Now;
             MovieEntity.IsFeatured = false;
+            MovieEntity.PosterImage = PosterImage;
             var resuleSaveMovie = MovieService.AddMovie(MovieEntity);
             var resultSaveGenre = MovieService.SaveMovieWithGenre(MovieEntity, SelectedGenreIds);
             if (resuleSaveMovie.IsCompleted && resultSaveGenre.IsCompleted)
             {
                 NavigationManager.NavigateTo("/admin/movie");
+            }
+        }
+
+        async Task HandleFileSelected(IFileListEntry[] files)
+        {
+            var file = files.FirstOrDefault();
+            if(file != null)
+            {
+                var ms = new MemoryStream();
+                await file.Data.CopyToAsync(ms);
+                PosterImage = ms.ToArray();
             }
         }
 
