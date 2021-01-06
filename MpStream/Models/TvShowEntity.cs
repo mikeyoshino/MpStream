@@ -27,6 +27,7 @@ namespace MpStream.Models
         public ICollection<TvShowWithGenre> TvShowWithGenres { get; set; }
         public ICollection<Season> Seasons { get; set; }
         public ICollection<Tag> Tags { get; set; }
+        public ICollection<TvShowRegion> TvShowRegions { get; set; }
     }
 
     public class TvShowGenre
@@ -58,6 +59,7 @@ namespace MpStream.Models
         [Required]
         public string Name { get; set; }
         public int NumberOfEpisode { get; set; }
+        public DateTime PublishedDate { get; set; }
         public TvShowEntity TvShowEntity { get; set; }
         [Required]
         public int TvShowEntityId { get; set; }
@@ -69,6 +71,7 @@ namespace MpStream.Models
         [Required]
         public string Name { get; set; }
         public string SeasonNumber { get; set; }
+        public DateTime PublishedDate { get; set; }
         public Season Season { get; set; }
         [Required]
         public int SeasonId { get; set; }
@@ -79,6 +82,14 @@ namespace MpStream.Models
     }
 
     public class Tag
+    {
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public TvShowEntity TvShowEntity { get; set; }
+    }
+
+    public class TvShowRegion
     {
         public int Id { get; set; }
         [Required]

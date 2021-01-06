@@ -4,6 +4,10 @@
 <EditForm Model="TvShowEntity" OnValidSubmit="SaveShow">
     <DataAnnotationsValidator />
     <ValidationSummary />
+    @if(OperationMessage != null)
+    {
+        <p>@OperationMessage</p>
+    }
     <div class="px-6 py-8">
         <a href="/admin/movie" class="border border-gray-500 bg-gray-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-600 focus:outline-none focus:shadow-outline">กลับ</a>
         <div class="flex justify-between container mx-auto mt-5">
@@ -33,40 +37,79 @@
                         <label for="firstname" class="font-bold mb-1 text-gray-700 block">ตัวอย่าง</label>
                         <InputText @bind-Value="TvShowEntity.Trailer" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
                     </div>
+                    <div class="bg-gray-50 shadow m-3">
+                        <div class="p-3">
+                            <div @onclick="AddSeason" class="flex bg-pink-400 rounded-sm px-2 py-1 m-2 transition duration-500 ease select-none hover:bg-pink-500 focus:outline-none focus:shadow-outline">
+                                <div class="p-1">
+                                    <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </div>
+                                <div class="text-white p-2">
+                                    Add Season
+                                </div>
+                            </div>
+                            @if (SeasonList != null)
+                            {
+                                @foreach (var eachSeason in SeasonList)
+                                {
+                                    <div class="m-1 bg-indigo-100 flex rounded shadow">
+                                        <div class="w-10/12 p-3 pt-4 flex">
+                                            <div class="mr-1">
+                                                <svg class="h-8 w-8 text-red-500"  viewBox="0 0 20 20" fill="currentColor">  <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
+                                            </div>
+                                            <div class="p-1 bg-white text-gray-700 rounded-sm">
+                                                Season @eachSeason.Name @*Id: @eachSeason.Name*@
+                                            </div>
+                                        </div>
+
+                                        <div class="w-1/12 p-3 pl-8">
+                                            <div @onclick="() => AddEpisode(eachSeason.Name)" class="w-8 bg-green-500 text-white rounded-md transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">
+                                                <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="w-1/12 p-3">
+                                            <div @onclick="() => RemoveSeason(eachSeason.Name)" class="w-8 bg-red-500 text-white rounded-md transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline">
+                                                <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @foreach (var eachEpisode in EpisodeList)
+                                    {
+                                        if (eachEpisode.SeasonNumber == eachSeason.Name)
+                                        {
+                                            <div class="w-11/12 m-1 bg-indigo-50 ml-14 rounded shadow mb-3">
+                                                <div class="p-3 lg:flex">
+                                                    <div class="w-8/12 mr-2"><InputText @bind-Value="eachEpisode.Name" class="px-2 py-1 w-full rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 border border-solid border-gray-200" placeholder="เลขที่ตอนและชื่อตอน"></InputText></div>
+                                                    <div class="w-3/12 mr-2"><InputText @bind-Value="eachEpisode.Language" class="px-2 py-1 w-full rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 border border-solid border-gray-200" placeholder="ภาษา"></InputText></div>
+                                                    <div class="w-1/12 mr-2">
+                                                        <div @onclick="() => RemoveEpisode(eachSeason.Name, eachEpisode.SeasonNumber)" class="ml-7 w-8 bg-red-500 text-white rounded-md transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline">
+                                                            <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="p-3">
+                                                    <div class="w-12/12"> <InputText @bind-Value="eachEpisode.EmbedLink" class="w-full px-2 py-1 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-sm border border-solid border-gray-200" placeholder="ลิงค์ตัวเล่น"></InputText></div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
                     <div class="mt-5">
                         <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline" value="Save">Save</button>
                     </div>
-                    <div class="bg-gray-100 shadow m-3">
-                        <div class="p-3">
-                                <button @onclick="AddSeason" class="border border-green-500 bg-green-500 text-white rounded-md px-2 py-1 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">เพิ่มซี่ซั่น</button>
-                                @if (SeasonList != null)
-                                {
-                                    @foreach (var eachSeason in SeasonList)
-                                    {
-                                        <div class="w-full m-2 bg-indigo-100 flex">
-                                            <div class="w-9/12">ซีซั่นที่ @eachSeason.Name @*Id: @eachSeason.Name*@</div>
-                                            <div class="w-2/12"><button @onclick="() => AddEpisode(eachSeason.Name)" class="border border-green-500 bg-green-500 text-white rounded-md px-2 py-1 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">เพิ่มจำนวนตอน</button></div>
-                                            <div class="w-1/12"><button @onclick="() => RemoveSeason(eachSeason.Name)" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">ลบ</button></div>
-                                        </div>
-                                        @foreach (var eachEpisode in EpisodeList)
-                                        {
-                                            if (eachEpisode.SeasonNumber == eachSeason.Name)
-                                            {
-                                            <div class="w-full m-2 bg-indigo-100">
-                                                <div class="p-3 flex">
-                                                    <div class="w-1/12">ตอนที่ @eachEpisode.Name @*Season Id : @eachSeason.Name*@</div>
-                                                    <div class="w-9/12"> <InputText @bind-Value="TvShowEntity.Status" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText></div>
-                                                    <div class="w-2/12"><button @onclick="() => RemoveEpisode(eachSeason.Name, eachEpisode.SeasonNumber)" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">ลบ</button></div>
-                                                </div>
-                                            </div>
-                                            }
-                                        }
-                                        }
-                                }
-                        </div>
-                    </div>
                 </div>
             </div>
+
             <div class="-mx-8 w-4/12 hidden lg:block">
                 <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">Poster Image:</div>
                 <div class="bg-white shadow-lg rounded">

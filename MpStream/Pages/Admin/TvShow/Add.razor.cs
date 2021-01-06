@@ -12,24 +12,35 @@ namespace MpStream.Pages.Admin.TvShow
     {
         [Inject]
         public TvShowService TvShowService { get; set; }
+        [Inject]
+        public NavigationManager NavBar { get; set; }
         public TvShowEntity TvShowEntity { get; set; } = new TvShowEntity();
         public List<TvShowGenre> TvShowGenreList { get; set; } = new List<TvShowGenre>();
-        public List<string> SelectedGenreIds { get; set; }
+        public List<string> SelectedGenreIds { get; set; } = new List<string>();
         public List<Season> SeasonList { get; set; } = new List<Season>();
         public List<Episode> EpisodeList { get; set; } = new List<Episode>();
         public int NumberOfSeason { get; set; }
-
-        public int NumberOfEpisode { get; set; }
         public string ImdbId { get; set; }
+        public string OperationMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             TvShowGenreList = await TvShowService.TvShowGenreList();
         }
 
-        void SaveShow()
+        public void SaveShow()
         {
-
+            var saveTvShow = TvShowService.Create(TvShowEntity);
+            var saveTvShowGenreList = TvShowService.SaveBulkTvShowGenre(TvShowEntity, SelectedGenreIds);
+            var saveBulkSeason = TvShowService.InsertBulkSeason(TvShowEntity, SeasonList);
+            var saveBulkEpisode = TvShowService.InsertBulkEpisode(TvShowEntity, EpisodeList);
+            if (saveTvShow) {
+                OperationMessage = "Inserted TvShow Succesfully!";
+                NavBar.NavigateTo("/admin/tvshow");
+            } else
+            {
+                OperationMessage = "Failed to create!";
+            }
         }
         void CheckboxClicked(string Id, object checkedValue)
         {
@@ -56,22 +67,16 @@ namespace MpStream.Pages.Admin.TvShow
         void AddSeason()
         {
             NumberOfSeason += 1;
-            SeasonList.Add( new Season {TvShowEntityId = TvShowEntity.Id, Name = NumberOfSeason.ToString()});
-            if(NumberOfSeason > 1)
-            {
-                NumberOfEpisode -= NumberOfEpisode;
-            }
+            SeasonList.Add( new Season { Name = NumberOfSeason.ToString()});
         }
         void AddEpisode(string seasonId)
         {
-            NumberOfEpisode += 1;
-            EpisodeList.Add(new Episode { Name = NumberOfEpisode.ToString(), SeasonNumber = seasonId });
+            EpisodeList.Add(new Episode { SeasonNumber = seasonId });
         }
         void RemoveEpisode(string seasonNumber, string episodeSeasonNumber)
         {
             if(seasonNumber == episodeSeasonNumber)
             {
-                NumberOfEpisode -= 1;
                 var selectedEpsode = EpisodeList.Where(s => s.SeasonNumber == seasonNumber).Last();
                 EpisodeList.Remove(selectedEpsode);
             }
@@ -79,8 +84,13 @@ namespace MpStream.Pages.Admin.TvShow
         void RemoveSeason(string Id)
         {
             NumberOfSeason -= 1;
-            var selectedSeason = SeasonList.Where(s => s.Name == Id).First();
+            Season selectedSeason = SeasonList.Where(s => s.Name == Id).First();
+            List<Episode> selectedEpisodes = EpisodeList.Where(s => s.SeasonNumber == Id).ToList();
             SeasonList.Remove(selectedSeason);
+            foreach (var eachEpisode in selectedEpisodes)
+            {
+                EpisodeList.Remove(eachEpisode);
+            }
         }
     }
 }

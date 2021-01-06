@@ -12,6 +12,7 @@ namespace MpStream.Services
         private readonly ApplicationDbContext aDatabase;
         private TvShowEntity TvShowModel = new TvShowEntity();
         private List<TvShowWithGenre> TvShowWithGenreList = new List<TvShowWithGenre>();
+        private int Result;
 
         public TvShowService(ApplicationDbContext database)
         {
@@ -22,21 +23,20 @@ namespace MpStream.Services
         {
             return Task.FromResult(aDatabase.TvShowEntities.ToList());
         }
-        public Task Create(TvShowEntity tvShowModel)
+        public bool Create(TvShowEntity tvShowModel)
         {
             if(tvShowModel != null)
             {
                 aDatabase.TvShowEntities.Add(tvShowModel);
-                var result = aDatabase.SaveChanges();
-                if(result >= 0)
-                {
-                    return Task.FromResult(true);
-                }
+                Result = aDatabase.SaveChanges();
+            }
+            if (Result >= 0)
+            {
+                return true;
             } else
             {
-                return Task.FromResult(false);
+                return false;
             }
-            return Task.FromResult(tvShowModel);
         }
         public Task<TvShowEntity> GetTvShowById(int Id)
         {
@@ -57,20 +57,20 @@ namespace MpStream.Services
             }
         }
 
-        public Task<bool> SaveBulkTvShowGenre(int tvShowId, List<int> GenreIdList)
+        public bool SaveBulkTvShowGenre(TvShowEntity tvShowModel, List<string> GenreIdList)
         {
             foreach (var eachGenreId in GenreIdList)
             {
-                TvShowWithGenreList.Add(new TvShowWithGenre { TvShowEntityId = tvShowId, TvShowGenreId = eachGenreId});
+                TvShowWithGenreList.Add(new TvShowWithGenre { TvShowEntityId = tvShowModel.Id, TvShowGenreId = Convert.ToInt32(eachGenreId)});
             }
             if(TvShowWithGenreList != null)
             {
                 aDatabase.TvShowWithGenres.AddRange(TvShowWithGenreList);
                 aDatabase.SaveChanges();
-                return Task.FromResult(true);
+                return true;
             } else
             {
-                return Task.FromResult(false);
+                return false;
             }
         }
         public Task<bool> UpdateTvShow(int tvShowId, TvShowEntity tvShowModel, List<TvShowGenre> newSelectedGenreList)
@@ -135,16 +135,27 @@ namespace MpStream.Services
         #endregion
 
         #region Season Service
-        public Task<bool> CreateSeason(Season seasonModel)
+        public bool InsertBulkSeason(TvShowEntity tvshowModel, List<Season> seasonList)
         {
-            if(seasonModel != null)
+            List<Season> addTvIdToSeasonList = new List<Season>();
+            foreach (var eachSeason in seasonList)
             {
-                aDatabase.Seasons.Add(seasonModel);
-                aDatabase.SaveChanges();
-                return Task.FromResult(true);
-            }else
+                addTvIdToSeasonList.Add(new Season
+                {
+                    Name = eachSeason.Name,
+                    NumberOfEpisode = eachSeason.NumberOfEpisode,
+                    PublishedDate = eachSeason.PublishedDate,
+                    TvShowEntityId = tvshowModel.Id
+                });
+            }
+            aDatabase.Seasons.AddRange(addTvIdToSeasonList);
+            var result = aDatabase.SaveChanges();
+            if (result >= 0)
             {
-                return Task.FromResult(false);
+                return true;
+            } else
+            {
+                return false;
             }
         }
         public List<Season> GetSeasonList()
@@ -155,6 +166,39 @@ namespace MpStream.Services
         {
             var season = aDatabase.Seasons.SingleOrDefault(s => s.Id == Id);
             var result = aDatabase.Seasons.Remove(season);
+        }
+        #endregion
+
+        #region Episode Service
+        public bool InsertBulkEpisode(TvShowEntity tvshowModel, List<Episode> episodeList)
+        {
+            List<Episode> finalEpisodeListBeforeInsert = new List<Episode>();
+            //Get Season list based on tv show Id.
+            var seasonListInDb = aDatabase.Seasons.Where(s => s.TvShowEntityId == tvshowModel.Id).ToList();
+            //add to new list before inserting to epsiode db.
+            foreach (var eachEpisode in episodeList)
+            {
+                var seasonId = seasonListInDb.Where(s => s.Name == eachEpisode.SeasonNumber).First();
+                finalEpisodeListBeforeInsert.Add(new Episode { 
+                    Language = eachEpisode.Language, 
+                    Name = eachEpisode.Name, 
+                    PublishedDate = eachEpisode.PublishedDate, 
+                    SeasonId = seasonId.Id,
+                    EmbedLink = eachEpisode.EmbedLink,
+                    SeasonNumber = eachEpisode.SeasonNumber
+                    
+                });
+            }
+            aDatabase.Episodes.AddRange(finalEpisodeListBeforeInsert);
+            var result = aDatabase.SaveChanges();
+            if (result >= 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         #endregion
     }

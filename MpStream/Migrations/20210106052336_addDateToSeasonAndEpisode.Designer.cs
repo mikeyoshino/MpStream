@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MpStream.Data;
 
 namespace MpStream.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210106052336_addDateToSeasonAndEpisode")]
+    partial class addDateToSeasonAndEpisode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,27 +268,6 @@ namespace MpStream.Migrations
                     b.ToTable("TvShowGenres");
                 });
 
-            modelBuilder.Entity("MpStream.Models.TvShowRegion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TvShowEntityId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TvShowEntityId");
-
-                    b.ToTable("TvShowRegions");
-                });
-
             modelBuilder.Entity("MpStream.Models.TvShowWithGenre", b =>
                 {
                     b.Property<int>("Id")
@@ -370,15 +351,6 @@ namespace MpStream.Migrations
                     b.Navigation("TvShowEntity");
                 });
 
-            modelBuilder.Entity("MpStream.Models.TvShowRegion", b =>
-                {
-                    b.HasOne("MpStream.Models.TvShowEntity", "TvShowEntity")
-                        .WithMany("TvShowRegions")
-                        .HasForeignKey("TvShowEntityId");
-
-                    b.Navigation("TvShowEntity");
-                });
-
             modelBuilder.Entity("MpStream.Models.TvShowWithGenre", b =>
                 {
                     b.HasOne("MpStream.Models.TvShowEntity", "TvShowEntity")
@@ -418,8 +390,6 @@ namespace MpStream.Migrations
                     b.Navigation("Seasons");
 
                     b.Navigation("Tags");
-
-                    b.Navigation("TvShowRegions");
 
                     b.Navigation("TvShowWithGenres");
                 });
