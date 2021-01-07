@@ -13,6 +13,8 @@ namespace MpStream.Pages.Admin.TvShow
         [Inject]
         public TvShowService TvShowService { get; set; }
         public List<TvShowEntity> TvShowEntities { get; set; } = new List<TvShowEntity>();
+        [Inject]
+        public NavigationManager NavBar { get; set; }
         protected override async Task OnInitializedAsync()
         {
             TvShowEntities = await TvShowService.GetTvShowList();
@@ -24,7 +26,7 @@ namespace MpStream.Pages.Admin.TvShow
         }
         public async Task Edit(int Id)
         {
-
+            NavBar.NavigateTo($"/admin/tvshow/edit/{Id}");
         }
     }
 }

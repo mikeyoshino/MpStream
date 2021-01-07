@@ -17,7 +17,11 @@ namespace MpStream.Models
         public ICollection<MovieWithGenre> MovieWithGenres { get; set; }
         public string Player { get; set; }
         public string Tag { get; set; }
-        public int Score { get; set; }
+        public decimal Score { get; set; }
+        public int Runtime { get; set; }
+        public int Revenue { get; set; }
+        public int Vote_count { get; set; }
+        public int ReleaseYear { get; set; }
         public string Description { get; set; }
         public string Sound { get; set; }
         public string TrailerId { get; set; }

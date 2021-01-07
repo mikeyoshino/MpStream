@@ -12,6 +12,7 @@ namespace MpStream.Services
         private readonly ApplicationDbContext aDatabase;
         private TvShowEntity TvShowModel = new TvShowEntity();
         private List<TvShowWithGenre> TvShowWithGenreList = new List<TvShowWithGenre>();
+        public List<Episode> EpisodeList = new List<Episode>();
         private int Result;
 
         public TvShowService(ApplicationDbContext database)
@@ -133,6 +134,12 @@ namespace MpStream.Services
         {
             return Task.FromResult(aDatabase.TvShowGenres.SingleOrDefault(s => s.Id == Id));
         }
+
+        public Task<List<TvShowWithGenre>> GetTvShowGenreListByShowId(int Id)
+        {
+            var showGenreList = aDatabase.TvShowWithGenres.Where(s => s.TvShowEntityId == Id).ToList();
+            return Task.FromResult(showGenreList);
+        }
         #endregion
 
         #region Season Service
@@ -168,6 +175,12 @@ namespace MpStream.Services
             var season = aDatabase.Seasons.SingleOrDefault(s => s.Id == Id);
             var result = aDatabase.Seasons.Remove(season);
         }
+
+        public Task<List<Season>> GetSeasonListByTvShowId(int Id)
+        {
+            var seasonList = aDatabase.Seasons.Where(s => s.TvShowEntityId == Id).ToList();
+            return Task.FromResult(seasonList);
+        }
         #endregion
 
         #region Episode Service
@@ -200,6 +213,16 @@ namespace MpStream.Services
             {
                 return false;
             }
+        }
+
+        public Task<List<Episode>> GetEpisodeListBySeasonList(List<Season> seasonList)
+        {
+            foreach (var eachSeason in seasonList)
+            {
+                var eachEpisode = aDatabase.Episodes.Where(s => s.SeasonId == eachSeason.Id).ToList();
+                EpisodeList.AddRange(eachEpisode);
+            }
+            return Task.FromResult(EpisodeList);
         }
         #endregion
     }

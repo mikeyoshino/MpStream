@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MpStream.Data;
 using MpStream.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace MpStream.Services
@@ -15,6 +17,8 @@ namespace MpStream.Services
         Dictionary<int, string> GenreNameMappedById = new Dictionary<int, string>();
         List<MovieWithGenre> GenresByMovieId = new List<MovieWithGenre>();
         public MovieEntity MovieEntity { get; set; } = new MovieEntity();
+        public TmdbMovieModel TmdbMovieModel = new TmdbMovieModel();
+        public Video VideoModel = new Video();
         public MovieService(){}
         public MovieService(ApplicationDbContext database, ApplicationDbContext sdatabase){aDatabase = database;}
 
@@ -134,6 +138,55 @@ namespace MpStream.Services
             }
             var resultFirst = aDatabase.SaveChanges();
             if(resultFirst >= 0) {return true; } else {return false;}
+        }
+
+        public async Task<TmdbMovieModel> FetchTmdbApi(string movieId)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(string.Format("https://api.themoviedb.org/3/movie/{0}?api_key=09e414c534d47f74def83dd9fa03909c&language=th", movieId)),
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                TmdbMovieModel = JsonConvert.DeserializeObject<TmdbMovieModel>(body);
+                Console.WriteLine(body);
+                return await Task.FromResult(TmdbMovieModel);
+            }
+        }
+        public async Task<TmdbMovieModel> FetchTmdbApiEnglish(string movieId)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(string.Format("https://api.themoviedb.org/3/movie/{0}?api_key=09e414c534d47f74def83dd9fa03909c", movieId)),
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                TmdbMovieModel = JsonConvert.DeserializeObject<TmdbMovieModel>(body);
+                Console.WriteLine(body);
+                return await Task.FromResult(TmdbMovieModel);
+            }
+        }
+        public async Task<Video> FetchTmdbTrailerApi(string movieId)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(string.Format("http://api.themoviedb.org/3/movie/{0}/videos?api_key=09e414c534d47f74def83dd9fa03909c", movieId)),
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                VideoModel = JsonConvert.DeserializeObject<Video>(body);
+                Console.WriteLine(body);
+                return await Task.FromResult(VideoModel);
+            }
         }
     }
 }
