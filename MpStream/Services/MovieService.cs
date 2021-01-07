@@ -35,6 +35,36 @@ namespace MpStream.Services
             movieList = aDatabase.MovieEntity.Include("MovieWithGenres").ToList();
             return movieList;
         }
+        public Task<int> CountMovies()
+        {
+            return Task.FromResult(aDatabase.MovieEntity.Count());
+        }
+        public async Task<List<MovieEntity>> GetMovieListIndexPage(int pageSize)
+        {
+            List<MovieEntity> movieList;
+            movieList = await aDatabase.MovieEntity.Include("MovieWithGenres").OrderBy(c => c.Id).Take(pageSize).ToListAsync();
+            return movieList;
+        }
+        public async Task<List<MovieEntity>> GetMovieListByPage(int pageSize, int pageIndex)
+        {
+            List<MovieEntity> movieList;
+            if(pageIndex == 1) //mean click on page 1.
+            {
+                movieList = await aDatabase.MovieEntity.Include("MovieWithGenres").OrderBy(c => c.Id).Take(pageSize).ToListAsync();
+            }
+            else
+            {
+                movieList = await aDatabase.MovieEntity.Include("MovieWithGenres").OrderBy(c => c.Id).Skip(pageSize * (pageIndex-1)).Take(pageSize).ToListAsync();
+            }
+            return movieList;
+        }
+
+        public async Task<List<MovieEntity>> SearchByWords (string keywords)
+        {
+            List<MovieEntity> movieList;
+            movieList = await aDatabase.MovieEntity.Where(q => keywords.All(k => q.Title.Contains(k))).ToListAsync();
+            return movieList;
+        }
 
         public MovieEntity GetMovieById(int Id)
         {

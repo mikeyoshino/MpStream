@@ -1,5 +1,6 @@
 ﻿@page "/admin/movie/add"
 
+@namespace MpStream.Pages.Admins
 
 <EditForm Model="MovieEntity" OnValidSubmit="SaveMovie">
     <DataAnnotationsValidator />
@@ -75,39 +76,40 @@
                     <div class="mt-5">
                         <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline flex" value="Save">
                             <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            <div class="pr-2">บันทึก</div></button>
+                            <div class="pr-2">บันทึก</div>
+                        </button>
                     </div>
                 </div>
             </div>
             <div class="-mx-8 w-4/12 hidden lg:block">
                 <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">Poster Image</div>
                 <div class="bg-white shadow-lg rounded">
-                        <div class="mb-5 text-center">
-                            <div class="mx-auto w-full h-32 mb-2 border relative bg-gray-100 mb-4 shadow-inset">
-                                @if (PreviewImage != null)
-                                {
-                                    <img id="image" class="object-cover object-top w-full h-48" src="https://image.tmdb.org/t/p/original/@PreviewImage" />
-                                }
-                                else
-                                {
-                                    <img id="image" class="object-cover w-full h-48" src="https://www.policebodysize.com/assets/image/catalog/no-image.svg" />
-                                }
-                            </div>
-
-                            <label for="fileInput"
-                                   type="button"
-                                   class="mt-16 cursor-pointer inine-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="inline-flex flex-shrink-0 w-6 h-6 -mt-1 mr-1" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
-                                    <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
-                                    <circle cx="12" cy="13" r="3" />
-                                </svg>
-                                Browse Poster
-                            </label>
-
-                            <div class="pb-4 mx-auto w-48 text-gray-500 text-xs text-center mt-1">Click to add movie poster</div>
-                            <InputFile id="fileInput" class="hidden" OnChange="HandleFileSelected"></InputFile>
+                    <div class="mb-5 text-center">
+                        <div class="mx-auto w-full h-32 mb-2 border relative bg-gray-100 mb-4 shadow-inset">
+                            @if (PreviewImage != null)
+                            {
+                                <img id="image" class="object-cover object-top w-full h-48" src="https://image.tmdb.org/t/p/original/@PreviewImage" />
+                            }
+                            else
+                            {
+                                <img id="image" class="object-cover w-full h-48" src="https://www.policebodysize.com/assets/image/catalog/no-image.svg" />
+                            }
                         </div>
+
+                        <label for="fileInput"
+                               type="button"
+                               class="mt-16 cursor-pointer inine-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-flex flex-shrink-0 w-6 h-6 -mt-1 mr-1" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                                <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+                                <circle cx="12" cy="13" r="3" />
+                            </svg>
+                            Browse Poster
+                        </label>
+
+                        <div class="pb-4 mx-auto w-48 text-gray-500 text-xs text-center mt-1">Click to add movie poster</div>
+                        <InputFile id="fileInput" class="hidden" OnChange="HandleFileSelected"></InputFile>
+                    </div>
                 </div>
                 <div class="bg-white shadow-lg mt-5 rounded">
                     <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">Category</div>
@@ -116,11 +118,11 @@
                         {
                             @if (SelectedGenreIds.Contains(genre.Id.ToString()))
                             {
-                                <input type="checkbox" checked="checked" value="true" @onchange="eventArgs => { CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
+                                <input class="form-checkbox mr-2" type="checkbox" checked="checked" value="true" @onchange="eventArgs => { CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
                             }
                             else
                             {
-                                <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
+                                <input class="form-checkbox mr-2" type="checkbox" @onchange="eventArgs => { CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
                             }
                         }
                     </div>

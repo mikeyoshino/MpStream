@@ -16,7 +16,6 @@ namespace MpStream.Pages.Movie
         Dictionary<int, string> GenreNameMappedById = new Dictionary<int, string>();
         protected override void OnInitialized()
         {
-            GenreNameMappedById = MovieService.MappedGenreToDictionary();
             MovieList = MovieService.GetMovieList();
         }
     }
