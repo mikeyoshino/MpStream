@@ -1,4 +1,35 @@
 ﻿@page "/movie/view/{MovieId:int}"
-<h3>Detail</h3>
-<p>@MovieEntity.Title</p>
-<p>@MovieEntity.Sound</p>
+<div class="w-full bg-gray-700">
+    <div class="w-10/12">
+        <div class="flex p-20">
+            <div class="w-4/12 round-sm">
+                <img class="shadow-lg" src="https://image.tmdb.org/t/p/original/kOCpkoMUVae9UIf85gO71SyjLbW.jpg" />
+            </div>
+            <div class="w-8/12 text-gray-300 pl-14">
+                <div class="mt-20"></div>
+                <div class="flex mt-4">
+                    <h1 class="text-4xl font-bold">@MovieEntity.Title</h1>
+                    <div class="text-4xl ml-2 font-thin">(@MovieEntity.ReleaseYear)</div>
+                </div>
+                <div class="flex mt-4">
+                    <div class="border px-2 rounded-sm mr-2">R</div>
+                    @foreach (var eachGenre in MovieEntity.MovieWithGenres)
+                    {
+                        <a href="/movie/category/@eachGenre.MovieGenreEntity.Name"><div class="mr-3">@eachGenre.MovieGenreEntity.Name</div></a>
+                    }
+                    <div class="flex">
+                    <div class=""><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                    <div class="">ตัวอย่าง</div>
+                    </div>
+                </div>
+                <h2 class="text-xl font-bold mt-4">เรื่องย่อ</h2>
+                <p class="pl-2 pt-1">@MovieEntity.Description</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="w-full bg-gray-600">
+    <div class="h-screen items-center">
+        <iframe class="w-8/12 h-4/6"  src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+    </div>
+</div>

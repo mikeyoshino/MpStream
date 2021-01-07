@@ -27,6 +27,9 @@ namespace MpStream.Pages.Admin.Movie
         [Parameter]
         public int MovieId { get; set; }
         public string ImdbId { get; set; }
+        public string PreviewImage { get; set; }
+        public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
+        public string TitleTH { get; set; }
 
         protected override void OnInitialized()
         {
@@ -84,6 +87,8 @@ namespace MpStream.Pages.Admin.Movie
         {
 
         }
+
+        public async Task HandleFileSelected() { }
     }
 
 }

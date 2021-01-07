@@ -38,7 +38,7 @@ namespace MpStream.Services
 
         public MovieEntity GetMovieById(int Id)
         {
-            MovieEntity = aDatabase.MovieEntity.SingleOrDefault(s => s.Id == Id);
+            MovieEntity = aDatabase.MovieEntity.Include(s => s.MovieWithGenres).ThenInclude(s => s.MovieGenreEntity).SingleOrDefault(s => s.Id == Id);
             return MovieEntity;
         }
 

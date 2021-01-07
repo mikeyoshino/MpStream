@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace MpStream.Pages.Admin.Movie
@@ -14,6 +13,8 @@ namespace MpStream.Pages.Admin.Movie
     public partial class AddMovie : ComponentBase
     {
         public string ImdbId { get; set; }
+        public string TitleTH {private get; set; }
+        public string PreviewImage { get; set; }
         public MovieEntity MovieEntity { get; set; } = new MovieEntity();
         [Inject]
         public MovieService MovieService { get; set; }
@@ -24,6 +25,7 @@ namespace MpStream.Pages.Admin.Movie
         public List<MovieGenreEntity> MovieGenres { get; private set; } = new List<MovieGenreEntity>();
         public List<string> GenreStringList { get; set; } = new List<string>();
         public List<string> SelectedGenreIds { get; set; } = new List<string>();
+        public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
         public byte[] PosterImage { get; set; }
         protected override void OnInitialized()
         {
@@ -74,12 +76,15 @@ namespace MpStream.Pages.Admin.Movie
         {
             var movieDataTH = await MovieService.FetchTmdbApi(Id);
             var videoTrailer = await MovieService.FetchTmdbTrailerApi(Id);
-            MovieEntity.Title = movieDataTH.Original_title + " " + movieDataTH.Title;
+            MovieEntity.Title = movieDataTH.Original_title;
             MovieEntity.Description = movieDataTH.Overview;
             MovieEntity.Score = movieDataTH.Vote_average;
             MovieEntity.Runtime = movieDataTH.Runtime;
             MovieEntity.Revenue = movieDataTH.Revenue;
             MovieEntity.Vote_count = movieDataTH.Vote_count;
+            MovieEntity.ReleaseYear = movieDataTH.Release_date.Year;
+            PreviewImage = movieDataTH.Poster_path;
+            TitleTH = movieDataTH.Title;
             var movieDataEnglish = await MovieService.FetchTmdbApiEnglish(Id);
             if (videoTrailer.Results != null)
             {
