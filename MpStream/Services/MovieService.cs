@@ -42,7 +42,7 @@ namespace MpStream.Services
         public async Task<List<MovieEntity>> GetMovieListIndexPage(int pageSize)
         {
             List<MovieEntity> movieList;
-            movieList = await aDatabase.MovieEntity.Include("MovieWithGenres").OrderBy(c => c.Id).Take(pageSize).ToListAsync();
+            movieList = await aDatabase.MovieEntity.Include("MovieWithGenres").OrderByDescending(c => c.Id).Take(pageSize).ToListAsync();
             return movieList;
         }
         public async Task<List<MovieEntity>> GetMovieListByPage(int pageSize, int pageIndex)
@@ -62,7 +62,7 @@ namespace MpStream.Services
         public async Task<List<MovieEntity>> SearchByWords (string keywords)
         {
             List<MovieEntity> movieList;
-            movieList = await aDatabase.MovieEntity.Where(q => keywords.All(k => q.Title.Contains(k))).ToListAsync();
+            movieList = await aDatabase.MovieEntity.Where(q => (q.Title).ToLower().Contains(keywords.ToLower())).ToListAsync();
             return movieList;
         }
 
@@ -94,6 +94,8 @@ namespace MpStream.Services
             }
             aDatabase.MovieWithGenres.AddRange(MovieWithGenres);
             var reuslt = aDatabase.SaveChanges();
+            //List wont be clear when genres are saved, what? need to clear it everytime after we save genre so new post wont have this list.
+            MovieWithGenres.Clear();
             return Task.FromResult(reuslt > 0);
         }
         public Dictionary<int, string> MappedGenreToDictionary()

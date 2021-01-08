@@ -9,12 +9,13 @@ namespace MpStream.Pages.Admins
     public partial class Index : ComponentBase
     {
         #region Pagination
-        public int pageSize { get; set; } = 3;
+        public int pageSize { get; set; } = 5;
         public int pageIndex { get; set; }
         public List<int> PageNumber { get; set; } = new List<int>();
         public int CountMovie { get; set; }
-
         #endregion
+
+
         [Inject]
         public MovieService MovieService { get; set; }
         [Inject]
@@ -24,13 +25,14 @@ namespace MpStream.Pages.Admins
         public List<MovieEntity> MovieEntity { get; set; }
         public List<int> SelectedMovieIds { get; set; } = new List<int>();
         public string DeleteMessage { get; set; }
-        public string SearchKeyword { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             MovieList = await MovieService.GetMovieListIndexPage(pageSize);
             CountMovie = await MovieService.CountMovies();
-            var number = CountMovie / pageSize;
+
+            //what is it you divide two int and cant round the number up? need to use this algorihm to fix it.
+            var number = (CountMovie + (pageSize - 1)) / pageSize;
             for (int i = 1; i <= number; i++)
             {
                 PageNumber.Add(i);
@@ -58,20 +60,25 @@ namespace MpStream.Pages.Admins
                 }
             }
         }
-        public async Task Search(string searchKeywords)
+        public async Task Search(object searchKeywords)
         {
-            MovieList = await MovieService.SearchByWords(searchKeywords);
+            MovieList = await MovieService.SearchByWords((string)searchKeywords);
+            StateHasChanged();
         }
 
         public async Task Remove(int Id)
         {
-            var result = MovieService.DeleteMovie(Id);
-            if(result == Task.FromResult(true))
+            var result = await MovieService.DeleteMovie(Id);
+            if(result == true)
             {
-                DeleteMessage = "Sucessfully Deleted";
+                DeleteMessage = "Succeeded";
+                MovieList.Clear();
+                MovieList = MovieService.GetMovieList();
+                StateHasChanged();
+                DeleteMessage = "Restart";
             } else
             {
-                DeleteMessage = "Fail to Delete.";
+                DeleteMessage = "Failed";
             }
         }
         public void Edit(int Id)

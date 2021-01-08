@@ -26,6 +26,7 @@ namespace MpStream.Pages.Admins
         public List<string> GenreStringList { get; set; } = new List<string>();
         public List<string> SelectedGenreIds { get; set; } = new List<string>();
         public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
+
         public byte[] PosterImage { get; set; }
         protected override void OnInitialized()
         {
@@ -40,6 +41,7 @@ namespace MpStream.Pages.Admins
             var resultSaveGenre = MovieService.SaveMovieWithGenre(MovieEntity, SelectedGenreIds);
             if (resuleSaveMovie.IsCompleted && resultSaveGenre.IsCompleted)
             {
+                StateHasChanged();
                 NavigationManager.NavigateTo("/admin/movie");
             }
         }
@@ -86,7 +88,7 @@ namespace MpStream.Pages.Admins
             PreviewImage = movieDataTH.Poster_path;
             TitleTH = movieDataTH.Title;
             var movieDataEnglish = await MovieService.FetchTmdbApiEnglish(Id);
-            if (videoTrailer.Results != null)
+            if (videoTrailer.Results.Length != 0)
             {
                 MovieEntity.TrailerId = videoTrailer.Results[0].Key;
             }
@@ -99,12 +101,14 @@ namespace MpStream.Pages.Admins
             {
                 if (!GenreStringList.Contains(genre.Name))
                 {
+                    //if category not exist create
                    await MovieGenreService.AddGenre(new MovieGenreEntity { Name = genre.Name });
                     MovieGenres = MovieGenreService.GetGenreList();
                     var genreModel = MovieGenres.Where(s => s.Name.Contains(genre.Name)).FirstOrDefault();
                     SelectedGenreIds.Add(genreModel.Id.ToString());
                 } else if (GenreStringList.Contains(genre.Name))
                 {
+                    //if category exist add to selectedGenreIds
                     var genreModel = MovieGenres.Where(s => s.Name.Contains(genre.Name)).FirstOrDefault();
                     SelectedGenreIds.Add(genreModel.Id.ToString());
                 }

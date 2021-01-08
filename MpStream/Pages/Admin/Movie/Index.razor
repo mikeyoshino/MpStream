@@ -1,12 +1,8 @@
 ﻿@page "/admin/movie"
 
 @namespace MpStream.Pages.Admins
-@using MpStream.Models
 
-@if (this.DeleteMessage != null)
-{
-    <p>@this.DeleteMessage</p>
-}
+
 <div class="mt-5 flex">
     <a href="/admin/movie/add" class="flex border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">
         <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
@@ -16,7 +12,7 @@
 <div class="my-2 flex sm:flex-row flex-col">
     <div class="flex flex-row mb-1 sm:mb-0">
         <div class="relative">
-            <select class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+            <select class="appearance-none h-full rounded-l border block appearance-none w-full bg-white text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                 <option>5</option>
                 <option>10</option>
                 <option>20</option>
@@ -28,11 +24,6 @@
             </div>
         </div>
         <div class="relative">
-            <select class="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                <option>All</option>
-                <option>Active</option>
-                <option>Inactive</option>
-            </select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
@@ -47,10 +38,7 @@
                 </path>
             </svg>
         </span>
-        <EditForm>
-            <InputText @bind-Value="SearchKeyword" @onchange="() => Search(SearchKeyword)" placeholder="Search" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
-        </EditForm>
-        
+        <input @onchange="eventArgs => { Search(eventArgs.Value); }" placeholder="ค้นหา.." class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
     </div>
 </div>
 
@@ -58,7 +46,6 @@
     <tbody>
         <tr class="border-b">
             <th class="text-left p-3 px-5">เลือก</th>
-            <th class="text-left p-3 px-5">หมายเลข</th>
             <th class="text-left p-3 px-5">ชื่อเรื่อง</th>
             <th class="text-left p-3 px-5">วันโพส</th>
             <th></th>
@@ -66,13 +53,12 @@
         @foreach (var eachMovie in MovieList)
         {
             <tr class="border-b hover:bg-orange-100 bg-gray-100">
-                <td class="w-1/12 pl-8"><input class="form-checkbox mr-2" type="checkbox" checked="checked" value="true" @onchange="eventArgs => { CheckboxClicked(eachMovie.Id, eventArgs.Value); }" /></td>
-                <td class="w-1/12 pl-9">@eachMovie.Id</td>
+                <td class="w-2/12 pl-8"><input class="form-checkbox mr-2" type="checkbox" value="true" @onchange="eventArgs => { CheckboxClicked(eachMovie.Id, eventArgs.Value); }" /></td>
                 <td class="w-6/12 pl-2"><a href="/admin/movie/edit/@eachMovie.Id">@eachMovie.Title</a></td>
                 <td class="w-2/12">@eachMovie.PublishedDate.ToShortDateString()</td>
                 <td class="w-2/12 pl-10">
-                    <Button @onclick="() => Edit(eachMovie.Id)" class="bg-green-800 text-white p-2 px-3 hover:bg-green-600">แก้ไข</Button>
-                    <Button @onclick="() => Remove(eachMovie.Id)" class="bg-red-800 text-white p-2 px-3 hover:bg-red-600">ลบ</Button>
+                    <Button @onclick="() => Edit(eachMovie.Id)" class="bg-green-800 text-white p-1 px-3 hover:bg-green-600">แก้ไข</Button>
+                    <Button @onclick="() => Remove(eachMovie.Id)" class="bg-red-800 text-white p-1 px-3 hover:bg-red-600">ลบ</Button>
                 </td>
             </tr>
         }
@@ -127,3 +113,18 @@
         </div>
     </div>
 </div>
+
+@if (this.DeleteMessage == "Succeeded")
+{
+    <div class="alert-toast fixed bottom-0 right-0 m-8 w-5/6 md:w-full max-w-sm">
+        <input type="checkbox" class="hidden" id="footertoast">
+
+        <label class="close cursor-pointer flex items-start justify-between w-full p-2 bg-green-500 h-24 rounded shadow-lg text-white" title="close" for="footertoast">
+            DeleteMessage
+
+            <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+            </svg>
+        </label>
+    </div>
+}

@@ -4,104 +4,147 @@
 <EditForm Model="MovieEntity" OnValidSubmit="UpdateMovie">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    @if(Message != null)
-    {
-        <p>@Message</p>
-    }
     <div class="px-6 py-8">
-        <a href="/admin/movie" class="border border-gray-500 bg-gray-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-600 focus:outline-none focus:shadow-outline">กลับ</a>
+        <a href="/admin/movie" class="w-1/12 border border-gray-500 bg-gray-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-600 focus:outline-none focus:shadow-outline flex">
+            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"></path></svg>
+            <div>กลับ</div>
+        </a>
         <div class="flex justify-between container mx-auto mt-5">
             <div class="w-full lg:w-8/12">
-                @if (MovieEntity != null)
-                {
-                    <div class="bg-white shadow-lg p-5">
-                        <div class="mb-5">
-                            <label for="firstname" class="font-weight-normal mb-1 text-gray-700 block">ชื่อเรื่อง</label>
-                            <InputText @bind-Value="MovieEntity.Title" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                <div class="bg-white shadow-lg p-5">
+                    <div class="flex">
+                        <div class="mb-5 w-8/12 mr-2">
+                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">ชื่ออังกฤษ</label>
+                            <InputText @bind-Value="MovieEntity.Title" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
                         </div>
-                        <div class="mb-5">
-                            <label for="firstname" class="font-weight-normal mb-1 text-gray-700 h-32">เรื่องย่อ</label>
-                            <InputTextArea @bind-Value="MovieEntity.Title" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputTextArea>
-                        </div>
-                        <div class="mb-5">
-                            <label for="firstname" class="font-weight-normal mb-1 text-gray-700 block">ตัวเล่น</label>
-                            <InputTextArea @bind-Value="MovieEntity.Player" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputTextArea>
-                        </div>
-                        <div class="mb-5">
-                            <label for="firstname" class="font-weight-normal mb-1 text-gray-700 block">เสียง</label>
-                            <InputText @bind-Value="MovieEntity.Sound" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
-                        </div>
-                        <div class="mb-5">
-                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">ป้าย</label>
-                            <InputText @bind-Value="MovieEntity.Tag" class="w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
-                        </div>
-                        <div class="mt-5">
-                            <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline" value="Save">Save</button>
+                        <div class="mb-5 w-4/12">
+                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">ชื่อไทย</label>
+                            <InputText @bind-Value="this.TitleTH" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
                         </div>
                     </div>
-                }
+                    <div class="mb-5">
+                        <label for="firstname" class="font-bold mb-1 text-gray-700 h-32">เรื่องย่อ</label>
+                        <InputTextArea @bind-Value="MovieEntity.Description" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200 h-96"></InputTextArea>
+                    </div>
+                    <div class="mb-5">
+                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ตัวเล่น</label>
+                        <InputTextArea @bind-Value="MovieEntity.Player" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputTextArea>
+                    </div>
+                    <div class="mb-5">
+                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">เสียง</label>
+                        <InputSelect @bind-Value="MovieEntity.Sound" class="focus:ring-1 focus:ring-blue-600 form-select w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200">
+                            @foreach (var eachChoice in soundChoices)
+                            {
+                                <option value="@eachChoice">@eachChoice</option>
+                            }
+
+                        </InputSelect>
+                    </div>
+                    <div class="flex">
+                        <div class="mb-5 w-full mr-2">
+                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">คะแนน</label>
+                            <InputNumber @bind-Value="MovieEntity.Score" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputNumber>
+                        </div>
+                        <div class="mb-5 w-full mr-2">
+                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">คะแนนทั้งหมด</label>
+                            <InputNumber @bind-Value="MovieEntity.Vote_count" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputNumber>
+                        </div>
+                        <div class="mb-5 w-full">
+                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">ปีที่ฉาย</label>
+                            <InputNumber @bind-Value="MovieEntity.ReleaseYear" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputNumber>
+                        </div>
+                    </div>
+                    <div class="mb-5">
+                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ตัวอย่างหนัง</label>
+                        <InputText @bind-Value="MovieEntity.TrailerId" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                        <div class="flex text-gray-400 text-xs pt-1">
+                            <svg class="pr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+
+                            <p>ใส่ไอดี Youtube ตัวอย่าง youtube.com/watch?v=<div class="font-semibold">kOCkne-Bku</div>.</p>
+                        </div>
+                    </div>
+                    <div class="mb-5">
+                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ป้าย</label>
+                        <InputText @bind-Value="MovieEntity.Tag" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                        <div class="flex text-gray-400 text-xs pt-1">
+                            <svg class="pr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+
+                            <p>คีย์เวิร์ดตามด้วย , เป็นต้น</p>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline flex" value="Save">
+                            <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            <div class="pr-2">บันทึก</div>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="-mx-8 w-4/12 hidden lg:block">
-                <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">Poster Image:</div>
+                <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">Poster Image</div>
                 <div class="bg-white shadow-lg rounded">
-                    <div class="p-3">
-                        <div class="mb-5 text-center">
-                            <div class="mx-auto w-32 h-32 mb-2 border rounded-full relative bg-gray-100 mb-4 shadow-inset">
-                                <img id="image" class="object-cover w-full h-32 rounded-full" :src="image" />
-                            </div>
-
-                            <label for="fileInput"
-                                   type="button"
-                                   class="cursor-pointer inine-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="inline-flex flex-shrink-0 w-6 h-6 -mt-1 mr-1" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
-                                    <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
-                                    <circle cx="12" cy="13" r="3" />
-                                </svg>
-                                Browse Photo
-                            </label>
-
-                            <div class="mx-auto w-48 text-gray-500 text-xs text-center mt-1">Click to add profile picture</div>
-
-                            <input name="photo" id="fileInput" accept="image/*" class="hidden" type="file" @change="let file = document.getElementById('fileInput').files[0];
-                                   var reader=new FileReader();
-                                   reader.onload=(e) => image = e.target.result; reader.readAsDataURL(file);">
-
+                    <div class="mb-5 text-center">
+                        <div class="mx-auto w-full h-32 mb-2 border relative bg-gray-100 mb-4 shadow-inset">
+                            @if (PreviewImage != null)
+                            {
+                                <img id="image" class="object-cover object-top w-full h-48" src="https://image.tmdb.org/t/p/original/@PreviewImage" />
+                            }
+                            else
+                            {
+                                <img id="image" class="object-cover w-full h-48" src="https://www.policebodysize.com/assets/image/catalog/no-image.svg" />
+                            }
                         </div>
+
+                        <label for="fileInput"
+                               type="button"
+                               class="mt-16 cursor-pointer inine-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-flex flex-shrink-0 w-6 h-6 -mt-1 mr-1" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+                                <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+                                <circle cx="12" cy="13" r="3" />
+                            </svg>
+                            Browse Poster
+                        </label>
+
+                        <div class="pb-4 mx-auto w-48 text-gray-500 text-xs text-center mt-1">Click to add movie poster</div>
+                        <InputFile id="fileInput" class="hidden" OnChange="HandleFileSelected"></InputFile>
                     </div>
                 </div>
                 <div class="bg-white shadow-lg mt-5 rounded">
-                    @if (MovieGenres != null)
-                    {
-                        <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">Category:</div>
-                        <div class="mr-3 ml-3 pl-3 pr-3 bg-gray-100 overflow-auto h-32">
-                            @foreach (var genre in this.MovieGenres)
+                    <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">Category</div>
+                    <div class="mr-3 ml-3 pl-3 pr-3 pt-2 bg-gray-100 overflow-auto h-40">
+                        @foreach (var genre in this.MovieGenres)
+                        {
+                            if (SelectedGenreIds.Contains(genre.Id.ToString()))
                             {
-                                @if (ExistGenreId.Contains(genre.Id))
-                                {
-                                    <input type="checkbox" checked="checked" value="true" @onchange="eventArgs => { CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" @onchange="eventArgs => { CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
-                                }
-
+                                <input class="form-checkbox mr-2" type="checkbox" checked="checked" @onchange="eventArgs => {CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
                             }
-                        </div>
-                    }
-                    @foreach (var item in SelectedGenreIds)
-                    {
-                        <p>@item</p>
-
-                    }
+                            else
+                            {
+                                <input class="form-checkbox mr-2" type="checkbox" @onchange="eventArgs => {CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
+                            }
+                        }
+                    </div>
                 </div>
+                @foreach (var item in SelectedGenreIds)
+                {
+                    <p>@item</p>
+                }
                 <div class="mt-5 bg-white shadow-lg">
-                    <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">IMDB Id:</div>
-                    <div class="p-3">
-                        <InputText @bind-Value="this.ImdbId" class="w-full px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                    <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">IMDB Id</div>
+                    <div class="p-4">
+                        <InputText @bind-Value="this.ImdbId" class="focus:ring-1 focus:ring-blue-600 w-full px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
                         <div class="mt-3"></div>
-                        <div @onclick="() => FetchImdbApi(this.ImdbId)" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">Fatch Data</div>
-                        <p class="text-gray-500">กรุณาใส่ไอดีจากเว็บ Imdb ที่นี้</p>
+                        <div @onclick="() => FetchImdbApi(this.ImdbId)" class="border border-green-500 bg-green-500 text-white rounded-sm px-4 py-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">
+                            <div class="flex">
+                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                                <div>Fatch Data</div>
+                            </div>
+                        </div>
+                        <div class="flex text-gray-400 text-xs pt-1">
+                            <svg class="pr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <p>กรุณาใส่ไอดีจากเว็บ Tmdb</p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -116,17 +116,14 @@
                     <div class="mr-3 ml-3 pl-3 pr-3 pt-2 bg-gray-100 overflow-auto h-40">
                         @foreach (var genre in this.MovieGenres)
                         {
-                            @if (SelectedGenreIds.Contains(genre.Id.ToString()))
-                            {
-                                <input class="form-checkbox mr-2" type="checkbox" checked="checked" value="true" @onchange="eventArgs => { CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
-                            }
-                            else
-                            {
-                                <input class="form-checkbox mr-2" type="checkbox" @onchange="eventArgs => { CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
-                            }
+                            <input class="form-checkbox mr-2" type="checkbox" @onchange="eventArgs => {CheckboxClicked(genre.Id.ToString(), eventArgs.Value); }" /> @genre.Name<br />
                         }
                     </div>
                 </div>
+                @foreach (var item in SelectedGenreIds)
+                {
+                    <p>@item</p>
+                }
                 <div class="mt-5 bg-white shadow-lg">
                     <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">IMDB Id</div>
                     <div class="p-4">
