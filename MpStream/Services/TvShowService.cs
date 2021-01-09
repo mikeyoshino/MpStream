@@ -1,8 +1,11 @@
-﻿using MpStream.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MpStream.Data;
 using MpStream.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace MpStream.Services
@@ -13,6 +16,8 @@ namespace MpStream.Services
         private TvShowEntity TvShowModel = new TvShowEntity();
         private List<TvShowWithGenre> TvShowWithGenreList = new List<TvShowWithGenre>();
         public List<Episode> EpisodeList = new List<Episode>();
+        public TmdbTvShowModel TmdbTvShow { get; set; } = new TmdbTvShowModel();
+        public Video TmdbVideoModel = new Video();
         private int Result;
 
         public TvShowService(ApplicationDbContext database)
@@ -22,7 +27,7 @@ namespace MpStream.Services
         #region TvShow Service
         public Task<List<TvShowEntity>> GetTvShowList()
         {
-            return Task.FromResult(aDatabase.TvShowEntities.ToList());
+            return Task.FromResult(aDatabase.TvShowEntities.Include("TvShowWithGenres").ToList());
         }
         public bool Create(TvShowEntity tvShowModel)
         {
@@ -84,6 +89,78 @@ namespace MpStream.Services
             tvShowInDb.Trailer = tvShowModel.Trailer;
             return Task.FromResult(true);
 
+        }
+
+        public async Task<TmdbTvShowModel> FetchTmdbTvShowApi(string movieId, bool isThaiApi)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage();
+            if (isThaiApi){
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri(string.Format("https://api.themoviedb.org/3/tv/{0}?api_key=09e414c534d47f74def83dd9fa03909c&language=th", movieId));
+            } else {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri(string.Format("https://api.themoviedb.org/3/tv/{0}?api_key=09e414c534d47f74def83dd9fa03909c", movieId));
+            }
+            using (var response = await client.SendAsync(request))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var body = await response.Content.ReadAsStringAsync();
+                    TmdbTvShow = JsonConvert.DeserializeObject<TmdbTvShowModel>(body);
+                } else
+                {
+                    TmdbTvShow = new TmdbTvShowModel { isRequestSucceed = false };
+                }
+                
+                return await Task.FromResult(TmdbTvShow);
+            }
+        }
+        public async Task<Video> FetchTmdbTrailerApi(string movieId)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(string.Format("http://api.themoviedb.org/3/tv/{0}/videos?api_key=09e414c534d47f74def83dd9fa03909c", movieId)),
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                TmdbVideoModel = JsonConvert.DeserializeObject<Video>(body);
+                Console.WriteLine(body);
+                return await Task.FromResult(TmdbVideoModel);
+            }
+        }
+        public Task<int> CountTvShow()
+        {
+            return Task.FromResult(aDatabase.TvShowEntities.Count());
+        }
+        public async Task<List<TvShowEntity>> GetTvShowListIndexPage(int pageSize)
+        {
+            List<TvShowEntity> tvShowList;
+            tvShowList = await aDatabase.TvShowEntities.OrderByDescending(c => c.Id).Take(pageSize).ToListAsync();
+            return tvShowList;
+        }
+        public async Task<List<TvShowEntity>> GetMovieListByPage(int pageSize, int pageIndex)
+        {
+            List<TvShowEntity> tvShowList;
+            if (pageIndex == 1) //mean click on page 1.
+            {
+                tvShowList = await aDatabase.TvShowEntities.OrderBy(c => c.Id).Take(pageSize).ToListAsync();
+            }
+            else
+            {
+                tvShowList = await aDatabase.TvShowEntities.OrderBy(c => c.Id).Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToListAsync();
+            }
+            return tvShowList;
+        }
+
+        public async Task<List<TvShowEntity>> SearchByWords(string keywords)
+        {
+            List<TvShowEntity> tvShowList;
+            tvShowList = await aDatabase.TvShowEntities.Where(q => (q.Title).ToLower().Contains(keywords.ToLower())).ToListAsync();
+            return tvShowList;
         }
         #endregion
 

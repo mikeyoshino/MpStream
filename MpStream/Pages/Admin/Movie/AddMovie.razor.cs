@@ -102,7 +102,7 @@ namespace MpStream.Pages.Admins
                 if (!GenreStringList.Contains(genre.Name))
                 {
                     //if category not exist create
-                   await MovieGenreService.AddGenre(new MovieGenreEntity { Name = genre.Name });
+                    await MovieGenreService.AddGenre(new MovieGenreEntity { Name = genre.Name });
                     MovieGenres = MovieGenreService.GetGenreList();
                     var genreModel = MovieGenres.Where(s => s.Name.Contains(genre.Name)).FirstOrDefault();
                     SelectedGenreIds.Add(genreModel.Id.ToString());

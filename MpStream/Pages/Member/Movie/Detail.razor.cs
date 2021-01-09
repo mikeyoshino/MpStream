@@ -3,7 +3,7 @@ using MpStream.Models;
 using MpStream.Services;
 using System.Threading.Tasks;
 
-namespace MpStream.Pages.Movie
+namespace MpStream.Pages.Members
 {
     public partial class Detail : ComponentBase
     {

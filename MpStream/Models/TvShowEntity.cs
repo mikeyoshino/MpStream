@@ -29,10 +29,12 @@ namespace MpStream.Models
         public int VoteCount { get; set; }
         public string Backdrop_Path { get; set; }
         public DateTime FirstAirDate { get; set; }
+        public DateTime PublishedDate { get; set; }
         public ICollection<TvShowWithGenre> TvShowWithGenres { get; set; }
         public ICollection<Season> Seasons { get; set; }
         public ICollection<Tag> Tags { get; set; }
         public ICollection<TvShowRegion> TvShowRegions { get; set; }
+ 
     }
 
     public class TvShowGenre

@@ -13,6 +13,7 @@ namespace MpStream.Models
         public string TmdbApiKeyLanguage { get; set; }
         public bool AutoCompleteGenre { get; set; }
     }
+
     [NotMapped]
     public class TmdbMovieModel
     {
@@ -48,7 +49,31 @@ namespace MpStream.Models
         public string Id { get; set; }
         public string Key { get; set; }
         public int Size { get; set; }
+    }
 
-
+    [NotMapped]
+    public class TmdbTvShowModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Original_name { get; set; }
+        public string Overview { get; set; }
+        public decimal Popularity { get; set; }
+        public string Poster_path { get; set; }
+        public string Status { get; set; }
+        public decimal Vote_average { get; set; }
+        public int Vote_count { get; set; }
+        public int Number_of_episodes { get; set; }
+        public int Number_of_seasons { get; set; }
+        public string Backdrop_path { get; set; }
+        public DateTime First_air_date { get; set; }
+        public TvGenres[] Genres { get; set; }
+        public bool isRequestSucceed { get; set; } = true;
+    }
+    [NotMapped]
+    public class TvGenres
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

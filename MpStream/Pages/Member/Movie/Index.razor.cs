@@ -6,16 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MpStream.Pages.MovieGenre
+namespace MpStream.Pages.Members
 {
     public partial class Index : ComponentBase
     {
         [Inject]
-        public MovieGenreService MovieGenreService { get; set; }
-        List<MovieGenreEntity> GenreList;
+        public MovieService MovieService { get; set; }
+        public List<MovieEntity> MovieList { get; set; } = new List<MovieEntity>();
+        Dictionary<int, string> GenreNameMappedById = new Dictionary<int, string>();
         protected override void OnInitialized()
         {
-            GenreList = MovieGenreService.GetGenreList();
+            MovieList = MovieService.GetMovieList();
         }
     }
 }
