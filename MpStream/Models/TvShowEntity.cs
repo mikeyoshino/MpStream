@@ -22,7 +22,13 @@ namespace MpStream.Models
         [Required]
         public int NumberOfSeason { get; set; }
         [Required]
+        public int NumberOfEpisode { get; set; }
         public string Status { get; set; }
+        public int EpisodeRunTime  { get; set; }
+        public decimal Score { get; set; }
+        public int VoteCount { get; set; }
+        public string Backdrop_Path { get; set; }
+        public DateTime FirstAirDate { get; set; }
         public ICollection<TvShowWithGenre> TvShowWithGenres { get; set; }
         public ICollection<Season> Seasons { get; set; }
         public ICollection<Tag> Tags { get; set; }
