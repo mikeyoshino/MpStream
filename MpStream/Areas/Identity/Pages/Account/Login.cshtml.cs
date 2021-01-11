@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Components;
 
 namespace MpStream.Areas.Identity.Pages.Account
 {
@@ -83,7 +84,7 @@ namespace MpStream.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    Response.Redirect("/admin/movie");
                 }
                 if (result.RequiresTwoFactor)
                 {

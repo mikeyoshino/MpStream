@@ -11,6 +11,8 @@ namespace MpStream.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
+        public ApplicationDbContext()
+        { }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
         protected override void OnModelCreating(ModelBuilder builder)
         {

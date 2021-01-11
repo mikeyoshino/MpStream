@@ -33,6 +33,7 @@ namespace MpStream
             services.AddAuthentication("Identity.Application")
         .AddCookie();
             services.AddDbContext<ApplicationDbContext>(aDbContextOptionsBuilder => aDbContextOptionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllers();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<SignInManager<IdentityUser>>();
@@ -57,6 +58,7 @@ namespace MpStream
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -64,7 +66,9 @@ namespace MpStream
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapBlazorHub();
+                endpoints.MapControllers();
                 endpoints.MapFallbackToPage("/_Host");
             });
         }
