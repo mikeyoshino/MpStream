@@ -79,16 +79,60 @@ namespace MpStream.Services
                 return false;
             }
         }
-        public Task<bool> UpdateTvShow(int tvShowId, TvShowEntity tvShowModel, List<TvShowGenre> newSelectedGenreList)
+        public Task<bool> UpdateTvShow(TvShowEntity tvShowModel, List<TvShowGenre> newSelectGenreList)
         {
-            var tvShowInDb = aDatabase.TvShowEntities.SingleOrDefault(s => s.Id == tvShowId);
-            tvShowInDb.NumberOfSeason = tvShowModel.NumberOfSeason;
-            tvShowInDb.Sound = tvShowModel.Sound;
-            tvShowInDb.Status = tvShowModel.Status;
-            tvShowInDb.Title = tvShowModel.Title;
-            tvShowInDb.Trailer = tvShowModel.Trailer;
-            return Task.FromResult(true);
+            List<TvShowWithGenre> GenreRemoveList = new List<TvShowWithGenre>();
+            Dictionary<int, int> tvshowWithGenreMapById = new Dictionary<int, int>();
+            Dictionary<int, int> tvshowGenreInDbMapById = new Dictionary<int, int>();
+            TvShowEntity tvshowInDb = aDatabase.TvShowEntities.SingleOrDefault(s => s.Id == tvShowModel.Id);
+            List<TvShowWithGenre> genreDb = aDatabase.TvShowWithGenres.Where(s => s.TvShowEntityId == tvShowModel.Id).ToList();
+            List<TvShowWithGenre> ToRemoveTvshowWithGenre = new List<TvShowWithGenre>();
+            List<TvShowWithGenre> ToAddTvshowWithGenre = new List<TvShowWithGenre>();
+            tvshowInDb.NumberOfSeason = tvShowModel.NumberOfSeason;
+            tvshowInDb.Sound = tvShowModel.Sound;
+            tvshowInDb.Status = tvShowModel.Status;
+            tvshowInDb.Title = tvShowModel.Title;
+            tvshowInDb.Trailer = tvShowModel.Trailer;
+            tvshowInDb.Backdrop_Path = tvShowModel.Backdrop_Path;
+            tvshowInDb.Description = tvShowModel.Description;
+            tvshowInDb.EpisodeRunTime = tvShowModel.EpisodeRunTime;
+            tvshowInDb.FirstAirDate = tvShowModel.FirstAirDate;
+            tvshowInDb.NumberOfEpisode = tvShowModel.NumberOfEpisode;
+            tvshowInDb.Score = tvShowModel.Score;
+            tvshowInDb.VoteCount = tvShowModel.VoteCount;
+            tvshowInDb.PublishedDate = tvShowModel.PublishedDate;
+            foreach (var eachGenreInDb in genreDb)
+            {
+                tvshowWithGenreMapById.Add(eachGenreInDb.TvShowGenreId, eachGenreInDb.TvShowEntityId);
+            }
+            //add new select to list before puting to db.
+            foreach (var newGenre in newSelectGenreList)
+            {
+                if (!tvshowWithGenreMapById.ContainsKey(newGenre.Id))
+                {
+                    //remove list;
+                    ToAddTvshowWithGenre.Add(new TvShowWithGenre { TvShowEntityId = tvShowModel.Id, TvShowGenreId = newGenre.Id });
+                }
+                tvshowGenreInDbMapById.Add(newGenre.Id, tvShowModel.Id);
+            }
+            aDatabase.TvShowWithGenres.AddRange(ToAddTvshowWithGenre);
 
+            foreach (var oldGenre in genreDb)
+            {
+                if (!tvshowGenreInDbMapById.ContainsKey(oldGenre.TvShowGenreId))
+                {
+                    aDatabase.Entry(oldGenre).State = EntityState.Deleted;
+                }
+
+            }
+            var resultFirst = aDatabase.SaveChanges();
+            if (resultFirst >= 0) 
+            { 
+                return Task.FromResult(true); 
+            } else 
+            { 
+                return Task.FromResult(false); 
+            }
         }
 
         public async Task<TmdbTvShowModel> FetchTmdbTvShowApi(string movieId, bool isThaiApi)
@@ -217,6 +261,8 @@ namespace MpStream.Services
             var showGenreList = aDatabase.TvShowWithGenres.Where(s => s.TvShowEntityId == Id).ToList();
             return Task.FromResult(showGenreList);
         }
+
+
         #endregion
 
         #region Season Service
@@ -257,6 +303,19 @@ namespace MpStream.Services
         {
             var seasonList = aDatabase.Seasons.Where(s => s.TvShowEntityId == Id).ToList();
             return Task.FromResult(seasonList);
+        }
+        public Task<int> GetRecentSeasonNumberBySeasonIdAndTvShowId(int tvshowId)
+        {
+            var getSeasonByParams = aDatabase.Seasons.Where(i => i.TvShowEntityId == tvshowId).Last();
+            if (getSeasonByParams != null)
+            {
+                return Task.FromResult(Convert.ToInt32(getSeasonByParams.Name));
+            }
+            else
+            {
+                //no record return 0.
+                return Task.FromResult(0);
+            }
         }
         #endregion
 
@@ -300,6 +359,33 @@ namespace MpStream.Services
                 EpisodeList.AddRange(eachEpisode);
             }
             return Task.FromResult(EpisodeList);
+        }
+
+        public Task<bool> RemovieEpisodeBySeasonIdAndSeasonNumber(int seasonId, string episodeName)
+        { 
+            var getEpByParameters = aDatabase.Episodes.Where(s => s.SeasonId == seasonId).Where(i => i.Name.Contains(episodeName)).FirstOrDefault();
+            if(getEpByParameters != null)
+            {
+                aDatabase.Episodes.Remove(getEpByParameters);
+                aDatabase.SaveChanges();
+                return Task.FromResult(true);
+            } else
+            {
+                return Task.FromResult(false);
+            }
+        }
+        public Task<bool> RemoveSeasonByIdAndTvShowId(int seasonId, int tvShowId)
+        {
+            var getSeasonByParams = aDatabase.Seasons.Where(s => s.Id == seasonId).Where(i => i.TvShowEntityId == tvShowId).FirstOrDefault();
+            if(getSeasonByParams != null)
+            {
+                aDatabase.Seasons.Remove(getSeasonByParams);
+                aDatabase.SaveChanges();
+                return Task.FromResult(true);
+            } else
+            {
+                return Task.FromResult(false);
+            }
         }
         #endregion
     }

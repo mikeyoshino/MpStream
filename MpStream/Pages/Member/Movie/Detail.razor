@@ -3,14 +3,14 @@
 <div class="w-full bg-gray-700">
     <div class="w-10/12">
         <div class="flex p-20">
-            <div class="w-4/12 round-sm">
-                <img class="shadow-lg" src="https://image.tmdb.org/t/p/original/kOCpkoMUVae9UIf85gO71SyjLbW.jpg" />
+            <div class="w-4/12">
+                <img class="shadow-lg rounded w-10/12 ml-12" src="https://image.tmdb.org/t/p/original/kOCpkoMUVae9UIf85gO71SyjLbW.jpg" />
             </div>
             <div class="w-8/12 text-gray-300 pl-14">
                 <div class="mt-20"></div>
                 <div class="flex mt-4">
-                    <h1 class="text-4xl font-bold">@MovieEntity.Title</h1>
-                    <div class="text-4xl ml-2 font-thin">(@MovieEntity.ReleaseYear)</div>
+                    <h1 class="text-2xl font-semibold break-all">@MovieEntity.Title</h1>
+                    <div class="text-2xl ml-2 font-thin">(@MovieEntity.ReleaseYear)</div>
                 </div>
                 <div class="flex mt-4">
                     <div class="border px-2 rounded-sm mr-2">R</div>
@@ -29,8 +29,13 @@
         </div>
     </div>
 </div>
-<div class="w-full bg-gray-600">
-    <div class="h-screen items-center">
-        <iframe class="w-8/12 h-4/6"  src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+<div class="w-full bg-gray-600 h-96">
+    <div class="w-12/12">
+        <div class="m-auto w-8/12">
+            <iframe class="h-96 w-full" src="https://www.youtube.com/embed/@MovieEntity.TrailerId"></iframe>
+        </div>
     </div>
+</div>
+<div class="w-full bg-white">
+    <div class="h-50"></div>
 </div>
