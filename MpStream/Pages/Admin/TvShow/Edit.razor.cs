@@ -10,6 +10,10 @@ namespace MpStream.Pages.Admin.TvShow
 {
     public partial class Edit : ComponentBase
     {
+        [Parameter]
+        public int tvShowId { get; set; }
+
+
         [Inject]
         public TvShowService TvShowService { get; set; }
         [Inject]
@@ -26,12 +30,20 @@ namespace MpStream.Pages.Admin.TvShow
         public string showStatusMessageApiRequest { get; set; }
         public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
         public string ImdbId { get; set; }
-        [Parameter]
-        public int tvShowId { get; set; }
+        public int recentSeasonNumber { get; set; }
+        public int recentEpisodeNumberOnEachSeason { get; set; }
 
+        //New list for saving season and episode for newly added.
+        public List<Episode> NewAddEpisodeList { get; set; } = new List<Episode>();
+        public List<Season> NewAddSeasonList { get; set; } = new List<Season>();
         protected override async Task OnInitializedAsync()
         {
             await FetchAllNecessaryData();
+            if(SeasonList.Count() > 0)
+            {
+                //Case when remove all season and this try to call to get list of season but the list not exist in database.
+                recentSeasonNumber = await TvShowService.GetRecentSeasonNumberBySeasonIdAndTvShowId(TvShowEntity.Id);
+            }
             foreach (var eachTvshowWithGenre in TvShowWithGenreList)
             {
                 SelectedGenreIds.Add(eachTvshowWithGenre.TvShowGenreId.ToString());
@@ -72,54 +84,75 @@ namespace MpStream.Pages.Admin.TvShow
                     newSelectedList.Add(new TvShowGenre { Id = genre.Id, Name = genre.Name });
                 }
             }
-            var result = await TvShowService.UpdateTvShow(TvShowEntity, newSelectedList);
-            if (result) { 
-                NavigationManager.NavigateTo("admin/movie"); 
+            var saveTvshowResult = await TvShowService.UpdateTvShow(TvShowEntity, newSelectedList);
+            var saveSeasonResult = TvShowService.InsertBulkSeason(TvShowEntity, NewAddSeasonList);
+            var saveEpisodeResult = TvShowService.InsertBulkEpisode(TvShowEntity, NewAddEpisodeList);
+            if (saveTvshowResult && saveSeasonResult && saveEpisodeResult) {
+                NewAddEpisodeList.Clear();
+                NavigationManager.NavigateTo("admin/tvshow"); 
             } else { 
-                NavigationManager.NavigateTo($"admin/movie/edit/{TvShowEntity.Id}"); 
+                NavigationManager.NavigateTo($"admin/tvshow/edit/{TvShowEntity.Id}"); 
                 OperationMessage = "Fail to update"; 
             }
 
         }
         public async Task AddSeason(int tvshowId)
         {
-            int recentSeasonNumber = await TvShowService.GetRecentSeasonNumberBySeasonIdAndTvShowId(tvshowId);
             //check if season is exist in database, if exsit pick last season number and plus by one when user click add season.
             //if season doesnt have any record mean user delete all season. season start counting from one.
             if(recentSeasonNumber != 0)
             {
                 recentSeasonNumber += 1;
-                SeasonList.Add(new Season { Name = recentSeasonNumber.ToString() });
+                SeasonList.Add(new Season { SeasonNumber = recentSeasonNumber.ToString() });
+                NewAddSeasonList.Add(new Season { SeasonNumber = recentSeasonNumber.ToString() });
+            } else
+            {
+                recentSeasonNumber += 1;
+                SeasonList.Add(new Season { SeasonNumber = recentSeasonNumber.ToString() });
+                NewAddSeasonList.Add(new Season { SeasonNumber = recentSeasonNumber.ToString() });
             }
-            recentSeasonNumber += 1;
-            SeasonList.Add(new Season { Name = recentSeasonNumber.ToString() });
         }
-        public async Task AddEpisode(string seasonId)
+        public async Task AddEpisode(string seasonNumber)
         {
-            EpisodeList.Add(new Episode { SeasonNumber = seasonId });
+            NewAddEpisodeList.Add(new Episode { SeasonNumber = seasonNumber});
+          
         }
-        public async Task RemoveSeason(int seasonId, int tvShowId)
+        public async Task RemoveSeason(int seasonId, int tvShowId, string seasonNumber)
         {
             var result = await TvShowService.RemoveSeasonByIdAndTvShowId(seasonId, tvShowId);
             if (result)
             {
-                OperationMessage = "ทำการลบสำเร็จ";
+                //Remove season after it's removed from database. or to refresh when click remove season in db.
+                var removeSeason = SeasonList.Where(s => s.Id == seasonId).FirstOrDefault();
+                SeasonList.Remove(removeSeason);
+ 
             }
             else
             {
-                OperationMessage = "เกิดข้อผิดพลาด";
+                //Remove newly add season but not in database yet.
+                recentSeasonNumber -= 1;
+                var removeSeason = SeasonList.Where(s => s.Id == seasonId).Where(s => s.SeasonNumber.Contains(seasonNumber)).FirstOrDefault();
+                SeasonList.Remove(removeSeason);
+                var removeNewAddedSeason = NewAddSeasonList.Where(s => s.Id == seasonId).FirstOrDefault();
+                NewAddSeasonList.Remove(removeNewAddedSeason);
             }
             StateHasChanged();
         }
-        public async Task RemoveEpisode(int seasonNumber, string episodeName)
+        public async Task RemoveEpisode(int seasonId, int episodeNumber, string seasonNumber)
         {
-            var result = await TvShowService.RemovieEpisodeBySeasonIdAndSeasonNumber(seasonNumber, episodeName);
+            var result = await TvShowService.RemovieEpisodeBySeasonIdAndSeasonNumber(seasonId, episodeNumber);
             if (result)
             {
-                OperationMessage = "ทำการลบสำเร็จ";
+                //Remove episode after its removed from database.
+                var removeEpisode = EpisodeList.Where(s => s.SeasonId == seasonId).Where(s => s.EpisodeNumber == episodeNumber).FirstOrDefault();
+                EpisodeList.Remove(removeEpisode);
             } else
             {
-                OperationMessage = "เกิดข้อผิดพลาด";
+                //Remove newly add episode but not in db yet.
+                var removeEpisode = EpisodeList.Where(s => s.SeasonNumber == seasonNumber).Last();
+                EpisodeList.Remove(removeEpisode);
+                var newAddedEpisodeList = NewAddEpisodeList.Where(s => s.SeasonNumber == seasonNumber).Last();
+                NewAddEpisodeList.Remove(newAddedEpisodeList);
             }
             StateHasChanged();
         }

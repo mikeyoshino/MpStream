@@ -22,6 +22,9 @@ namespace MpStream.Pages.Admin.TvShow
         public List<TvShowEntity> TvShowEntities { get; set; } = new List<TvShowEntity>();
         [Inject]
         public NavigationManager NavBar { get; set; }
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+        public string OperationMessage { get; set; }
         protected override async Task OnInitializedAsync()
         {
             TvShowEntities = await TvShowService.GetTvShowListIndexPage(pageSize);
@@ -38,7 +41,15 @@ namespace MpStream.Pages.Admin.TvShow
 
         public async Task Remove(int Id)
         {
-
+            var result = await TvShowService.RemoveTvshow(Id);
+            if (result)
+            {
+               var removeTvshow = TvShowEntities.Where(s => s.Id == Id).SingleOrDefault();
+               TvShowEntities.Remove(removeTvshow);
+            }else
+            {
+                OperationMessage = "เกิดข้อผิดพลาด";
+            }
         }
         async void Search(object searchKeywords)
         {

@@ -78,7 +78,7 @@
                             </div>
                             @if (SeasonList != null)
                             {
-                                @foreach (var eachSeason in SeasonList.OrderBy(s => s.Name))
+                                @foreach (var eachSeason in SeasonList.OrderBy(s => s.SeasonNumber))
                                 {
                                     <div class="m-1 bg-indigo-100 flex rounded shadow">
                                         <div class="w-10/12 p-3 pt-4 flex">
@@ -86,19 +86,19 @@
                                                 <svg class="h-8 w-8 text-red-500" viewBox="0 0 20 20" fill="currentColor">  <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg>
                                             </div>
                                             <div class="p-1 bg-white text-gray-700 rounded-sm">
-                                                Season @eachSeason.Name @*Id: @eachSeason.Name*@
+                                                Season @eachSeason.SeasonNumber @*Id: @eachSeason.Name*@
                                             </div>
                                         </div>
 
                                         <div class="w-1/12 p-3 pl-8">
-                                            <div @onclick="() => AddEpisode(eachSeason.Name)" class="w-8 bg-green-500 text-white rounded-md transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">
+                                            <div @onclick="() => AddEpisode(eachSeason.SeasonNumber)" class="w-8 bg-green-500 text-white rounded-md transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">
                                                 <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                                 </svg>
                                             </div>
                                         </div>
                                         <div class="w-1/12 p-3">
-                                            <div @onclick="() => RemoveSeason(eachSeason.Id, eachSeason.TvShowEntityId)" class="w-8 bg-red-500 text-white rounded-md transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline">
+                                            <div @onclick="() => RemoveSeason(eachSeason.Id, eachSeason.TvShowEntityId, eachSeason.SeasonNumber)" class="w-8 bg-red-500 text-white rounded-md transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline">
                                                 <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
@@ -107,15 +107,22 @@
                                     </div>
                                     @foreach (var eachEpisode in EpisodeList)
                                     {
-                                        if (eachEpisode.SeasonNumber == eachSeason.Name)
+                                        if (eachEpisode.SeasonNumber == eachSeason.SeasonNumber)
                                         {
                                             <div class="w-11/12 m-1 bg-indigo-50 ml-14 rounded shadow mb-3">
                                                 <div class="p-3 lg:flex">
-                                                    <div class="w-8/12 mr-2"><InputText @bind-Value="eachEpisode.Name" class="focus:ring-1 focus:ring-blue-600 px-2 py-1 w-full rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 border border-solid border-gray-200" placeholder="เลขที่ตอนและชื่อตอน"></InputText></div>
-                                                    <div class="w-3/12 mr-2"><InputText @bind-Value="eachEpisode.Language" class="focus:ring-1 focus:ring-blue-600 px-2 py-1 w-full rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 border border-solid border-gray-200" placeholder="ภาษา"></InputText></div>
+                                                    <div class="w-1/12 mr-2"><InputNumber @bind-Value="eachEpisode.EpisodeNumber" class="focus:ring-1 focus:ring-blue-600 px-2 py-1 w-full rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 border border-solid border-gray-200" placeholder="ตอนที่"></InputNumber></div>
+                                                    <div class="w-7/12 mr-2"><InputText @bind-Value="eachEpisode.Name" class="focus:ring-1 focus:ring-blue-600 px-2 py-1 w-full rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 border border-solid border-gray-200" placeholder="ชื่อตอน"></InputText></div>
+                                                    <div class="w-3/12 mr-2">
+                                                        <InputSelect @bind-Value="eachEpisode.Language" class="focus:ring-1 focus:ring-blue-600 px-2 py-1 w-full rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 border border-solid border-gray-200">
+                                                            @foreach (var eachChoice in soundChoices)
+                                                                            {
+                                                                <option value="@eachChoice">@eachChoice</option>
+                                                                            }
+                                                        </InputSelect>
+                                                    </div>
                                                     <div class="w-1/12 mr-2">
-                                                        @eachEpisode.SeasonId
-                                                        <div @onclick="() => RemoveEpisode(eachSeason.Id, eachEpisode.Name)" class="ml-7 w-8 bg-red-500 text-white rounded-md transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline">
+                                                        <div @onclick="() => RemoveEpisode(eachSeason.Id, eachEpisode.EpisodeNumber, eachEpisode.SeasonNumber)" class="ml-7 w-8 bg-red-500 text-white rounded-md transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline">
                                                             <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                             </svg>
@@ -123,11 +130,53 @@
                                                     </div>
                                                 </div>
                                                 <div class="p-3">
-                                                    <div class="w-12/12"> <InputText @bind-Value="eachEpisode.EmbedLink" class="focus:ring-1 focus:ring-blue-600 w-full px-2 py-1 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-sm border border-solid border-gray-200" placeholder="ลิงค์ตัวเล่น"></InputText></div>
+                                                    <div class="w-12/12"> <InputTextArea @bind-Value="eachEpisode.EmbedLink" class="focus:ring-1 focus:ring-blue-600 w-full px-2 py-1 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-sm border border-solid border-gray-200 h-20" placeholder="ลิงค์ตัวเล่น"></InputTextArea></div>
                                                 </div>
+                                                <p>@eachEpisode.EpisodeNumber</p>
                                             </div>
                                         }
                                     }
+
+
+
+                                    //Create new list of episode to hold when adding new episode in edit page
+
+
+                                    @if (NewAddEpisodeList.Count != 0)
+                                    {
+                                        @foreach (var eachEpisode in NewAddEpisodeList)
+                                        {
+                                            if (eachEpisode.SeasonNumber == eachSeason.SeasonNumber)
+                                            {
+                                                <div class="w-11/12 m-1 bg-green-50 ml-14 rounded shadow mb-3">
+                                                    <div class="p-3 lg:flex">
+                                                        <div class="w-1/12 mr-2"><InputNumber @bind-Value="eachEpisode.EpisodeNumber" class="focus:ring-1 focus:ring-blue-600 px-2 py-1 w-full rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 border border-solid border-gray-200" placeholder="ตอนที่"></InputNumber></div>
+                                                        <div class="w-7/12 mr-2"><InputText @bind-Value="eachEpisode.Name" class="focus:ring-1 focus:ring-blue-600 px-2 py-1 w-full rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 border border-solid border-gray-200" placeholder="ชื่อตอน"></InputText></div>
+                                                        <div class="w-3/12 mr-2">
+                                                            <InputSelect @bind-Value="eachEpisode.Language" class="focus:ring-1 focus:ring-blue-600 px-2 py-1 w-full rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 border border-solid border-gray-200">
+                                                                @foreach (var eachChoice in soundChoices)
+                                                                                    {
+                                                                    <option value="@eachChoice">@eachChoice</option>
+                                                                                    }
+                                                            </InputSelect>
+                                                        </div>
+                                                        <div class="w-1/12 mr-2">
+                                                            <div @onclick="() => RemoveEpisode(eachSeason.Id, eachEpisode.EpisodeNumber, eachEpisode.SeasonNumber)" class="ml-7 w-8 bg-red-500 text-white rounded-md transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline">
+                                                                <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-3">
+                                                        <div class="w-12/12"> <InputTextArea @bind-Value="eachEpisode.EmbedLink" class="focus:ring-1 focus:ring-blue-600 w-full px-2 py-1 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-sm border border-solid border-gray-200 h-20" placeholder="ลิงค์ตัวเล่น"></InputTextArea></div>
+                                                    </div>
+                                                    <p>@eachEpisode.EpisodeNumber</p>
+                                                </div>
+                                            }
+                                        }
+                                    }
+
                                 }
                             }
                         </div>
@@ -165,7 +214,7 @@
                         </label>
 
                         <div class="pb-4 mx-auto w-48 text-gray-500 text-xs text-center mt-1">Click to add movie poster</div>
-                        <InputFile id="fileInput" class="hidden" OnChange="HandleFileSelected"></InputFile>
+                        @*<InputFile id="fileInput" class="hidden" OnChange="HandleFileSelected"></InputFile>*@
                     </div>
                 </div>
                 <div class="bg-white shadow-lg mt-5 rounded">

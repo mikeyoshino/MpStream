@@ -1,5 +1,6 @@
 ﻿using BlazorInputFile;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using MpStream.Models;
 using MpStream.Services;
 using System;
@@ -26,11 +27,23 @@ namespace MpStream.Pages.Admins
         public List<string> GenreStringList { get; set; } = new List<string>();
         public List<string> SelectedGenreIds { get; set; } = new List<string>();
         public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
+        public string ImageUrl { get; set; }
 
         public byte[] PosterImage { get; set; }
         protected override void OnInitialized()
         {
             MovieGenres = MovieService.MovieGenreList();
+        }
+
+        async Task UploadImageOnchange(InputFileChangeEventArgs e)
+        {
+            string format = "image/jpg";
+            var imageFile = e.File;
+            var resizeFile = await imageFile.RequestImageFileAsync(format, 380, 280);
+            var buffer = new byte[resizeFile.Size];
+            await resizeFile.OpenReadStream().ReadAsync(buffer);
+
+            ImageUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
         }
 
         void SaveMovie()

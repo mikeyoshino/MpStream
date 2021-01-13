@@ -9,6 +9,7 @@ namespace MpStream.Pages.Members
     {
         [Inject]
         public MovieService MovieService { get; set; }
+        public bool ShowDialog { get; set; } = false;
         public MovieEntity MovieEntity { get; set; } = new MovieEntity();
         [Parameter]
         public int MovieId { get; set; }
@@ -16,6 +17,16 @@ namespace MpStream.Pages.Members
         protected override void OnInitialized()
         {
             MovieEntity = MovieService.GetMovieById(MovieId);
+        }
+        void ShowUpDialog()
+        {
+            ShowDialog = true;
+            StateHasChanged();
+        }
+        void CloseDialog()
+        {
+            ShowDialog = false;
+            StateHasChanged();
         }
     }
 }

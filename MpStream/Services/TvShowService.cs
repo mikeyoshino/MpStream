@@ -49,12 +49,13 @@ namespace MpStream.Services
             TvShowModel = aDatabase.TvShowEntities.SingleOrDefault(t => t.Id == Id);
             return Task.FromResult(TvShowModel);
         }
-        public Task Delete(int Id)
+        public Task<bool> RemoveTvshow(int Id)
         {
             TvShowModel = aDatabase.TvShowEntities.Find(Id);
             if(TvShowModel != null)
             {
                 aDatabase.TvShowEntities.Remove(TvShowModel);
+                aDatabase.SaveChanges();
                 return Task.FromResult(true);
             }
             else
@@ -208,6 +209,21 @@ namespace MpStream.Services
         }
         #endregion
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         #region TvShpowGenre Service
         public Task<List<TvShowGenre>> TvShowGenreList()
         {
@@ -273,10 +289,11 @@ namespace MpStream.Services
             {
                 addTvIdToSeasonList.Add(new Season
                 {
-                    Name = eachSeason.Name,
+                    SeasonNumber = eachSeason.SeasonNumber,
                     NumberOfEpisode = eachSeason.NumberOfEpisode,
                     PublishedDate = eachSeason.PublishedDate,
-                    TvShowEntityId = tvshowModel.Id
+                    TvShowEntityId = tvshowModel.Id,
+                    TvshowName = tvshowModel.Title
                 });
             }
             aDatabase.Seasons.AddRange(addTvIdToSeasonList);
@@ -306,10 +323,23 @@ namespace MpStream.Services
         }
         public Task<int> GetRecentSeasonNumberBySeasonIdAndTvShowId(int tvshowId)
         {
-            var getSeasonByParams = aDatabase.Seasons.Where(i => i.TvShowEntityId == tvshowId).Last();
+            var getSeasonByParams = aDatabase.Seasons.Where(i => i.TvShowEntityId == tvshowId).OrderBy(s=>s.SeasonNumber).Last();
             if (getSeasonByParams != null)
             {
-                return Task.FromResult(Convert.ToInt32(getSeasonByParams.Name));
+                return Task.FromResult(Convert.ToInt32(getSeasonByParams.SeasonNumber));
+            }
+            else
+            {
+                //no record return 0.
+                return Task.FromResult(0);
+            }
+        }
+        public Task<int> GetRecentEpisodeNumberBySeasonId(int seasonId)
+        {
+            var getEpisodeByParams = aDatabase.Episodes.Where(i => i.SeasonId == seasonId).OrderBy(s => s.EpisodeNumber).Last();
+            if (getEpisodeByParams != null)
+            {
+                return Task.FromResult(Convert.ToInt32(getEpisodeByParams.SeasonNumber));
             }
             else
             {
@@ -328,14 +358,15 @@ namespace MpStream.Services
             //add to new list before inserting to epsiode db.
             foreach (var eachEpisode in episodeList)
             {
-                var seasonId = seasonListInDb.Where(s => s.Name == eachEpisode.SeasonNumber).First();
+                var seasonId = seasonListInDb.Where(s => s.SeasonNumber == eachEpisode.SeasonNumber).First();
                 finalEpisodeListBeforeInsert.Add(new Episode { 
                     Language = eachEpisode.Language, 
                     Name = eachEpisode.Name, 
                     PublishedDate = eachEpisode.PublishedDate, 
                     SeasonId = seasonId.Id,
                     EmbedLink = eachEpisode.EmbedLink,
-                    SeasonNumber = eachEpisode.SeasonNumber
+                    SeasonNumber = eachEpisode.SeasonNumber,
+                    EpisodeNumber = eachEpisode.EpisodeNumber
                     
                 });
             }
@@ -355,15 +386,15 @@ namespace MpStream.Services
         {
             foreach (var eachSeason in seasonList)
             {
-                var eachEpisode = aDatabase.Episodes.Where(s => s.SeasonId == eachSeason.Id).ToList();
+                var eachEpisode = aDatabase.Episodes.Where(s => s.SeasonId == eachSeason.Id).OrderBy(n=>n.EpisodeNumber).ToList();
                 EpisodeList.AddRange(eachEpisode);
             }
             return Task.FromResult(EpisodeList);
         }
 
-        public Task<bool> RemovieEpisodeBySeasonIdAndSeasonNumber(int seasonId, string episodeName)
+        public Task<bool> RemovieEpisodeBySeasonIdAndSeasonNumber(int seasonId, int episodeNumber)
         { 
-            var getEpByParameters = aDatabase.Episodes.Where(s => s.SeasonId == seasonId).Where(i => i.Name.Contains(episodeName)).FirstOrDefault();
+            var getEpByParameters = aDatabase.Episodes.Where(s => s.SeasonId == seasonId).Where(i => i.EpisodeNumber == episodeNumber).FirstOrDefault();
             if(getEpByParameters != null)
             {
                 aDatabase.Episodes.Remove(getEpByParameters);

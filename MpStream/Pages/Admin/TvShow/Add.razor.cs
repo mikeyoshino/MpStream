@@ -26,7 +26,6 @@ namespace MpStream.Pages.Admin.TvShow
         public string showStatusMessageApiRequest { get; set; }
         public string PreviewImage { get; set; }
         public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
-
         protected override async Task OnInitializedAsync()
         {
             TvShowGenreList = await TvShowService.TvShowGenreList();
@@ -121,11 +120,11 @@ namespace MpStream.Pages.Admin.TvShow
         void AddSeason()
         {
             NumberOfSeason += 1;
-            SeasonList.Add( new Season { Name = NumberOfSeason.ToString()});
+            SeasonList.Add( new Season { SeasonNumber = NumberOfSeason.ToString()});
         }
-        void AddEpisode(string seasonId)
+        void AddEpisode(string seasonNumber)
         {
-            EpisodeList.Add(new Episode { SeasonNumber = seasonId });
+            EpisodeList.Add(new Episode { SeasonNumber = seasonNumber});
         }
         void RemoveEpisode(string seasonNumber, string episodeSeasonNumber)
         {
@@ -138,7 +137,7 @@ namespace MpStream.Pages.Admin.TvShow
         void RemoveSeason(string Id)
         {
             NumberOfSeason -= 1;
-            Season selectedSeason = SeasonList.Where(s => s.Name == Id).First();
+            Season selectedSeason = SeasonList.Where(s => s.SeasonNumber == Id).First();
             List<Episode> selectedEpisodes = EpisodeList.Where(s => s.SeasonNumber == Id).ToList();
             SeasonList.Remove(selectedSeason);
             foreach (var eachEpisode in selectedEpisodes)

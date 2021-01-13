@@ -64,13 +64,14 @@ namespace MpStream.Models
     {
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string SeasonNumber { get; set; }
         public int NumberOfEpisode { get; set; }
         public DateTime PublishedDate { get; set; }
         public TvShowEntity TvShowEntity { get; set; }
         [Required]
         public int TvShowEntityId { get; set; }
         public ICollection<Episode> Episodes { get; set; }
+        public string TvshowName { get; set; }
     }
     public class Episode
     {
@@ -86,6 +87,7 @@ namespace MpStream.Models
         public string EmbedLink { get; set; }
         [Required]
         public string Language { get; set; }
+        public int EpisodeNumber { get; set; }
     }
 
     public class Tag
