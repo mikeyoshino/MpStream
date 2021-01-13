@@ -1,12 +1,14 @@
 ﻿using BlazorInputFile;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Hosting;
 using MpStream.Models;
 using MpStream.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace MpStream.Pages.Admins
@@ -28,8 +30,10 @@ namespace MpStream.Pages.Admins
         public List<string> SelectedGenreIds { get; set; } = new List<string>();
         public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
         public string ImageUrl { get; set; }
+        [Inject]
+        public IWebHostEnvironment environment { get; set; } 
+        IBrowserFile SelectedImage;
 
-        public byte[] PosterImage { get; set; }
         protected override void OnInitialized()
         {
             MovieGenres = MovieService.MovieGenreList();
@@ -39,34 +43,44 @@ namespace MpStream.Pages.Admins
         {
             string format = "image/jpg";
             var imageFile = e.File;
-            var resizeFile = await imageFile.RequestImageFileAsync(format, 380, 280);
+            var resizeFile = await imageFile.RequestImageFileAsync(format, 660, 420);
             var buffer = new byte[resizeFile.Size];
             await resizeFile.OpenReadStream().ReadAsync(buffer);
-
+            SelectedImage = imageFile;
             ImageUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
         }
 
-        void SaveMovie()
+        async Task SaveMovie()
         {
+
+            if (ImageUrl != null)
+            {
+                Stream stream = SelectedImage.OpenReadStream();
+                var extension = Path.GetExtension(SelectedImage.Name);
+                var fileNameBasedOnDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+                var path = $"{environment.WebRootPath}\\Posters\\{fileNameBasedOnDate + extension}";
+                FileStream fileStream = File.Create(path);
+                await stream.CopyToAsync(fileStream);
+                fileStream.Close();
+                MovieEntity.PosterImage = $"/Posters/{fileNameBasedOnDate + extension}";
+
+            } else if (PreviewImage != null)
+            {
+                var path = $"{environment.WebRootPath}" + "\\" + "Posters";
+                var fileNameBasedOnDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+                var apiImageUrl = $"https://image.tmdb.org/t/p/original/{PreviewImage}";
+                await MovieService.DownloadImageAsync(path, fileNameBasedOnDate, new Uri(apiImageUrl));
+                MovieEntity.PosterImage = $"/Posters/{fileNameBasedOnDate + ".jpg"}";
+            }
             MovieEntity.PublishedDate = DateTime.Now;
             MovieEntity.IsFeatured = false;
             var resuleSaveMovie = MovieService.AddMovie(MovieEntity);
             var resultSaveGenre = MovieService.SaveMovieWithGenre(MovieEntity, SelectedGenreIds);
+
             if (resuleSaveMovie.IsCompleted && resultSaveGenre.IsCompleted)
             {
                 StateHasChanged();
                 NavigationManager.NavigateTo("/admin/movie");
-            }
-        }
-
-        async Task HandleFileSelected(IFileListEntry[] files)
-        {
-            var file = files.FirstOrDefault();
-            if(file != null)
-            {
-                var ms = new MemoryStream();
-                await file.Data.CopyToAsync(ms);
-                PosterImage = ms.ToArray();
             }
         }
 
@@ -126,23 +140,8 @@ namespace MpStream.Pages.Admins
                     SelectedGenreIds.Add(genreModel.Id.ToString());
                 }
             }
-            //var client = new HttpClient();
-            //var request = new HttpRequestMessage
-            //{
-            //    Method = HttpMethod.Get,
-            //    RequestUri = new Uri($"https://movie-database-imdb-alternative.p.rapidapi.com/?i=tt10539608&r=json"),
-            //    Headers =
-            //{
-            //    { "x-rapidapi-key", "095c60bedemsh1e527c4f4aadf50p17e5c8jsn4ac63cfa2017" },
-            //    { "x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com" },
-            //},
-            //};
-            //using (var response = await client.SendAsync(request))
-            //{
-            //    response.EnsureSuccessStatusCode();
-            //    var body = await response.Content.ReadAsStringAsync();
-            //    Console.WriteLine(body);
-            //}
+
+
         }
     }
 }
