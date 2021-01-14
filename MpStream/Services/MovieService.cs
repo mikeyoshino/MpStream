@@ -200,9 +200,15 @@ namespace MpStream.Services
             };
             using (var response = await client.SendAsync(request))
             {
-                var body = await response.Content.ReadAsStringAsync();
-                TmdbMovieModel = JsonConvert.DeserializeObject<TmdbMovieModel>(body);
-                Console.WriteLine(body);
+                if (response.IsSuccessStatusCode)
+                {
+                    var body = await response.Content.ReadAsStringAsync();
+                    TmdbMovieModel = JsonConvert.DeserializeObject<TmdbMovieModel>(body);
+                }
+                else
+                {
+                    TmdbMovieModel = new TmdbMovieModel { isRequestSucceed = false };
+                }
                 return await Task.FromResult(TmdbMovieModel);
             }
         }

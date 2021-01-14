@@ -21,12 +21,10 @@ namespace MpStream.Pages.Members
         void ShowUpDialog()
         {
             ShowDialog = true;
-            StateHasChanged();
         }
         void CloseDialog()
         {
             ShowDialog = false;
-            StateHasChanged();
         }
     }
 }

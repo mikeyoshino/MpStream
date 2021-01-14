@@ -30,6 +30,7 @@ namespace MpStream.Models
         public DateTime Release_date { get; set; }
         public Genres[] Genres { get; set; }
         public string Poster_path { get; set; }
+        public bool isRequestSucceed { get; set; } = true;
     }
     [NotMapped]
     public class Genres

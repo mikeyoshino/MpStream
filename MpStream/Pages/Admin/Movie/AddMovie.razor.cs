@@ -30,6 +30,9 @@ namespace MpStream.Pages.Admins
         public List<string> SelectedGenreIds { get; set; } = new List<string>();
         public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
         public string ImageUrl { get; set; }
+        public bool ApiLoadSpiner { get; set; } = false;
+        public bool MoveSaveSpinner { get; set; } = false;
+        public string showStatusMessageApiRequest { get; set; }
         [Inject]
         public IWebHostEnvironment environment { get; set; } 
         IBrowserFile SelectedImage;
@@ -52,17 +55,17 @@ namespace MpStream.Pages.Admins
 
         async Task SaveMovie()
         {
-
+            MoveSaveSpinner = true;
             if (ImageUrl != null)
             {
                 Stream stream = SelectedImage.OpenReadStream();
                 var extension = Path.GetExtension(SelectedImage.Name);
                 var fileNameBasedOnDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-                var path = $"{environment.WebRootPath}\\Posters\\{fileNameBasedOnDate + extension}";
+                var path = $"{environment.WebRootPath}\\posters\\{fileNameBasedOnDate + extension}";
                 FileStream fileStream = File.Create(path);
                 await stream.CopyToAsync(fileStream);
                 fileStream.Close();
-                MovieEntity.PosterImage = $"/Posters/{fileNameBasedOnDate + extension}";
+                MovieEntity.PosterImage = $"/posters/{fileNameBasedOnDate + extension}";
 
             } else if (PreviewImage != null)
             {
@@ -82,6 +85,7 @@ namespace MpStream.Pages.Admins
                 StateHasChanged();
                 NavigationManager.NavigateTo("/admin/movie");
             }
+            MoveSaveSpinner = false;
         }
 
         void CheckboxClicked(string Id, object checkedValue)
@@ -103,43 +107,54 @@ namespace MpStream.Pages.Admins
         }
         public async Task FetchImdbApi(string Id)
         {
+            ApiLoadSpiner = true;
             var movieDataTH = await MovieService.FetchTmdbApi(Id);
             var videoTrailer = await MovieService.FetchTmdbTrailerApi(Id);
-            MovieEntity.Title = movieDataTH.Original_title;
-            MovieEntity.Description = movieDataTH.Overview;
-            MovieEntity.Score = movieDataTH.Vote_average;
-            MovieEntity.Runtime = movieDataTH.Runtime;
-            MovieEntity.Revenue = movieDataTH.Revenue;
-            MovieEntity.Vote_count = movieDataTH.Vote_count;
-            MovieEntity.ReleaseYear = movieDataTH.Release_date.Year;
-            PreviewImage = movieDataTH.Poster_path;
-            TitleTH = movieDataTH.Title;
-            var movieDataEnglish = await MovieService.FetchTmdbApiEnglish(Id);
-            if (videoTrailer.Results.Length != 0)
+            if (movieDataTH.isRequestSucceed)
             {
-                MovieEntity.TrailerId = videoTrailer.Results[0].Key;
-            }
-            var genreInEnglish = movieDataEnglish.Genres;
-            foreach (var eachGenre in MovieGenres)
-            {
-                GenreStringList.Add(eachGenre.Name);
-            }
-            foreach (var genre in genreInEnglish)
-            {
-                if (!GenreStringList.Contains(genre.Name))
+                MovieEntity.Title = movieDataTH.Original_title;
+                MovieEntity.Description = movieDataTH.Overview;
+                MovieEntity.Score = movieDataTH.Vote_average;
+                MovieEntity.Runtime = movieDataTH.Runtime;
+                MovieEntity.Revenue = movieDataTH.Revenue;
+                MovieEntity.Vote_count = movieDataTH.Vote_count;
+                MovieEntity.ReleaseYear = movieDataTH.Release_date.Year;
+                PreviewImage = movieDataTH.Poster_path;
+                TitleTH = movieDataTH.Title;
+                var movieDataEnglish = await MovieService.FetchTmdbApiEnglish(Id);
+                if (videoTrailer.Results.Length != 0)
                 {
-                    //if category not exist create
-                    await MovieGenreService.AddGenre(new MovieGenreEntity { Name = genre.Name });
-                    MovieGenres = MovieGenreService.GetGenreList();
-                    var genreModel = MovieGenres.Where(s => s.Name.Contains(genre.Name)).FirstOrDefault();
-                    SelectedGenreIds.Add(genreModel.Id.ToString());
-                } else if (GenreStringList.Contains(genre.Name))
-                {
-                    //if category exist add to selectedGenreIds
-                    var genreModel = MovieGenres.Where(s => s.Name.Contains(genre.Name)).FirstOrDefault();
-                    SelectedGenreIds.Add(genreModel.Id.ToString());
+                    MovieEntity.TrailerId = videoTrailer.Results[0].Key;
                 }
+                var genreInEnglish = movieDataEnglish.Genres;
+                foreach (var eachGenre in MovieGenres)
+                {
+                    GenreStringList.Add(eachGenre.Name);
+                }
+                foreach (var genre in genreInEnglish)
+                {
+                    if (!GenreStringList.Contains(genre.Name))
+                    {
+                        //if category not exist create
+                        await MovieGenreService.AddGenre(new MovieGenreEntity { Name = genre.Name });
+                        MovieGenres = MovieGenreService.GetGenreList();
+                        var genreModel = MovieGenres.Where(s => s.Name.Contains(genre.Name)).FirstOrDefault();
+                        SelectedGenreIds.Add(genreModel.Id.ToString());
+                    }
+                    else if (GenreStringList.Contains(genre.Name))
+                    {
+                        //if category exist add to selectedGenreIds
+                        var genreModel = MovieGenres.Where(s => s.Name.Contains(genre.Name)).FirstOrDefault();
+                        SelectedGenreIds.Add(genreModel.Id.ToString());
+                    }
+                }
+                showStatusMessageApiRequest = "เรียกข่้อมูลสำเร็จ";
+            } else
+            {
+                showStatusMessageApiRequest = "เกิดข้อผิดพลาด เช็คไอดีให้ถูกต้อง";
             }
+
+            ApiLoadSpiner = false;
 
 
         }

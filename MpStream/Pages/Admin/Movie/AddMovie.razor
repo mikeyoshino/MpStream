@@ -4,7 +4,6 @@
 
 <EditForm Model="MovieEntity" OnValidSubmit="SaveMovie">
     <DataAnnotationsValidator />
-    <ValidationSummary />
     <div class="px-6 py-8">
         <a href="/admin/movie" class="w-1/12 border border-gray-500 bg-gray-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-600 focus:outline-none focus:shadow-outline flex">
             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"></path></svg>
@@ -74,9 +73,17 @@
                         </div>
                     </div>
                     <div class="mt-5">
+                        <ValidationSummary />
                         <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline flex" value="Save">
-                            <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            <div class="pr-2">บันทึก</div>
+                            @if (MoveSaveSpinner)
+                            {
+                                <div class="animate-spin" style="border-width: 0.3em; border-style: solid; border-color: rgb(52, 152, 219) rgb(243, 243, 243) rgb(243, 243, 243); border-image: initial; border-radius: 50%; width: 1.5em; height: 1.5em; display: inline-block;"></div>
+                            }
+                            else
+                            {
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            }
+                            <div class="ml-1 pr-2">บันทึก</div>
                         </button>
                     </div>
                 </div>
@@ -137,12 +144,32 @@
                 <div class="mt-5 bg-white shadow-lg">
                     <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">IMDB Id</div>
                     <div class="p-4">
+                        @if (this.showStatusMessageApiRequest != "")
+                        {
+                            if (showStatusMessageApiRequest != "เรียกข่้อมูลสำเร็จ")
+                            {
+                                <div class="text-sm text-red-700 pl-2 pt-2">@showStatusMessageApiRequest</div>
+                            }
+                            else
+                            {
+                                <div class="text-sm text-green-700 pl-2 pt-2">@showStatusMessageApiRequest</div>
+                            }
+
+                        }
                         <InputText @bind-Value="this.ImdbId" class="focus:ring-1 focus:ring-blue-600 w-full px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
                         <div class="mt-3"></div>
                         <div @onclick="() => FetchImdbApi(this.ImdbId)" class="border border-green-500 bg-green-500 text-white rounded-sm px-4 py-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">
                             <div class="flex">
-                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
-                                <div>Fatch Data</div>
+
+                                @if (ApiLoadSpiner)
+                                {
+                                    <div class="animate-spin" style="border-width: 0.3em; border-style: solid; border-color: rgb(52, 152, 219) rgb(243, 243, 243) rgb(243, 243, 243); border-image: initial; border-radius: 50%; width: 1.5em; height: 1.5em; display: inline-block;"></div>
+                                }
+                                else
+                                {
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                                }
+                                <div class="ml-2">ดึงข้อมูล</div>
                             </div>
                         </div>
                         <div class="flex text-gray-400 text-xs pt-1">
