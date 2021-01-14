@@ -10,6 +10,7 @@ namespace MpStream.Pages.Members
 {
     public partial class DisplayShow : ComponentBase
     {
+        public int TvshowId { get; set; }
         [Inject]
         public TvShowService TvShowService { get; set; }
         public List<TvShowEntity> TvShowList { get; set; }

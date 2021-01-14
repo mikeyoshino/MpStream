@@ -11,7 +11,7 @@ namespace MpStream.Models
         [MaxLength(120)]
         [MinLength(3)]
         public string Title { get; set; }
-        public byte[] PosterImage { get; set; }
+        public string PosterImage { get; set; }
 
         [MinLength(3)]
         public string Description { get; set; }

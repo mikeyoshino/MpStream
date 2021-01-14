@@ -143,7 +143,18 @@
                         </div>
                     </div>
                     <div class="mt-5">
-                        <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline" value="Save">Save</button>
+                        <ValidationSummary />
+                        <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline flex" value="Save">
+                            @if (TvshowSaveSpinner)
+                            {
+                                <div class="animate-spin" style="border-width: 0.3em; border-style: solid; border-color: rgb(52, 152, 219) rgb(243, 243, 243) rgb(243, 243, 243); border-image: initial; border-radius: 50%; width: 1.5em; height: 1.5em; display: inline-block;"></div>
+                            }
+                            else
+                            {
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            }
+                            <div class="ml-1 pr-2">บันทึก</div>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -152,14 +163,18 @@
                 <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">Poster Image</div>
                 <div class="bg-white shadow-lg rounded">
                     <div class="mb-5 text-center">
-                        <div class="mx-auto w-full h-32 mb-2 border relative bg-gray-100 mb-4 shadow-inset">
-                            @if (PreviewImage != null)
+                        <div class="mx-auto w-6/12 h-72 mb-2 border relative bg-gray-100 mb-4 shadow-inset">
+                            @if (ImageUrl != null)
                             {
-                                <img id="image" class="object-cover object-top w-full h-48" src="https://image.tmdb.org/t/p/original/@PreviewImage" />
+                                <img id="image" class="object-cover w-full h-72" src="@ImageUrl" />
+                            }
+                            else if (PreviewImage != null && ImageUrl == null)
+                            {
+                                <img id="image" class="object-cover w-full h-72" src="https://image.tmdb.org/t/p/original/@PreviewImage" />
                             }
                             else
                             {
-                                <img id="image" class="object-cover w-full h-48" src="https://www.policebodysize.com/assets/image/catalog/no-image.svg" />
+                                <img id="image" class="object-cover rounded pt-4 w-full h-72" src="https://www.policebodysize.com/assets/image/catalog/no-image.svg" />
                             }
                         </div>
 
@@ -175,8 +190,14 @@
                         </label>
 
                         <div class="pb-4 mx-auto w-48 text-gray-500 text-xs text-center mt-1">Click to add movie poster</div>
-                        @*<InputFile id="fileInput" class="hidden" OnChange="HandleFileSelected"></InputFile>*@
+                        <InputFile id="fileInput" class="hidden" OnChange="UploadImageOnchange" />
                     </div>
+                    @if (SelectedImage != null)
+                    {
+                        <p>@SelectedImage.ContentType</p>
+                        <p>@SelectedImage.Name</p>
+                    }
+
                 </div>
                 <div class="bg-white shadow-lg mt-5 rounded">
                     <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">Category</div>
@@ -225,8 +246,16 @@
                         <div class="mt-3"></div>
                         <div @onclick="() => FetchImdbApi(this.ImdbId)" class="border border-green-500 bg-green-500 text-white rounded-sm px-4 py-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline">
                             <div class="flex">
-                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
-                                <div>Fatch Data</div>
+
+                                @if (ApiRequestSpinner)
+                                {
+                                    <div class="animate-spin" style="border-width: 0.3em; border-style: solid; border-color: rgb(52, 152, 219) rgb(243, 243, 243) rgb(243, 243, 243); border-image: initial; border-radius: 50%; width: 1.5em; height: 1.5em; display: inline-block;"></div>
+                                }
+                                else
+                                {
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                                }
+                                <div class="ml-2">ดึงข้อมูล</div>
                             </div>
                         </div>
                         <div class="flex text-gray-400 text-xs pt-1">

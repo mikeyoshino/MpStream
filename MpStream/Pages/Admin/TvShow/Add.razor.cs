@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Hosting;
 using MpStream.Models;
 using MpStream.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +15,8 @@ namespace MpStream.Pages.Admin.TvShow
     {
         [Inject]
         public TvShowService TvShowService { get; set; }
+        [Inject]
+        public MovieService MovieService { get; set; }
         [Inject]
         public NavigationManager NavBar { get; set; }
         public TvShowEntity TvShowEntity { get; set; } = new TvShowEntity();
@@ -26,13 +31,40 @@ namespace MpStream.Pages.Admin.TvShow
         public string showStatusMessageApiRequest { get; set; }
         public string PreviewImage { get; set; }
         public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
+        public string ImageUrl { get; set; }
+        public bool ApiRequestSpinner { get; set; } = false;
+        public bool TvshowSaveSpinner { get; set; } = false;
+        [Inject]
+        public IWebHostEnvironment environment { get; set; }
+        IBrowserFile SelectedImage;
         protected override async Task OnInitializedAsync()
         {
             TvShowGenreList = await TvShowService.TvShowGenreList();
         }
 
-        public void SaveShow()
+        async Task SaveShow()
         {
+            TvshowSaveSpinner = true;
+            if (ImageUrl != null)
+            {
+                Stream stream = SelectedImage.OpenReadStream();
+                var extension = Path.GetExtension(SelectedImage.Name);
+                var fileNameBasedOnDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+                var path = $"{environment.WebRootPath}\\posters\\{fileNameBasedOnDate + extension}";
+                FileStream fileStream = File.Create(path);
+                await stream.CopyToAsync(fileStream);
+                fileStream.Close();
+                TvShowEntity.PosterImage = $"/posters/{fileNameBasedOnDate + extension}";
+
+            }
+            else if (PreviewImage != null)
+            {
+                var path = $"{environment.WebRootPath}" + "\\" + "Posters";
+                var fileNameBasedOnDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+                var apiImageUrl = $"https://image.tmdb.org/t/p/original/{PreviewImage}";
+                await MovieService.DownloadImageAsync(path, fileNameBasedOnDate, new Uri(apiImageUrl));
+                TvShowEntity.PosterImage = $"/Posters/{fileNameBasedOnDate + ".jpg"}";
+            }
             TvShowEntity.Sound = "พากย์ไทย";
             TvShowEntity.PublishedDate = DateTime.Now;
             var saveTvShow = TvShowService.Create(TvShowEntity);
@@ -46,7 +78,20 @@ namespace MpStream.Pages.Admin.TvShow
             {
                 OperationMessage = "Failed to create!";
             }
+            TvshowSaveSpinner = false;
         }
+        async Task UploadImageOnchange(InputFileChangeEventArgs e)
+        {
+            string format = "image/jpg";
+            var imageFile = e.File;
+            var resizeFile = await imageFile.RequestImageFileAsync(format, 660, 420);
+            var buffer = new byte[resizeFile.Size];
+            await resizeFile.OpenReadStream().ReadAsync(buffer);
+            SelectedImage = imageFile;
+            ImageUrl = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+        }
+
+
         void CheckboxClicked(string Id, object checkedValue)
         {
             if ((bool)checkedValue)
@@ -66,6 +111,8 @@ namespace MpStream.Pages.Admin.TvShow
         }
         public async Task FetchImdbApi(string Id)
         {
+            ApiRequestSpinner = true;
+            
             var tvShowApiRequestTH = await TvShowService.FetchTmdbTvShowApi(Id, true);
             var tvShaowTrailerRequest = await TvShowService.FetchTmdbTrailerApi(Id);
             var tvShowApiRequestEnglish = await TvShowService.FetchTmdbTvShowApi(Id, false);
@@ -110,23 +157,20 @@ namespace MpStream.Pages.Admin.TvShow
             } else {
                 showStatusMessageApiRequest = "เกิดข้อผิดพลาด เช็คไอดีให้ถูกต้อง";
             }
+            ApiRequestSpinner = false;
         }
 
-        void HandleFileSelected()
-        {
 
-        }
-
-        void AddSeason()
+        async Task AddSeason()
         {
             NumberOfSeason += 1;
             SeasonList.Add( new Season { SeasonNumber = NumberOfSeason.ToString()});
         }
-        void AddEpisode(string seasonNumber)
+        async Task AddEpisode(string seasonNumber)
         {
             EpisodeList.Add(new Episode { SeasonNumber = seasonNumber});
         }
-        void RemoveEpisode(string seasonNumber, string episodeSeasonNumber)
+        async Task RemoveEpisode(string seasonNumber, string episodeSeasonNumber)
         {
             if(seasonNumber == episodeSeasonNumber)
             {
@@ -134,7 +178,7 @@ namespace MpStream.Pages.Admin.TvShow
                 EpisodeList.Remove(selectedEpsode);
             }
         }
-        void RemoveSeason(string Id)
+        async Task RemoveSeason(string Id)
         {
             NumberOfSeason -= 1;
             Season selectedSeason = SeasonList.Where(s => s.SeasonNumber == Id).First();

@@ -1,0 +1,22 @@
+﻿@page "/tvshow/view/{TvshowId:int}"
+
+
+@TvshowModel.Title
+
+@foreach (var eachGenre in TvShowGenreList)
+{
+    <p>@eachGenre.Name</p>
+}
+
+
+@foreach (var eachSeason in SeasonList)
+{
+    <p>Season Number : @eachSeason.SeasonNumber</p>
+    @foreach (var eachEpisode in EpisodeList)
+    {
+        if(eachEpisode.SeasonId == eachSeason.Id)
+        {
+            <p>Epsiode @eachEpisode.EpisodeNumber - @eachEpisode.Name</p>
+        }
+    }
+}

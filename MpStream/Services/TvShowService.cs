@@ -16,6 +16,7 @@ namespace MpStream.Services
         private TvShowEntity TvShowModel = new TvShowEntity();
         private List<TvShowWithGenre> TvShowWithGenreList = new List<TvShowWithGenre>();
         public List<Episode> EpisodeList = new List<Episode>();
+        private List<TvShowGenre> TvShowGenresList { get; set; } = new List<TvShowGenre>();
         public TmdbTvShowModel TmdbTvShow { get; set; } = new TmdbTvShowModel();
         public Video TmdbVideoModel = new Video();
         private int Result;
@@ -46,7 +47,7 @@ namespace MpStream.Services
         }
         public Task<TvShowEntity> GetTvShowById(int Id)
         {
-            TvShowModel = aDatabase.TvShowEntities.SingleOrDefault(t => t.Id == Id);
+            TvShowModel = aDatabase.TvShowEntities.Include("TvShowWithGenres").SingleOrDefault(t => t.Id == Id);
             return Task.FromResult(TvShowModel);
         }
         public Task<bool> RemoveTvshow(int Id)
@@ -208,15 +209,6 @@ namespace MpStream.Services
             return tvShowList;
         }
         #endregion
-
-
-
-
-
-
-
-
-
 
 
 
@@ -390,6 +382,16 @@ namespace MpStream.Services
                 EpisodeList.AddRange(eachEpisode);
             }
             return Task.FromResult(EpisodeList);
+        }
+
+        public Task<List<TvShowGenre>> GetGenreListByTvshowWithGenres(ICollection<TvShowWithGenre> TvShowWithGenreList)
+        {
+            foreach (var eachGenreWithTv in TvShowWithGenreList)
+            {
+                var eachGenreList = aDatabase.TvShowGenres.Where(s => s.Id == eachGenreWithTv.TvShowGenreId).ToList();
+                TvShowGenresList.AddRange(eachGenreList);
+            }
+            return Task.FromResult(TvShowGenresList);
         }
 
         public Task<bool> RemovieEpisodeBySeasonIdAndSeasonNumber(int seasonId, int episodeNumber)
