@@ -2,8 +2,8 @@
 @namespace MpStream.Pages.Members
 
 
-<div class="w-full bg-gray-700">
-    <div class="w-10/12">
+<div class="bg-gray-700">
+    <div class="w-full">
         <div class="flex p-20">
             <div class="w-4/12">
                 <img class="shadow-lg rounded w-10/12 ml-12" src="@MovieEntity.PosterImage" />
@@ -29,8 +29,6 @@
 
                 @if (ShowDialog)
                 {
-
-
                     <div class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-black opacity-95">
                         <div class="rounded w-1/2 h-96">
                             <div class="flex flex-col items-start transform ">
@@ -46,10 +44,7 @@
                             </div>
                         </div>
                     </div>
-
                 }
-
-
                 <h2 class="text-xl font-bold mt-4">เรื่องย่อ</h2>
                 <p class="pl-2 pt-1">@MovieEntity.Description</p>
             </div>

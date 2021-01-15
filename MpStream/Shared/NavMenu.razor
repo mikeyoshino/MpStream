@@ -1,45 +1,102 @@
-﻿@inherits LayoutComponentBase
-<!-- This example requires Tailwind CSS v2.0+ -->
-<div class="w-full bg-gray-700">
-    <div class="w-10/12 mx-auto">
-        <div class="pt-6 pb-4">
-            <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
-            <img class="hidden lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow">
-        </div>
-        </div>
-</div>
-<nav class="bg-gray-800">
-    <div class="max-w-full w-11/12 mx-auto px-2 sm:px-6 lg:px-8">
-        <div class="relative flex items-center justify-between h-16">
-            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                <!-- Mobile menu button-->
-                <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-expanded="false">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
+﻿
+@inherits LayoutComponentBase
 
-                    <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
 
-                <div class="hidden sm:block sm:ml-6">
-                    <div class="flex space-x-4">
-                        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                        <NavLink class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" href="" Match="NavLinkMatch.All">Home</NavLink>
-                        <NavLink class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" href="movie">หนังออนไลน์</NavLink>
-                        <NavLink class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" href="tvshow">ซีรีย์ออนไลน์</NavLink>
-                    </div>
+
+
+    <div class="w-full h-36 bg-gray-700">
+        <div class="w-10/12 mx-auto flex justify-between">
+            <img class="w-44 h-20 mt-6" src="https://www.logolynx.com/images/logolynx/3d/3d462b57721fb13d60c81133f018bb72.png">
+            <div class="pt-10">
+                <div class="pt-2 relative mx-auto text-gray-600">
+                    <input class="border-1 border-gray-300 bg-white w-64 h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+                           type="search" name="search" placeholder="Search">
+                    <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+                        <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
+                             xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                             viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+                             width="512px" height="512px">
+                        <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+
+          </svg>
+                    </button>
                 </div>
-            </div>
-            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <LoginDisplay />
             </div>
         </div>
     </div>
+    <div class="w-full h-13 bg-gray-800">
+        <div class="w-10/12 mx-auto">
+            <ul class="flex p-2">
+                <NavLink @onclick="ChangeMenu" class="mr-2 transition duration-500 ease-in-out bg-gray-600 hover:bg-gray-700 rounded p-2 px-7 text-white text-sm font-medium flex justify-between" href="" Match="NavLinkMatch.All">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <p class="text-md">หน้าหลัก</p>
+                </NavLink>
+                <NavLink @onclick="ChangeMenu" class="mr-2 transition duration-500 ease-in-out bg-gray-600 hover:bg-gray-700 rounded p-2 px-7 text-white text-sm font-medium flex justify-between" href="movie">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
+                    <p class="text-md">หนังออนไลน์</p>
+                </NavLink>
+                <NavLink @onclick="ChangeMenu" class="mr-2 transition duration-500 ease-in-out bg-gray-600 hover:bg-gray-700 rounded p-2 px-7 text-white text-sm font-medium flex justify-between" href="tvshow">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <p class="text-md">ซีรีย์ออนไลน์</p>
+                </NavLink>
+                <NavLink @onclick="() => ShowCategory(categoryShow)" class="mr-2 transition duration-500 ease-in-out bg-gray-600 hover:bg-gray-700 rounded p-2 px-7 text-white text-sm font-medium flex justify-between">
+                    <p class="text-md">ประเภท</p>
+                    <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </NavLink>
+            </ul>
+        </div>
+    </div>
+    <div class="bg-gray-50">
+        <div class="w-full overflow-auto ease-in-out transition-all duration-1000 z-30 overflow-hidden transform @(categoryShow? "translate-y-0 h-64 " : "-translate-x-full h-0")">
+            <div class="w-10/12 mx-auto">
+                <div class="flex pt-6">
+                    <div class="w-4/12">
+                        <div class="flex">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5v2H4V5h1zm0 4H4v2h1V9zm-1 4h1v2H4v-2z" clip-rule="evenodd"></path></svg>
+                            <div class="text-base mb-2">ประเภทภาพยนตน์</div>
+                        </div>
+                    </div>
+                    <div class="w-5/12">
+                        <div class="flex">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"></path></svg>
+                            <div class="text-base mb-2">ประเภทซีรีย์</div>
+                        </div>
+                    </div>
+                    <div class="w-3/12">
+                        <div class="text-base mb-2">
+                            แนะนำ
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="w-4/12">
+                        <div class="grid grid-flow-col grid-cols-3 grid-rows-6 border-solid border-l-2 border-yellow-200 p-2">
+                            @if (MovieGenreEntities != null)
+                            {
+                                @foreach (var eachMovieGenre in MovieGenreEntities)
+                                {
+                                    <a href="/movie/category/@eachMovieGenre.Id" class="hover:bg-gray-100 mr-3">@eachMovieGenre.Name</a>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="w-5/12">
+                        <div class="grid grid-flow-col grid-cols-3 grid-rows-6 border-solid border-l-2 border-yellow-200 p-2">
+                            @if (TvShowGenreEntities != null)
+                            {
+                                @foreach (var eachTvshowWGenre in TvShowGenreEntities)
+                                {
+                                    <a href="/tvshow/category/@eachTvshowWGenre.Id" class="mr-3">@eachTvshowWGenre.Name</a>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="w-3/12">แนะนำ</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!--
       Mobile menu, toggle classes based on menu state.
@@ -54,15 +111,3 @@
             <NavLink class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" href="movie">Home</NavLink>
         </div>
     </div>
-</nav>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}

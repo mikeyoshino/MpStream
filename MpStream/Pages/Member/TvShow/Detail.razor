@@ -8,15 +8,75 @@
     <p>@eachGenre.Name</p>
 }
 
+<div class="bg-gray-700">
+    <div class="w-full">
+        <div class="flex p-20">
+            <div class="w-4/12">
+                <img class="shadow-lg rounded w-10/12 ml-12" src="@TvshowModel.PosterImage" />
+            </div>
+            <div class="w-8/12 text-gray-300 pl-14">
+                <div class="mt-20"></div>
+                <div class="flex mt-4">
+                    <h1 class="text-2xl font-semibold break-all">@TvshowModel.Title</h1>
+                    <div class="text-2xl ml-2 font-thin">(@TvshowModel.FirstAirDate.ToString("yyyy"))</div>
+                </div>
+                <div class="flex mt-4">
+                    <div class="border px-2 rounded-sm mr-2">R</div>
+                    @foreach (var eachGenre in TvShowGenreList)
+                    {
+                        <a href="/tvshow/category/@eachGenre.Name"><div class="mr-3">@eachGenre.Name</div></a>
+                    }
+                    <div class="flex">
+                        <div class=""><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                        <button @onclick="ShowUpDialog" class="">ตัวอย่าง</button>
+                    </div>
+                </div>
 
-@foreach (var eachSeason in SeasonList)
-{
-    <p>Season Number : @eachSeason.SeasonNumber</p>
-    @foreach (var eachEpisode in EpisodeList)
+
+                @if (ShowDialog)
+                {
+                    <div class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-black opacity-95">
+                        <div class="rounded w-1/2 h-96">
+                            <div class="flex flex-col items-start transform ">
+                                <div class="flex items-center w-full">
+                                    <h3 class="font-medium text-lg text-white">ตัวอย่างหนัง @TvshowModel.Title</h3>
+                                    <div @onclick="CloseDialog">
+                                        <svg class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+                                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <iframe class="h-96 w-full" src="https://www.youtube.com/embed/@TvshowModel.Trailer"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <h2 class="text-xl font-bold mt-4">เรื่องย่อ</h2>
+                <p class="pl-2 pt-1">@TvshowModel.Description</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="w-full bg-gray-600 h-96">
+    <div class="w-12/12">
+        <div class="m-auto w-8/12">
+            <iframe class="h-96 w-full" src="https://www.youtube.com/embed/@TvshowModel.Trailer"></iframe>
+        </div>
+    </div>
+</div>
+<div class="w-full bg-white">
+    <div class="h-50"></div>
+</div>
+
+
+@*@foreach (var eachSeason in SeasonList)
     {
-        if(eachEpisode.SeasonId == eachSeason.Id)
+        <p>Season Number : @eachSeason.SeasonNumber</p>
+        @foreach (var eachEpisode in EpisodeList)
         {
-            <p>Epsiode @eachEpisode.EpisodeNumber - @eachEpisode.Name</p>
+            if(eachEpisode.SeasonId == eachSeason.Id)
+            {
+                <p>Epsiode @eachEpisode.EpisodeNumber - @eachEpisode.Name</p>
+            }
         }
-    }
-}
+    }*@

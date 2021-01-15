@@ -1,20 +1,31 @@
 ﻿@page "/movie"
 @namespace MpStream.Pages.Members
-@if (MovieList == null)
-{
+<div class="w-10/12 mx-auto">
+    <div class="flex flex-wrap">
+        @if (MovieList == null)
+        {
 
-}
-else
-{
-    @foreach (var item in MovieList)
-    {
-    <div class="w-full md:w-1/3 lg:w-1/6 p-2">
-        <a href="/movie/view/@item.Id" class="flex flex-col relative w-full bg-white overflow-hidden card translate-3d-none-after relative w-full bg-white overflow-hidden card translate-3d-none-after border hover:border-gray-300">
-            <img class="object-cover h-72" src="@item.PosterImage" />
-            <div class="text-center font-medium">@item.Title</div>
-        </a>
+        }
+        else
+        {
+            @foreach (var eachMovie in MovieList)
+            {
+                <div class="w-full md:w-1/3 lg:w-1/6 p-2 relative">
+                    <a @onmouseover="() => MouseOver(eachMovie.Id)" href="/movie/view/@eachMovie.Id" class="flex flex-col relative w-full bg-white overflow-hidden card translate-3d-none-after relative w-full bg-white overflow-hidden card translate-3d-none-after hover:border-gray-300">
+                        <img @onmouseout="() => MouseOut(eachMovie.Id)" class="object-cover h-86 md:76" src="@eachMovie.PosterImage" />
+                        <div class="transition duration-500 ease-in-out absolute right-0 bg-yellow-400 @(MouseEventMapbyMovieId[eachMovie.Id]? "opacity-100" : "opacity-0")">
+                            <div class="text-xs font-bold p-1">
+                                @eachMovie.Score
+                        </div>
+                    </div>
+                    <div class="transition duration-500 ease-in-out absolute bottom-0 w-full text-center bg-black text-white font-thin pb-2 pt-2 opacity-0 @(MouseEventMapbyMovieId[eachMovie.Id]? "opacity-100" : "opacity-0")">
+                        @eachMovie.Title
+                    </div>
+                </a>
+            </div>
+        }
+        }
     </div>
-    }
-}
+</div>
 
 

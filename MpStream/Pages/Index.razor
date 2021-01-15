@@ -1,24 +1,23 @@
 ﻿@page "/"
 
-<div class="w-full">
-    <div class="w-12/12 mx-auto  mt-10">
-        <h3 class="text-white">อัพเดทใหม่</h3>
-        <div class="flex">
-            @foreach (var eachMovieId in MovieList.Take(6))
-            {
-                <div class="w-full md:w-1/3 lg:w-1/6 p-2 relative">
-                    <a @onmouseover="() => MouseOver(eachMovieId.Id)" href="/movie/view/@eachMovieId.Id" class="flex flex-col relative w-full bg-white overflow-hidden card translate-3d-none-after relative w-full bg-white overflow-hidden card translate-3d-none-after hover:border-gray-300">
-                        <img @onmouseout="() => MouseOut(eachMovieId.Id)" class="object-cover h-86 md:76" src="@eachMovieId.PosterImage" />
-                            <div class="transition duration-500 ease-in-out absolute right-0 bg-yellow-400 @(MouseEventMapbyMovieId[eachMovieId.Id]? "opacity-100" : "opacity-0")">
-                                 <div class="text-xs font-bold p-1">@eachMovieId.Score
-                            </div>
-                            </div>
-                            <div class="transition duration-500 ease-in-out absolute bottom-0 w-full text-center bg-black text-white font-thin pb-2 pt-2 opacity-0 @(MouseEventMapbyMovieId[eachMovieId.Id]? "opacity-100" : "opacity-0")">
-                                @eachMovieId.Title
-                            </div>
-                    </a>
-                </div>
-            }
-        </div>
+<div class="w-10/12 mx-auto  mt-10">
+    <h3 class="text-white">อัพเดทใหม่</h3>
+    <div class="flex">
+        @foreach (var eachMovieId in MovieList.Take(6))
+        {
+            <div class="w-full md:w-1/3 lg:w-1/6 p-2 relative">
+                <a @onmouseover="() => MouseOver(eachMovieId.Id)" href="/movie/view/@eachMovieId.Id" class="flex flex-col relative w-full bg-white overflow-hidden card translate-3d-none-after relative w-full bg-white overflow-hidden card translate-3d-none-after hover:border-gray-300">
+                    <img @onmouseout="() => MouseOut(eachMovieId.Id)" class="object-cover h-86 md:76" src="@eachMovieId.PosterImage" />
+                        <div class="transition duration-500 ease-in-out absolute right-0 bg-yellow-400 @(MouseEventMapbyMovieId[eachMovieId.Id]? "opacity-100" : "opacity-0")">
+                                <div class="text-xs font-bold p-1">@eachMovieId.Score
+                        </div>
+                        </div>
+                        <div class="transition duration-500 ease-in-out absolute bottom-0 w-full text-center bg-black text-white font-thin pb-2 pt-2 opacity-0 @(MouseEventMapbyMovieId[eachMovieId.Id]? "opacity-100" : "opacity-0")">
+                            @eachMovieId.Title
+                        </div>
+                </a>
+            </div>
+        }
     </div>
 </div>
+

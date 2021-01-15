@@ -16,6 +16,7 @@ namespace MpStream.Pages.Member.TvShow
         public List<Season> SeasonList { get; set; } = new List<Season>();
         public List<Episode> EpisodeList { get; set; } = new List<Episode>();
         public List<TvShowGenre> TvShowGenreList { get; set; } = new List<TvShowGenre>();
+        public bool ShowDialog { get; set; } = false;
         protected override async Task OnInitializedAsync()
         {
             TvshowModel = await TvShowService.GetTvShowById(TvshowId);
@@ -23,6 +24,15 @@ namespace MpStream.Pages.Member.TvShow
             EpisodeList = await TvShowService.GetEpisodeListBySeasonList(SeasonList);
             TvShowGenreList = await TvShowService.GetGenreListByTvshowWithGenres(TvshowModel.TvShowWithGenres);
 
+        }
+
+        void ShowUpDialog()
+        {
+            ShowDialog = true;
+        }
+        void CloseDialog()
+        {
+            ShowDialog = false;
         }
     }
 }

@@ -14,9 +14,23 @@ namespace MpStream.Pages.Members
         public MovieService MovieService { get; set; }
         public List<MovieEntity> MovieList { get; set; } = new List<MovieEntity>();
         Dictionary<int, string> GenreNameMappedById = new Dictionary<int, string>();
+        public bool IsMouseOver { get; set; } = false;
+        public Dictionary<int, bool> MouseEventMapbyMovieId { get; set; } = new Dictionary<int, bool>();
         protected override void OnInitialized()
         {
             MovieList = MovieService.GetMovieList();
+            foreach (var eachMovie in MovieList)
+            {
+                MouseEventMapbyMovieId.Add(eachMovie.Id, false);
+            }
+        }
+        async Task MouseOver(int Id)
+        {
+            MouseEventMapbyMovieId[Id] = true;
+        }
+        async Task MouseOut(int Id)
+        {
+            MouseEventMapbyMovieId[Id] = false;
         }
     }
 }
