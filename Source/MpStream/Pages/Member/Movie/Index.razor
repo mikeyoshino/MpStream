@@ -1,30 +1,74 @@
 ﻿@page "/movie"
 @namespace MpStream.Pages.Members
-<div class="w-10/12 mx-auto">
-    <div class="flex flex-wrap">
-        @if (MovieList == null)
-        {
-
-        }
-        else
-        {
-            @foreach (var eachMovie in MovieList)
-            {
-                <div class="w-full md:w-1/3 lg:w-1/6 p-2 relative">
-                    <a @onmouseover="() => MouseOver(eachMovie.Id)" href="/movie/view/@eachMovie.Id" class="flex flex-col relative w-full bg-white overflow-hidden card translate-3d-none-after relative w-full bg-white overflow-hidden card translate-3d-none-after hover:border-gray-300">
-                        <img @onmouseout="() => MouseOut(eachMovie.Id)" class="object-cover h-86 md:76" src="@eachMovie.PosterImage" />
-                        <div class="transition duration-500 ease-in-out absolute right-0 bg-yellow-400 @(MouseEventMapbyMovieId[eachMovie.Id]? "opacity-100" : "opacity-0")">
-                            <div class="text-xs font-bold p-1">
-                                @eachMovie.Score
-                        </div>
-                    </div>
-                    <div class="transition duration-500 ease-in-out absolute bottom-0 w-full text-center bg-black text-white font-thin pb-2 pt-2 opacity-0 @(MouseEventMapbyMovieId[eachMovie.Id]? "opacity-100" : "opacity-0")">
-                        @eachMovie.Title
-                    </div>
-                </a>
+<div class="w-full lg:w-9/12 mx-auto flex">
+    <div class="w-full lg:w-9/12 mt-10 relative mr-10">
+        <div class="w-full h-10 flex justify-end">
+            <div>aaa</div>
+            <div>bbb</div>
+            <Button class="flex text-white bg-gray-800 px-4 py-2 rounded hover:bg-gray-700 transition duration-500 ease-in-out focus:outline-none" @onclick="()=> IsFilterClick(IsClickFilter)">
+                <div class="">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z"></path></svg>
+                </div>
+            </Button>
+        </div>
+        @*Filter Dropdown when button is clicked*@
+        <div class="w-full flex justify-end absolute z-10 transition duration-500 ease-in-out  @(IsClickFilter? "opacity-100" : "opacity-0")">
+            <div class="bg-gray-700 text-xs rounded text-white">
+                <ul>
+                    <a href=""><li class="px-10 py-3 hover:bg-gray-800">คะแนน</li></a>
+                    <a href=""><li class="px-10 py-3 hover:bg-gray-800">ความนิยม</li></a>
+                    <a href=""><li class="px-10 py-3 hover:bg-gray-800">ออกใหม่</li></a>
+                </ul>
             </div>
-        }
-        }
+        </div>
+        <div class="flex flex-wrap z-0">
+            @if (MovieList == null)
+            {
+
+            }
+            else
+            {
+                @foreach (var eachMovie in MovieList)
+                {
+                    <div class="w-full md:w-1/3 lg:w-1/5 p-2">
+                        <a @onmouseover="() => MouseOver(eachMovie.Id)" href="/movie/view/@eachMovie.Id" class="flex flex-col relative w-full bg-white overflow-hidden card translate-3d-none-after relative w-full bg-white overflow-hidden card translate-3d-none-after hover:border-gray-300">
+                            <img @onmouseout="() => MouseOut(eachMovie.Id)" class="object-cover h-86 md:76" src="@eachMovie.PosterImage" />
+                            <div class="transition duration-500 ease-in-out absolute right-0 bg-yellow-400 @(MouseEventMapbyMovieId[eachMovie.Id]? "opacity-100" : "opacity-0")">
+                                <div class="text-xs font-bold p-1">
+                                    @eachMovie.Score
+                                </div>
+                            </div>
+                            <div class="transition duration-500 ease-in-out absolute bottom-0 w-full text-center bg-black text-white font-thin pb-2 pt-2 opacity-0 @(MouseEventMapbyMovieId[eachMovie.Id]? "opacity-100" : "opacity-0")">
+                                @eachMovie.Title
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+        @*Loader and Page Navigation*@
+    <div class="flex mx-auto">
+        <button @onclick="LoadMorePost" class="bg-gray-700 hover:bg-gray-800 transition duration-500 ease-in-out text-gray-500 px-12 py-2 rounded flex justify-between">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            <div class="">แสดงเพิ่ม</div>
+        </button>
+    </div>
+    </div>
+    <div class="lg:w-3/12 ">
+        <div class="h-96 w-full bg-sideBarFilterBgColor mt-10 rounded shadow-lg">
+            @*Container*@
+            <div class="w-11/12 mx-auto">
+                @*Years Bar*@
+                <h1 class="">ปีที่ฉาย</h1>
+                <div class="flex flex-wrap text-sm">
+                    @foreach (var year in YearLists)
+                    {
+                        <a href="/movie/year/@year" class="w-1/5 bg-gray-700 m-1 rounded text-gray-400 hover:bg-gray-800 transition duration-500 ease-in-out">
+                            <div class="text-center">@year</div></a>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

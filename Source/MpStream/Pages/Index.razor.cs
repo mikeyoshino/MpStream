@@ -25,14 +25,15 @@ namespace MpStream.Pages
             }
         }
 
-        async Task MouseOver(int Id)
+        void MouseOver(int Id)
         {
             MouseEventMapbyMovieId[Id] = true;
         }
-        async Task MouseOut(int Id)
+        void MouseOut(int Id)
         {
             MouseEventMapbyMovieId[Id] = false;
         }
+
 
     }
 }

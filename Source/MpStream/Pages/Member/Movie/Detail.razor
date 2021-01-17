@@ -2,31 +2,30 @@
 @namespace MpStream.Pages.Members
 
 
-<div class="bg-gray-700">
-    <div class="w-full">
-        <div class="flex p-20">
-            <div class="w-4/12">
-                <img class="shadow-lg rounded w-10/12 ml-12" src="@MovieEntity.PosterImage" />
+
+
+<div class="w-full mt-10 mb-10 text-gray-100">
+    <div class="w-9/12 mx-auto flex">
+        <div class="w-2/12 flex justify-end">
+            <img class="shadow-lg rounded w-60" src="@MovieEntity.PosterImage" />
+        </div>
+        <div class="w-8/12 ml-6">
+            <div class="flex">
+                <h1 class="text-2xl font-semibold break-all">@MovieEntity.Title</h1>
+                <div class="text-2xl ml-2 font-thin">(@MovieEntity.ReleaseYear)</div>
             </div>
-            <div class="w-8/12 text-gray-300 pl-14">
-                <div class="mt-20"></div>
-                <div class="flex mt-4">
-                    <h1 class="text-2xl font-semibold break-all">@MovieEntity.Title</h1>
-                    <div class="text-2xl ml-2 font-thin">(@MovieEntity.ReleaseYear)</div>
+            <div class="flex">
+                <div class="bg-yellow-400 text-black p-1 rounded font-bold mr-2">@MovieEntity.Score.ToString().TrimEnd('0')</div>
+                <div class="bg-gray-900 p-1 rounded-full mr-2 hover:text-gray-600 transition duration-500 ease-in-out">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
                 </div>
-                <div class="flex mt-4">
-                    <div class="border px-2 rounded-sm mr-2">R</div>
-                    @foreach (var eachGenre in MovieEntity.MovieWithGenres)
-                    {
-                        <a href="/movie/category/@eachGenre.MovieGenreEntity.Name"><div class="mr-3">@eachGenre.MovieGenreEntity.Name</div></a>
-                    }
-                    <div class="flex">
-                        <div class=""><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
-                        <button @onclick="ShowUpDialog" class="">ตัวอย่าง</button>
-                    </div>
+                <div class="bg-gray-900 p-1 rounded-full mr-2 hover:text-gray-600 transition duration-500 ease-in-out">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
                 </div>
-
-
+                <button @onclick="ShowUpDialog" class="flex mt-1 hover:text-gray-600 transition duration-500 ease-in-out">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>ตัวอย่าง</div>
+                </button>
                 @if (ShowDialog)
                 {
                     <div class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-black opacity-95">
@@ -45,16 +44,29 @@
                         </div>
                     </div>
                 }
-                <h2 class="text-xl font-bold mt-4">เรื่องย่อ</h2>
-                <p class="pl-2 pt-1">@MovieEntity.Description</p>
             </div>
+            <div class="flex text-sm">
+                @foreach (var eachGenre in MovieEntity.MovieWithGenres)
+                {
+                    <a href="/movie/category/@eachGenre.MovieGenreEntity.Name.ToLower().Replace(" ","-")"><div class="mr-3 hover:text-gray-600 transition duration-500 ease-in-out">@eachGenre.MovieGenreEntity.Name</div></a>
+                }
+            </div>
+            <h2 class="text-xl font-bold mt-4">เรื่องย่อ</h2>
+            <p class="pl-2 pt-1">@MovieEntity.Description</p>
         </div>
     </div>
 </div>
-<div class="w-full bg-gray-600 h-96">
-    <div class="w-12/12">
-        <div class="m-auto w-8/12">
-            <iframe class="h-96 w-full" src="https://www.youtube.com/embed/@MovieEntity.TrailerId"></iframe>
+
+<div class="w-full bg-gray-900 h-96 pt-20">
+    <div class="w-9/12 m-auto flex">
+        <div class="w-9/12">
+            <iframe class="w-10/12 h-full" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+        <div class="w-3/12">
+            <div class="bg-coolGray-800">
+                <div class="">เรื่องเกี่ยวข้อง</div>
+            </div>
+
         </div>
     </div>
 </div>

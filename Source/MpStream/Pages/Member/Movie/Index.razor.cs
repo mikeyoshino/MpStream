@@ -15,22 +15,65 @@ namespace MpStream.Pages.Members
         public List<MovieEntity> MovieList { get; set; } = new List<MovieEntity>();
         Dictionary<int, string> GenreNameMappedById = new Dictionary<int, string>();
         public bool IsMouseOver { get; set; } = false;
+        public bool IsClickFilter { get; set; } = false;
         public Dictionary<int, bool> MouseEventMapbyMovieId { get; set; } = new Dictionary<int, bool>();
-        protected override void OnInitialized()
+        public List<int> YearLists { get; set; } = new List<int>();
+        public List<int> MovieOnlyYears { get; set; }
+        [Parameter]
+        public int PostNumber { get; set; } = 10;
+        public List<MovieEntity> MovieWithYear { get; set; }
+
+        protected override async Task OnInitializedAsync()
         {
-            MovieList = MovieService.GetMovieList();
+            MovieList = await MovieService.GetMovieListLimitPostNumber(PostNumber);
+            MouseEvent();
+            MovieOnlyYears = await MovieService.MovieYears();
+            PopulateYear();
+        }
+
+        protected override async Task OnParametersSetAsync()
+        {
+            MovieList = await MovieService.GetMovieListLimitPostNumber(PostNumber);
+        }
+
+        void MouseEvent()
+        {
             foreach (var eachMovie in MovieList)
             {
-                MouseEventMapbyMovieId.Add(eachMovie.Id, false);
+                if (!MouseEventMapbyMovieId.ContainsKey(eachMovie.Id))
+                {
+                    MouseEventMapbyMovieId.Add(eachMovie.Id, false);
+                }
             }
         }
-        async Task MouseOver(int Id)
+        void PopulateYear()
+        {
+            foreach (var eachyear in MovieOnlyYears)
+            {
+                if (!YearLists.Contains(eachyear))
+                {
+                    YearLists.Add(eachyear);
+                }
+            }
+        }
+
+        void MouseOver(int Id)
         {
             MouseEventMapbyMovieId[Id] = true;
         }
-        async Task MouseOut(int Id)
+        void MouseOut(int Id)
         {
             MouseEventMapbyMovieId[Id] = false;
+        }
+        void IsFilterClick(bool? isClick)
+        {
+            if (IsClickFilter == true) IsClickFilter = false;
+            IsClickFilter = true;
+        }
+        async Task LoadMorePost()
+        {
+            PostNumber += PostNumber;
+            await OnInitializedAsync();
         }
     }
 }

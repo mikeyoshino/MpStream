@@ -9,7 +9,7 @@ namespace MpStream.Pages.Admins
     public partial class Index : ComponentBase
     {
         #region Pagination
-        public int pageSize { get; set; } = 5;
+        public int pageSize { get; set; } = 10;
         public int pageIndex { get; set; }
         public List<int> PageNumber { get; set; } = new List<int>();
         public int CountMovie { get; set; }

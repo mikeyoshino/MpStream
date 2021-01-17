@@ -21,8 +21,16 @@ namespace MpStream.Services
         public TmdbMovieModel TmdbMovieModel = new TmdbMovieModel();
         public Video VideoModel = new Video();
         public HttpClient httpClient { get; set; }
+        public List<MovieWithGenre> GenreRemoveList = new List<MovieWithGenre>();
+        public Dictionary<int, int> movieWithGenreMapById = new Dictionary<int, int>();
+        public Dictionary<int, int> movieGenreInDbMapById = new Dictionary<int, int>();
+        public List<MovieWithGenre> ToRemoveMovieWithGenre = new List<MovieWithGenre>();
+        public List<MovieWithGenre> ToAddMovieWithGenre = new List<MovieWithGenre>();
+        public Dictionary<int, string> genreNameMapById = new Dictionary<int, string>();
+        public List<MovieEntity> MovieList = new List<MovieEntity>();
+        public List<MovieEntity> BrowseList = new List<MovieEntity>();
         public MovieService(){}
-        public MovieService(ApplicationDbContext database, ApplicationDbContext sdatabase){aDatabase = database;}
+        public MovieService(ApplicationDbContext database){aDatabase = database;}
 
         public Task<bool> AddMovie(MovieEntity movieEntity)
         {
@@ -33,10 +41,22 @@ namespace MpStream.Services
 
         public List<MovieEntity> GetMovieList()
         {
-            List<MovieEntity> movieList;
-            movieList = aDatabase.MovieEntity.Include("MovieWithGenres").ToList();
-            return movieList;
+            MovieList = aDatabase.MovieEntity.Include("MovieWithGenres").ToList();
+            return MovieList;
         }
+
+        public Task<List<int>> MovieYears()
+        {
+            var years = aDatabase.MovieEntity.Select(s => s.ReleaseYear).ToListAsync();
+            return years;
+        }
+
+        public Task<List<MovieEntity>> GetMovieListLimitPostNumber(int postDisplayNumber)
+        {
+            MovieList = aDatabase.MovieEntity.Include("MovieWithGenres").Take(postDisplayNumber).ToList();
+            return Task.FromResult(MovieList);
+        }
+
         public Task<int> CountMovies()
         {
             return Task.FromResult(aDatabase.MovieEntity.Count());
@@ -106,9 +126,19 @@ namespace MpStream.Services
 
         public Task<bool> SaveMovieWithGenre(MovieEntity movie, List<string> Ids)
         {
+            MovieWithGenres.Clear();
+            genreNameMapById = new Dictionary<int, string>();
+            var genreList = aDatabase.MovieGenreEntities.ToList();
+            foreach (var eachGenre in genreList)
+            {
+                genreNameMapById.Add(eachGenre.Id, eachGenre.Name);
+            }
             foreach (var eachId in Ids)
             {
-                MovieWithGenres.Add(new MovieWithGenre { MovieEntityId = movie.Id, MovieGenreEntityId = Convert.ToInt32(eachId)});
+                if (genreNameMapById.ContainsKey(Convert.ToInt32(eachId)))
+                {
+                    MovieWithGenres.Add(new MovieWithGenre { MovieEntityId = movie.Id, MovieGenreEntityId = Convert.ToInt32(eachId), GenreName = genreNameMapById[Convert.ToInt32(eachId)]});
+                }
             }
             aDatabase.MovieWithGenres.AddRange(MovieWithGenres);
             var reuslt = aDatabase.SaveChanges();
@@ -151,13 +181,9 @@ namespace MpStream.Services
 
         public bool UpdateMovie(int Id, MovieEntity movieEntity, List<MovieGenreEntity> newSelectGenreList)
         {
-            List<MovieWithGenre> GenreRemoveList = new List<MovieWithGenre>();
-            Dictionary<int, int> movieWithGenreMapById = new Dictionary<int, int>();
-            Dictionary<int, int> movieGenreInDbMapById = new Dictionary<int, int>();
-            MovieEntity movieDb = aDatabase.MovieEntity.SingleOrDefault(s => s.Id == Id);
-            List<MovieWithGenre> genreDb = aDatabase.MovieWithGenres.Where(s => s.MovieEntityId == Id).ToList();
-            List<MovieWithGenre> ToRemoveMovieWithGenre = new List<MovieWithGenre>();
-            List<MovieWithGenre> ToAddMovieWithGenre = new List<MovieWithGenre>();
+            
+            var movieDb = aDatabase.MovieEntity.SingleOrDefault(s => s.Id == Id);
+            var genreDb = aDatabase.MovieWithGenres.Where(s => s.MovieEntityId == Id).ToList();
             movieDb.Player = movieEntity.Player;
             movieDb.Title = movieEntity.Title;
             movieDb.Tag = movieEntity.Tag;
@@ -243,6 +269,20 @@ namespace MpStream.Services
                 Console.WriteLine(body);
                 return await Task.FromResult(VideoModel);
             }
+        }
+
+        public Task<List<MovieEntity>> BrowseMovieByCategory(string genreName)
+        {
+            BrowseList.Clear();
+            var searchWord = genreName.Replace("-", " ");
+            MovieList = aDatabase.MovieEntity.ToList();
+            var movieIds = aDatabase.MovieWithGenres.Where(s => s.GenreName.ToLower().StartsWith(searchWord)).Select(s => s.MovieEntityId).ToList();
+            foreach (var eachMovieId in movieIds)
+            {
+                var movieByCategory = MovieList.Where(s => s.Id == eachMovieId).Single();
+                BrowseList.Add(movieByCategory);
+            }
+            return Task.FromResult(BrowseList);
         }
     }
 }

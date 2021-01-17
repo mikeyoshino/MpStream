@@ -4,6 +4,7 @@
 
 @layer base {
     a.active {
-        @apply bg-gray-700;
+        @apply bg-NavColor;
+        @apply text-yellow-800;
     }
 }

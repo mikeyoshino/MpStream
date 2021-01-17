@@ -1,11 +1,8 @@
 ﻿
 @inherits LayoutComponentBase
 
-
-
-
-    <div class="w-full h-36 bg-gray-700">
-        <div class="w-10/12 mx-auto flex justify-between">
+    <div class="w-full h-36 bg-headerColor">
+        <div class="w-9/12 mx-auto flex justify-between">
             <img class="w-44 h-20 mt-6" src="https://www.logolynx.com/images/logolynx/3d/3d462b57721fb13d60c81133f018bb72.png">
             <div class="pt-10">
                 <div class="pt-2 relative mx-auto text-gray-600">
@@ -24,29 +21,29 @@
             </div>
         </div>
     </div>
-    <div class="w-full h-13 bg-gray-800">
-        <div class="w-10/12 mx-auto">
+    <div class="w-full h-13 bg-NavColor border-b-2 border-yellow-800">
+        <div class="w-9/12 mx-auto">
             <ul class="flex p-2">
-                <NavLink @onclick="ChangeMenu" class="mr-2 transition duration-500 ease-in-out bg-gray-600 hover:bg-gray-700 rounded p-2 px-7 text-white text-sm font-medium flex justify-between" href="" Match="NavLinkMatch.All">
+                <NavLink @onclick="ChangeMenu" class="mr-2 transition duration-500 ease-in-out bg-bodyBgColor hover:bg-NavColor hover:text-yellow-800 rounded p-2 px-7 text-white text-sm font-medium flex justify-between" href="" Match="NavLinkMatch.All">
                     <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                     <p class="text-md">หน้าหลัก</p>
                 </NavLink>
-                <NavLink @onclick="ChangeMenu" class="mr-2 transition duration-500 ease-in-out bg-gray-600 hover:bg-gray-700 rounded p-2 px-7 text-white text-sm font-medium flex justify-between" href="movie">
+                <NavLink @onclick="ChangeMenu" class="mr-2 transition duration-500 ease-in-out bg-bodyBgColor hover:bg-NavColor hover:text-yellow-800 rounded p-2 px-7 text-white text-sm font-medium flex justify-between" href="movie">
                     <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
                     <p class="text-md">หนังออนไลน์</p>
                 </NavLink>
-                <NavLink @onclick="ChangeMenu" class="mr-2 transition duration-500 ease-in-out bg-gray-600 hover:bg-gray-700 rounded p-2 px-7 text-white text-sm font-medium flex justify-between" href="tvshow">
+                <NavLink @onclick="ChangeMenu" class="mr-2 transition duration-500 ease-in-out bg-bodyBgColor hover:bg-NavColor hover:text-yellow-800 rounded p-2 px-7 text-white text-sm font-medium flex justify-between" href="tvshow">
                     <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     <p class="text-md">ซีรีย์ออนไลน์</p>
                 </NavLink>
-                <NavLink @onclick="() => ShowCategory(categoryShow)" class="mr-2 transition duration-500 ease-in-out bg-gray-600 hover:bg-gray-700 rounded p-2 px-7 text-white text-sm font-medium flex justify-between">
+                <NavLink @onclick="() => ShowCategory(categoryShow)" class="mr-2 transition duration-500 ease-in-out bg-bodyBgColor hover:bg-NavColor hover:text-yellow-800 rounded p-2 px-7 text-white text-sm font-medium flex justify-between">
                     <p class="text-md">ประเภท</p>
                     <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </NavLink>
             </ul>
         </div>
     </div>
-    <div class="bg-gray-50">
+    <div class="bg-CategoryBgColor text-CategoryTextColor">
         <div class="w-full overflow-auto ease-in-out transition-all duration-1000 z-30 overflow-hidden transform @(categoryShow? "translate-y-0 h-64 " : "-translate-x-full h-0")">
             <div class="w-10/12 mx-auto">
                 <div class="flex pt-6">
@@ -75,7 +72,7 @@
                             {
                                 @foreach (var eachMovieGenre in MovieGenreEntities)
                                 {
-                                    <a href="/movie/category/@eachMovieGenre.Id" class="hover:bg-gray-100 mr-3">@eachMovieGenre.Name</a>
+                                    <a @onclick="ChangeMenu" href="/movie/category/@eachMovieGenre.Name.Replace(" ", "-").ToLower()" class="hover:bg-gray-100 mr-3">@eachMovieGenre.Name</a>
                                 }
                             }
                         </div>
@@ -86,7 +83,7 @@
                             {
                                 @foreach (var eachTvshowWGenre in TvShowGenreEntities)
                                 {
-                                    <a href="/tvshow/category/@eachTvshowWGenre.Id" class="mr-3">@eachTvshowWGenre.Name</a>
+                                    <a @onclick="ChangeMenu" href="/tvshow/category/@eachTvshowWGenre.Name.Replace(" ", "-").ToLower()" class="mr-3">@eachTvshowWGenre.Name</a>
                                 }
                             }
                         </div>
