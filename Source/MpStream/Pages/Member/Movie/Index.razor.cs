@@ -20,7 +20,7 @@ namespace MpStream.Pages.Members
         public List<int> YearLists { get; set; } = new List<int>();
         public List<int> MovieOnlyYears { get; set; }
         [Parameter]
-        public int PostNumber { get; set; } = 10;
+        public int PostNumber { get; set; } = 20;
         public List<MovieEntity> MovieWithYear { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -65,10 +65,15 @@ namespace MpStream.Pages.Members
         {
             MouseEventMapbyMovieId[Id] = false;
         }
-        void IsFilterClick(bool? isClick)
+        void IsFilterClick(bool isClick)
         {
-            if (IsClickFilter == true) IsClickFilter = false;
-            IsClickFilter = true;
+            if (isClick == true)
+            {
+                IsClickFilter = false;
+            } else
+            {
+                IsClickFilter = true;
+            }
         }
         async Task LoadMorePost()
         {

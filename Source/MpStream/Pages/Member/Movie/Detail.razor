@@ -4,72 +4,74 @@
 
 
 
-<div class="w-full mt-10 mb-10 text-gray-100">
-    <div class="w-9/12 mx-auto flex">
-        <div class="w-2/12 flex justify-end">
-            <img class="shadow-lg rounded w-60" src="@MovieEntity.PosterImage" />
-        </div>
-        <div class="w-8/12 ml-6">
-            <div class="flex">
-                <h1 class="text-2xl font-semibold break-all">@MovieEntity.Title</h1>
-                <div class="text-2xl ml-2 font-thin">(@MovieEntity.ReleaseYear)</div>
+<div class="w-9/12 mt-10 mb-10 text-gray-100 mx-auto flex">
+    @*Main*@
+    <div class="w-9/12">
+        <div class="flex">
+            <div class="w-3/12 flex justify-end">
+                <img class="shadow-lg object-cover rounded w-60" src="@MovieEntity.PosterImage" />
             </div>
-            <div class="flex">
-                <div class="bg-yellow-400 text-black p-1 rounded font-bold mr-2">@MovieEntity.Score.ToString().TrimEnd('0')</div>
-                <div class="bg-gray-900 p-1 rounded-full mr-2 hover:text-gray-600 transition duration-500 ease-in-out">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+            <div class="w-8/12 ml-6">
+                <div class="flex">
+                    <h1 class="text-2xl font-semibold break-all">@MovieEntity.Title</h1>
+                    <div class="text-2xl ml-2 font-thin">(@MovieEntity.ReleaseYear)</div>
                 </div>
-                <div class="bg-gray-900 p-1 rounded-full mr-2 hover:text-gray-600 transition duration-500 ease-in-out">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
-                </div>
-                <button @onclick="ShowUpDialog" class="flex mt-1 hover:text-gray-600 transition duration-500 ease-in-out">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <div>ตัวอย่าง</div>
-                </button>
-                @if (ShowDialog)
-                {
-                    <div class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-black opacity-95">
-                        <div class="rounded w-1/2 h-96">
-                            <div class="flex flex-col items-start transform ">
-                                <div class="flex items-center w-full">
-                                    <h3 class="font-medium text-lg text-white">ตัวอย่างหนัง @MovieEntity.Title</h3>
-                                    <div @onclick="CloseDialog">
-                                        <svg class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-                                            <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
-                                        </svg>
+                <div class="flex">
+                    <div class="bg-yellow-400 text-black p-1 rounded font-bold mr-2">@MovieEntity.Score.ToString().TrimEnd('0')</div>
+                    <div class="bg-gray-900 p-1 rounded-full mr-2 hover:text-gray-600 transition duration-500 ease-in-out">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <div class="bg-gray-900 p-1 rounded-full mr-2 hover:text-gray-600 transition duration-500 ease-in-out">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
+                    </div>
+                    <button @onclick="ShowUpDialog" class="flex mt-1 hover:text-gray-600 transition duration-500 ease-in-out">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div>ตัวอย่าง</div>
+                    </button>
+                    @if (ShowDialog)
+                    {
+                        <div class="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-black opacity-95">
+                            <div class="rounded w-1/2 h-96">
+                                <div class="flex flex-col items-start transform ">
+                                    <div class="flex items-center w-full">
+                                        <h3 class="font-medium text-lg text-white">ตัวอย่างหนัง @MovieEntity.Title</h3>
+                                        <div @onclick="CloseDialog">
+                                            <svg class="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+                                                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+                                            </svg>
+                                        </div>
                                     </div>
+                                    <iframe class="h-96 w-full" src="https://www.youtube.com/embed/@MovieEntity.TrailerId"></iframe>
                                 </div>
-                                <iframe class="h-96 w-full" src="https://www.youtube.com/embed/@MovieEntity.TrailerId"></iframe>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
+                <div class="flex text-sm">
+                    @foreach (var eachGenre in MovieEntity.MovieWithGenres)
+                    {
+                        <a href="/movie/category/@eachGenre.MovieGenreEntity.Name.ToLower().Replace(" ","-")"><div class="mr-3 hover:text-gray-600 transition duration-500 ease-in-out">@eachGenre.MovieGenreEntity.Name</div></a>
+                    }
+                </div>
+                <h2 class="text-xl font-bold mt-4">เรื่องย่อ</h2>
+                <p class="pl-2 pt-1">@MovieEntity.Description</p>
             </div>
-            <div class="flex text-sm">
-                @foreach (var eachGenre in MovieEntity.MovieWithGenres)
-                {
-                    <a href="/movie/category/@eachGenre.MovieGenreEntity.Name.ToLower().Replace(" ","-")"><div class="mr-3 hover:text-gray-600 transition duration-500 ease-in-out">@eachGenre.MovieGenreEntity.Name</div></a>
-                }
-            </div>
-            <h2 class="text-xl font-bold mt-4">เรื่องย่อ</h2>
-            <p class="pl-2 pt-1">@MovieEntity.Description</p>
         </div>
+        @*Streaming Bar*@
+        <div class="w-11/12 h-10 bg-gray-800 flex mt-40 rounded p-2">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path></svg>
+            <h2>Streaming</h2>
+        </div> 
+        <div class="w-11/12 h-96">
+            <iframe class="w-full h-full h-96" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+    </div>
+    @*Sidebar*@
+    <div class="w-3/12">
+        <div class="bg-coolGray-800">
+            <div class="">เรื่องเกี่ยวข้อง</div>
+        </div>
+
     </div>
 </div>
 
-<div class="w-full bg-gray-900 h-96 pt-20">
-    <div class="w-9/12 m-auto flex">
-        <div class="w-9/12">
-            <iframe class="w-10/12 h-full" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
-        </div>
-        <div class="w-3/12">
-            <div class="bg-coolGray-800">
-                <div class="">เรื่องเกี่ยวข้อง</div>
-            </div>
-
-        </div>
-    </div>
-</div>
-<div class="w-full bg-white">
-    <div class="h-50"></div>
-</div>

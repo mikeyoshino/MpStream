@@ -21,6 +21,7 @@ namespace MpStream.Pages.Member.Movie
 
         protected override async Task OnParametersSetAsync()
         {
+            Message = string.Empty;
             await MovieList();
             MouseEvent();
         }
