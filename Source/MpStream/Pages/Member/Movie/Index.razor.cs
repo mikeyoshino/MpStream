@@ -17,8 +17,10 @@ namespace MpStream.Pages.Members
         public bool IsMouseOver { get; set; } = false;
         public bool IsClickFilter { get; set; } = false;
         public Dictionary<int, bool> MouseEventMapbyMovieId { get; set; } = new Dictionary<int, bool>();
-        public List<int> YearLists { get; set; } = new List<int>();
-        public List<int> MovieOnlyYears { get; set; }
+
+        public List<int> YearLists = new List<int>();
+        public List<int> MovieOnlyYears = new List<int>();
+        public List<string> MovieSoundList  = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
         [Parameter]
         public int PostNumber { get; set; } = 20;
         public List<MovieEntity> MovieWithYear { get; set; }

@@ -53,16 +53,40 @@
     </div>
     </div>
     <div class="lg:w-3/12 ">
-        <div class="h-96 w-full bg-sideBarFilterBgColor mt-10 rounded shadow-lg">
+        <div class="h-full w-full bg-sideBarFilterBgColor mt-10 rounded shadow-lg">
             @*Container*@
-            <div class="w-11/12 mx-auto">
+            <div class="w-11/12 mx-auto pt-4">
+                <h1 class="bg-yellow-800 rounded py-1 px-2 text-gray-300">เรื่องเด่นเย็นนี้</h1>
+                <div class="text-sm bg-gray-800 p-2 mt-2 rounded">
+                    @foreach (var eachMovie in MovieList.Take(5))
+                    {
+                    <div class="relative">
+                        <img src="@eachMovie.PosterImage" class="h-36 w-full object-cover object-top hover:object-center">
+                        <div class="flex">
+                            <div>@eachMovie.Title</div>
+                            <div>(@eachMovie.ReleaseYear)</div>
+                        </div>
+                    </div>
+                    }
+                </div>
+
+                <h1 class="bg-yellow-800 rounded py-1 px-2 text-gray-300">ภาษา</h1>
+                <div class="text-sm bg-gray-800 p-2 mt-2 rounded">
+                    @foreach (var sound in MovieSoundList)
+                    {
+                        <a href="/movie/sound/@sound" class="w-1/5 bg-gray-700 m-1 rounded text-gray-400 hover:bg-gray-800 transition duration-500 ease-in-out">
+                            <div class="">@sound</div>
+                        </a>
+                    }
+                </div>
                 @*Years Bar*@
-                <h1 class="">ปีที่ฉาย</h1>
-                <div class="flex flex-wrap text-sm">
+                <h1 class="bg-yellow-800 rounded py-1 px-2 mt-2 text-gray-300">ปีที่ฉาย</h1>
+                <div class="flex flex-wrap text-sm bg-gray-800 p-2 mt-2 rounded">
                     @foreach (var year in YearLists)
                     {
                         <a href="/movie/year/@year" class="w-1/5 bg-gray-700 m-1 rounded text-gray-400 hover:bg-gray-800 transition duration-500 ease-in-out">
-                            <div class="text-center">@year</div></a>
+                            <div class="text-center">@year</div>
+                        </a>
                     }
                 </div>
             </div>

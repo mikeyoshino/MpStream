@@ -44,7 +44,6 @@ namespace MpStream.Services
             MovieList = aDatabase.MovieEntity.Include("MovieWithGenres").ToList();
             return MovieList;
         }
-
         public Task<List<int>> MovieYears()
         {
             var years = aDatabase.MovieEntity.Select(s => s.ReleaseYear).ToListAsync();
