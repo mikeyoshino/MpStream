@@ -68,8 +68,18 @@
     </div>
     @*Sidebar*@
     <div class="w-3/12">
-        <div class="bg-coolGray-800">
-            <div class="">เรื่องเกี่ยวข้อง</div>
+        <div class="bg-coolGray-800 p-4">
+            <div class="w-full h-10 bg-yellow-500 rounded p-2">เรื่องเกี่ยวข้อง</div>
+            @foreach (var relateMovie in RelatedMovies)
+            {
+                <div class="relative mt-4">
+                    <img class="shadow-lg object-cover rounded w-full h-32 object-cover object-top" src="@relateMovie.PosterImage" />
+                    <div class="absolute flex">
+                        <h2>@relateMovie.Title</h2>
+                        <h2>@relateMovie.ReleaseYear</h2>
+                    </div>
+                </div>
+            }
         </div>
 
     </div>

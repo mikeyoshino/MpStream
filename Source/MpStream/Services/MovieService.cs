@@ -29,6 +29,7 @@ namespace MpStream.Services
         public Dictionary<int, string> genreNameMapById = new Dictionary<int, string>();
         public List<MovieEntity> MovieList = new List<MovieEntity>();
         public List<MovieEntity> BrowseList = new List<MovieEntity>();
+        public List<MovieEntity> RelateMovies { get; set; } = new List<MovieEntity>();
         public MovieService(){}
         public MovieService(ApplicationDbContext database){aDatabase = database;}
 
@@ -282,6 +283,22 @@ namespace MpStream.Services
                 BrowseList.Add(movieByCategory);
             }
             return Task.FromResult(BrowseList);
+        }
+
+        public Task<List<MovieEntity>> RelatedMovies(int movieId, ICollection<MovieWithGenre> movieWithGenres)
+        {
+            RelateMovies.Clear();
+            var movieGenreId = movieWithGenres.Select(s => s.MovieGenreEntityId).FirstOrDefault();
+            var relateMovieWithGenres = aDatabase.MovieWithGenres.Where(s => s.MovieGenreEntityId == movieGenreId).ToList();
+            foreach (var eachMovieWithGenre in relateMovieWithGenres.OrderBy(r => Guid.NewGuid()).Take(5))
+            {
+                if(eachMovieWithGenre.MovieEntityId != movieId)
+                {
+                    var relateMovies = GetMovieById(eachMovieWithGenre.MovieEntityId);
+                    RelateMovies.Add(relateMovies);
+                }
+            }
+            return Task.FromResult(RelateMovies);
         }
     }
 }

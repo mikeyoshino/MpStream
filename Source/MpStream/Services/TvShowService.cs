@@ -210,12 +210,6 @@ namespace MpStream.Services
         }
         #endregion
 
-
-
-
-
-
-
         #region TvShpowGenre Service
         public Task<List<TvShowGenre>> TvShowGenreList()
         {
