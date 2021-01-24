@@ -28,6 +28,7 @@ namespace MpStream.Models
         [Required]
         public DateTime PublishedDate { get; set; }
         public bool IsFeatured { get; set; } = false;
+        public MovieLike MovieLike { get; set; }
     }
 
     public class MoviePlayer
@@ -61,5 +62,13 @@ namespace MpStream.Models
         public string Name { get; set; }
         public string Tag { get; set; }
         public ICollection<MovieWithGenre> MovieWithGenres { get; set; }
+    }
+
+    public class MovieLike
+    {
+        public int Id { get; set; }
+        public MovieEntity MovieEntity { get; set; }
+        public int MovieEntityId { get; set; }
+        public int LikeCount { get; set; }
     }
 }

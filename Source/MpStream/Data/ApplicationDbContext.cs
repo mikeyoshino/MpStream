@@ -29,5 +29,6 @@ namespace MpStream.Data
         public DbSet<Episode> Episodes { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<TvShowRegion> TvShowRegions { get; set; }
+        public DbSet<MovieLike> MovieLikes { get; set; }
     }
 }

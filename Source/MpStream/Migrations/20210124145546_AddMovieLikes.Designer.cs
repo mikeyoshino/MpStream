@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MpStream.Data;
 
 namespace MpStream.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210124145546_AddMovieLikes")]
+    partial class AddMovieLikes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,7 +353,7 @@ namespace MpStream.Migrations
                     b.HasIndex("MovieEntityId")
                         .IsUnique();
 
-                    b.ToTable("MovieLikes");
+                    b.ToTable("MovieLike");
                 });
 
             modelBuilder.Entity("MpStream.Models.MoviePlayer", b =>
