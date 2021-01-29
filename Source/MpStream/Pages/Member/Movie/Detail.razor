@@ -73,7 +73,7 @@
             @foreach (var relateMovie in RelatedMovies)
             {
                 <div class="relative mt-4">
-                    <img class="shadow-lg object-cover rounded w-full h-32 object-cover object-top" src="@relateMovie.PosterImage" />
+                    <img class="shadow-lg object-cover rounded w-full h-32 object-cover object-center" src="@relateMovie.PosterImage" />
                     <div class="absolute flex">
                         <h2>@relateMovie.Title</h2>
                         <h2>@relateMovie.ReleaseYear</h2>

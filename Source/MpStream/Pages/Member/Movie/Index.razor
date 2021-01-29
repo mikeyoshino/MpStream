@@ -30,8 +30,8 @@
                 {
                     <div class="w-full md:w-1/3 lg:w-1/4 p-2 relative">
                         <a @onmouseover="() => MouseOver(eachMovie.Id)" href="/movie/view/@eachMovie.Id" class="flex flex-col relative w-full bg-white overflow-hidden card translate-3d-none-after relative w-full bg-white overflow-hidden card translate-3d-none-after hover:border-gray-300">
-                            <img @onmouseout="() => MouseOut(eachMovie.Id)" class="object-cover h-86 md:76" src="@eachMovie.PosterImage" />
-                            <div class="transition hover:scale-150 transform duration-500 ease-in-out absolute right-0 bg-yellow-400 @(MouseEventMapbyMovieId[eachMovie.Id]? "opacity-100" : "opacity-0")">
+                            <img @onmouseout="() => MouseOut(eachMovie.Id)" class="object-fill h-72 md:76 duration-700 hover:scale-110 transform" src="@eachMovie.PosterImage" />
+                            <div class="transition duration-500 ease-in-out absolute right-0 bg-yellow-400 @(MouseEventMapbyMovieId[eachMovie.Id]? "opacity-100" : "opacity-0")">
                                 <div class="text-xs font-bold p-1">
                                     @eachMovie.Score.ToString().TrimEnd('0')
                             </div>
