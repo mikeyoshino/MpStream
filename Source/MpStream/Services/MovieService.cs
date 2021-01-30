@@ -300,5 +300,17 @@ namespace MpStream.Services
             }
             return Task.FromResult(RelateMovies);
         }
+
+        public Task<List<MovieEntity>> BookmarkMovies(Dictionary<string, int> movieIdWithDateTime)
+        {
+            var movieIdOrderByDateTime = new List<string>();
+            foreach (var item in movieIdWithDateTime.OrderBy(s=>s.Value))
+            {
+                movieIdOrderByDateTime.Add(item.Key);
+
+            }
+            var movies = aDatabase.MovieEntity.Where(x => movieIdOrderByDateTime.Contains(x.Id.ToString())).ToList();
+            return Task.FromResult(movies);
+        }
     }
 }

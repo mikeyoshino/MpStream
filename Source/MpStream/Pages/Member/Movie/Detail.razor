@@ -18,10 +18,11 @@
                 </div>
                 <div class="flex">
                     <div class="bg-yellow-400 text-black p-1 rounded font-bold mr-2">@MovieEntity.Score.ToString().TrimEnd('0')</div>
-                    <div class="bg-gray-900 p-1 rounded-full mr-2 hover:text-gray-600 transition duration-500 ease-in-out">
+                    <button @onclick="AddLike" class="@(IsLiked? "bg-yellow-900" : "bg-gray-900 hover:text-gray-600 transition duration-500 ease-in-out") p-1 rounded-full mr-2  flex">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
-                    </div>
-                    <button @onclick="AddMovieToBookMarkList" class="@(IsActiveBookmark? "bg-yellow-900" : "bg-gray-900") p-1 rounded-full mr-2 hover:text-gray-600 transition duration-500 ease-in-out">
+                        <div class="ml-2">@LikeCount</div>
+                    </button>
+                    <button @onclick="AddMovieToBookMarkList" class="@(IsActiveBookmark? "bg-yellow-900" : "bg-gray-900 hover:text-gray-600 transition duration-500 ease-in-out") p-1 rounded-full mr-2">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
                     </button>
                     <button @onclick="ShowUpDialog" class="flex mt-1 hover:text-gray-600 transition duration-500 ease-in-out">

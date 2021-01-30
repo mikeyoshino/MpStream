@@ -35,6 +35,7 @@ namespace MpStream
             services.AddScoped<MovieService>();
             services.AddScoped<MovieGenreService>();
             services.AddScoped<TvShowService>();
+            services.AddScoped<LikeService>();
             services.AddBlazoredLocalStorage();
 
         }
