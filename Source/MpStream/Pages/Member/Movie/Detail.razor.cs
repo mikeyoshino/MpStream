@@ -60,14 +60,12 @@ namespace MpStream.Pages.Members
         }
         async Task AddLike()
         {
-            if(LikeCount == 0)
+            if(await LocalStorageService.ContainKeyAsync("Liked") && ValueKey.Contains(MovieId.ToString())){ 
+                //Show message that you liked already.
+            } else 
             {
                 LikeCount = await LikeService.AddMovieLike(MovieEntity.Id);
                 await LocalStorageService.SetItemAsync("Liked", MovieId);
-                IsLiked = true;
-            } else if(await LocalStorageService.ContainKeyAsync("Liked") && ValueKey.Contains(MovieId.ToString()))
-            {
-                LikeCount = await LikeService.UpdateLikes(MovieEntity.Id);
                 IsLiked = true;
             }
         }

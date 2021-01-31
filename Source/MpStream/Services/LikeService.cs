@@ -32,18 +32,10 @@ namespace MpStream.Services
             {
                 Database.MovieLikes.Add(new MovieLike { MovieEntityId = movieId, LikeCount = 1 });
                 Database.SaveChanges();
-            }
-            var movieLikeInDb = Database.MovieLikes.Where(s => s.MovieEntityId == movieId).SingleOrDefault();
-            return Task.FromResult(movieLikeInDb.LikeCount);
-        }
-
-        public Task<int> UpdateLikes(int movieId)
-        {
-            var movieLike = Database.MovieLikes.Where(s => s.MovieEntityId == movieId).SingleOrDefault();
-            if(movieLike is not null)
+            }else
             {
-                movieLike.LikeCount += 1;
                 movieLike.MovieEntityId = movieId;
+                movieLike.LikeCount += 1;
                 Database.SaveChanges();
             }
             var movieLikeInDb = Database.MovieLikes.Where(s => s.MovieEntityId == movieId).SingleOrDefault();
