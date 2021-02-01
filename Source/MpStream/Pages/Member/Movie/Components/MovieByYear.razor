@@ -1,10 +1,15 @@
 ﻿@namespace MpStream.Pages.Member.Movies
-<h1 class="bg-yellow-800 rounded py-1 px-2 mt-2 text-gray-300">ปีที่ฉาย</h1>
-<div class="flex flex-wrap text-sm bg-gray-800 p-2 mt-2 rounded">
-    @foreach (var year in YearLists)
-    {
-        <a href="/movie/year/@year" class="w-1/5 bg-gray-700 m-1 rounded text-gray-400 hover:bg-gray-800 transition duration-500 ease-in-out">
-            <div class="text-center">@year</div>
-        </a>
-    }
+<div class="bg-movieTitleBar pb-10 mb-5 rounded-b">
+    <h1 class="bg-yellow-800 rounded-t-lg py-3 px-2 text-gray-300 flex">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        ปีที่ฉาย
+    </h1>
+    <div class="flex flex-wrap text-sm p-2 mt-2 rounded">
+        @foreach (var year in YearLists)
+        {
+            <a href="/movie/year/@year" class="w-1/5 bg-gray-700 m-1 rounded text-gray-400 hover:bg-gray-800 transition duration-500 ease-in-out">
+                <div class="text-center px-4 py-2">@year</div>
+            </a>
+        }
+    </div>
 </div>

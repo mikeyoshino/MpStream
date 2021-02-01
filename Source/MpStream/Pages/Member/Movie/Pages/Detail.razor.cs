@@ -23,5 +23,10 @@ namespace MpStream.Pages.Member.Movies
             RelatedMovies = await MovieService.RelatedMovies(MovieId, MovieEntity.MovieWithGenres);
 
         }
+        protected override async Task OnParametersSetAsync()
+        {
+            MovieEntity = MovieService.GetMovieById(MovieId);
+            RelatedMovies = await MovieService.RelatedMovies(MovieId, MovieEntity.MovieWithGenres);
+        }
     }
 }
