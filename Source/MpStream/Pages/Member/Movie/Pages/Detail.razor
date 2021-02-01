@@ -1,0 +1,17 @@
+﻿@page "/movie/view/{MovieId:int}"
+@namespace MpStream.Pages.Member.Movies
+
+<div class="w-12/12 mt-10 mb-10 text-gray-100 mx-auto flex">
+    @*Main*@
+    <div class="w-9/12">
+        <SingleMovie MovieEntity="MovieEntity"/>
+        @*Streaming Bar*@
+        <Video MovieEntity="MovieEntity"/>
+        <Comments MovieEntity="MovieEntity"/>
+    </div>
+    @*Sidebar*@
+    <div class="w-3/12">
+        <SingleSidebar RelatedMovies="RelatedMovies"/>
+    </div>
+</div>
+

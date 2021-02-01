@@ -1,0 +1,16 @@
+﻿@namespace MpStream.Pages.Member.Movies
+<div class="bg-movieTitleBar rounded-xl pb-10">
+    <div class="w-full h-10 py-4 px-4 border-b-2 border-movieBorderColor pb-10 mb-4">เรื่องเกี่ยวข้อง</div>
+    @foreach (var relateMovie in RelateMovieList)
+    {
+        <div class="w-full">
+            <img class="shadow-lg object-cover w-full h-32 object-cover object-center" src="@relateMovie.PosterImage" />
+            <a href="/movie/view/@relateMovie.Id">
+                <div class="flex mb-4 p-2">
+                    <h2>@relateMovie.Title</h2>
+                    <h2>@relateMovie.ReleaseYear</h2>
+                </div>
+            </a>
+        </div>
+    }
+</div>

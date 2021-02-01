@@ -34,7 +34,10 @@ module.exports = {
             CategoryTextColor: '#a2a2a2',
             bodyBgColor: '#111111',
             filterBgColor: '#161616',
-            sideBarFilterBgColor: '#191c23'
+            sideBarFilterBgColor: '#191c23',
+            movieTitleBar: '#252525',
+            movieBorderColor: '#2e2e2e'
+            
 
         },
         extend: {},
