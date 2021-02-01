@@ -1,0 +1,15 @@
+﻿@namespace MpStream.Pages.Member.Movies
+
+<h1 class="bg-yellow-800 rounded py-1 px-2 text-gray-300">เรื่องเด่นเย็นนี้</h1>
+<div class="text-sm bg-gray-800 p-2 mt-2 rounded">
+    @foreach (var eachMovie in MovieList.Take(5))
+    {
+        <div class="relative">
+            <img src="@eachMovie.PosterImage" class="h-36 w-full object-cover object-top">
+            <div class="flex">
+                <div>@eachMovie.Title</div>
+                <div>(@eachMovie.ReleaseYear)</div>
+            </div>
+        </div>
+    }
+</div>
