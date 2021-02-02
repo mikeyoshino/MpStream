@@ -296,6 +296,20 @@ namespace MpStream.Services
             return Task.FromResult(movies);
         }
 
+        public Task<List<MovieEntity>> BrowseMovieBySoundType(string soundType)
+        {
+            BrowseList.Clear();
+            var movies = aDatabase.MovieEntity.Where(s => s.Sound.Contains(soundType)).ToList();
+            return Task.FromResult(movies);
+        }
+
+        public Task<List<MovieEntity>> BrowseMovieByYear(string year)
+        {
+            BrowseList.Clear();
+            var movies = aDatabase.MovieEntity.Where(s => s.ReleaseYear == Convert.ToInt32(year)).ToList();
+            return Task.FromResult(movies);
+        }
+
         public Task<List<MovieEntity>> RelatedMovies(int movieId, ICollection<MovieWithGenre> movieWithGenres)
         {
             RelateMovies.Clear();

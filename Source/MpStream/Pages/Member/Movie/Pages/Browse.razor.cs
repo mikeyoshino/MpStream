@@ -16,6 +16,10 @@ namespace MpStream.Pages.Member.Movies
         public string CategoryName { get; set; }
         [Parameter]
         public string SearchKeyword { get; set; }
+        [Parameter]
+        public string SoundType { get; set; }
+        [Parameter]
+        public string SearchByYear { get; set; }
         public List<MovieEntity> Movies = new List<MovieEntity>();
         public string Message { get; set; }
 
@@ -37,6 +41,25 @@ namespace MpStream.Pages.Member.Movies
             } else if (!string.IsNullOrEmpty(SearchKeyword))
             {
                 Movies = await MovieService.BrowseMovieBySearchKeyword(SearchKeyword);
+                if (Movies.Count == 0)
+                {
+                    Message = "ไม่พบรายการที่ค้นหา";
+                }
+            }
+            else if (!string.IsNullOrEmpty(SoundType))
+            {
+                Movies = await MovieService.BrowseMovieBySoundType(SoundType);
+                if (Movies.Count == 0)
+                {
+                    Message = "ไม่พบรายการที่ค้นหา";
+                }
+            } else if (!string.IsNullOrEmpty(SearchByYear))
+            {
+                Movies = await MovieService.BrowseMovieByYear(SearchByYear);
+                if (Movies.Count == 0)
+                {
+                    Message = "ไม่พบรายการที่ค้นหา";
+                }
             }
         }
 
