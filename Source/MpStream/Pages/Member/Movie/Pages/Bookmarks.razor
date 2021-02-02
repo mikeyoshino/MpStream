@@ -1,35 +1,49 @@
 ﻿@page "/movies/bookmarks"
 
 @namespace MpStream.Pages.Member.Movies
- 
 
-<div class="w-12/12 mx-auto mt-10">
-    <h3 class="text-white">อัพเดทใหม่</h3>
-    <div class="flex flex-wrap">
-        @foreach (var movie in Movies)
-        {
-        <div class="w-full md:w-1/3 lg:w-1/6 p-2 relative">
-            <a @onmouseover="() => MouseOver(movie.Id)" href="/movie/view/@movie.Id" class="flex flex-col relative w-full border border-movieBorderColor card translate-3d-none-after rounded w-full overflow-hidden translate-3d-none-after">
-                <img class="object-fill h-72 md:76 duration-700 hover:scale-110 transform" src="@movie.PosterImage" />
-                <div class="transition duration-500 z-10 ease-in-out absolute top-0 left-0 mt-5 ml-2 rounded-lg bg-yellow-900 p-1 px-2">
-                    <div class="text-sm font-semibold text-yellow-100">
-                        @movie.Score.ToString().TrimEnd('0')
-                    </div>
-                </div>
-                <div class="transition duration-500 z-10 ease-in-out absolute top-0 right-0 mt-5 mr-1 ml-2 rounded bg-movieTitleBar opacity-60 p-1">
-                    <div class="text-xs text-white">
-                        @movie.Sound
-                    </div>
-                </div>
-                <div class="relative bottom-0 w-full bg-movieTitleBar text-white font-thin h-14 p-2 hover:text-yellow-700 transtion duration-500 ease-in-out">
-                    <div class="text-sm font-medium">@movie.Title</div>
-                    <div class="text-sm font-medium">@movie.TitleTH</div>
-                </div>
-            </a>
-        </div>
+@if (Movies.Count == 0)
+{   <div class="w-7/12 mx-auto text-center mt-20 mb-96">
+    @if(IsSpinner)
+    {
+        <div class="animate-spin" style="border-width: 0.6em; border-style: solid; border-color: rgb(181 101 1) rgb(243, 243, 243) rgb(243, 243, 243); border-image: initial; border-radius: 50%; width: 4em; height: 4em; display: inline-block;"></div>
+    }else
+    {
+        <h1 class="text-2xl text-white">ยังไม่มีรายการโปรด</h1>
     }
+
     </div>
-</div>
+}
+else
+{
+    <div class="w-12/12 mx-auto mt-10">
+        <div class="flex justify-between">
+            <h3 class="text-white">รายการของฉัน</h3>
+            <button class="bg-gray-800 px-5 py-2 rounded m-1 hover:bg-gray-700 transition duration-500 ease-in-out" @onclick="RemoveAllBookmarks">ล้างรายการ</button>
+        </div>
+
+        <div class="flex flex-wrap">
+            @foreach (var movie in Movies)
+            {
+                <div class="w-full md:w-1/3 lg:w-1/6 p-2 relative">
+                    <button @onclick="() => RemoveFromBookmarks(movie.Id)" class="transition duration-500 z-10 ease-in-out absolute top-0 right-0 mt-2 mr-1 ml-2 rounded bg-red-700 hover:bg-red-600 p-1">
+                        <div class="text-xs text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                    </button>
+                    <a href="/movie/view/@movie.Id" class="flex flex-col relative w-full border border-movieBorderColor card translate-3d-none-after rounded w-full overflow-hidden translate-3d-none-after">
+                        <img class="object-fill h-72 md:76 duration-700 hover:scale-110 transform" src="@movie.PosterImage" />
+                        <div class="relative bottom-0 w-full bg-movieTitleBar text-white font-thin h-14 p-2 hover:text-yellow-700 transtion duration-500 ease-in-out">
+                            <div class="text-sm font-medium">@movie.Title</div>
+                            <div class="text-sm font-medium">@movie.TitleTH</div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+}
+
 
 
 

@@ -20,10 +20,12 @@ namespace MpStream.Pages.Member.Movies
         public Dictionary<int, bool> MouseEventMapbyMovieId { get; set; } = new Dictionary<int, bool>();
         public int number { get; set; }
         public string What { get; set; }
+        public bool IsSpinner { get; set; } = false;
 
 
         protected override async Task OnInitializedAsync()
         {
+            IsSpinner = true;
             number = await LocalStorageService.LengthAsync();
             for (int i = 0; i < number; i++)
             {
@@ -31,23 +33,23 @@ namespace MpStream.Pages.Member.Movies
                 var sessionVaule = await LocalStorageService.GetItemAsync<string>(sessionKey);
                 MovieIdList.Add(sessionKey, Convert.ToInt32(sessionVaule));
             }
-
             Movies = await MovieService.BookmarkMovies(MovieIdList);
+            IsSpinner = false;
 
-            //hover
-            foreach (var movie in Movies)
+        }
+
+        async Task RemoveFromBookmarks(int movieId)
+        {
+            await LocalStorageService.RemoveItemAsync(movieId.ToString());
+            Movies.RemoveAll(x => x.Id == movieId);
+        }
+        async Task RemoveAllBookmarks()
+        {
+            foreach (var movieId in MovieIdList.Keys)
             {
-                MouseEventMapbyMovieId.Add(movie.Id, false);
+                await LocalStorageService.RemoveItemAsync(movieId.ToString());
+                Movies.RemoveAll(x => x.Id == Convert.ToInt32(movieId));
             }
-        }
-
-        void MouseOver(int Id)
-        {
-            MouseEventMapbyMovieId[Id] = true;
-        }
-        void MouseOut(int Id)
-        {
-            MouseEventMapbyMovieId[Id] = false;
         }
     }
 }

@@ -289,6 +289,13 @@ namespace MpStream.Services
             return Task.FromResult(BrowseList);
         }
 
+        public Task<List<MovieEntity>> BrowseMovieBySearchKeyword(string serachKeyword)
+        {
+            BrowseList.Clear();
+            var movies = aDatabase.MovieEntity.Where(s => s.Title.Contains(serachKeyword)).ToList();
+            return Task.FromResult(movies);
+        }
+
         public Task<List<MovieEntity>> RelatedMovies(int movieId, ICollection<MovieWithGenre> movieWithGenres)
         {
             RelateMovies.Clear();
