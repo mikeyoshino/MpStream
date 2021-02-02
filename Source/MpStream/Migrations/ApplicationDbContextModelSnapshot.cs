@@ -17,7 +17,7 @@ namespace MpStream.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.1");
+                .HasAnnotation("ProductVersion", "5.0.2");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -257,6 +257,32 @@ namespace MpStream.Migrations
                     b.ToTable("Episodes");
                 });
 
+            modelBuilder.Entity("MpStream.Models.MovieComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MovieEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieEntityId");
+
+                    b.ToTable("MovieComments");
+                });
+
             modelBuilder.Entity("MpStream.Models.MovieEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -270,7 +296,16 @@ namespace MpStream.Migrations
                     b.Property<bool>("IsFeatured")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Player")
+                    b.Property<string>("PlayerFour")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlayerOne")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlayerThree")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlayerTwo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PosterImage")
@@ -301,6 +336,9 @@ namespace MpStream.Migrations
                         .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("TitleTH")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TrailerId")
                         .HasColumnType("nvarchar(max)");
@@ -352,27 +390,6 @@ namespace MpStream.Migrations
                         .IsUnique();
 
                     b.ToTable("MovieLikes");
-                });
-
-            modelBuilder.Entity("MpStream.Models.MoviePlayer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("EmbedCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MovieEntityId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieEntityId");
-
-                    b.ToTable("MoviePlayers");
                 });
 
             modelBuilder.Entity("MpStream.Models.MovieWithGenre", b =>
@@ -633,22 +650,22 @@ namespace MpStream.Migrations
                     b.Navigation("Season");
                 });
 
-            modelBuilder.Entity("MpStream.Models.MovieLike", b =>
+            modelBuilder.Entity("MpStream.Models.MovieComment", b =>
                 {
                     b.HasOne("MpStream.Models.MovieEntity", "MovieEntity")
-                        .WithOne("MovieLike")
-                        .HasForeignKey("MpStream.Models.MovieLike", "MovieEntityId")
+                        .WithMany("MovieComments")
+                        .HasForeignKey("MovieEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("MovieEntity");
                 });
 
-            modelBuilder.Entity("MpStream.Models.MoviePlayer", b =>
+            modelBuilder.Entity("MpStream.Models.MovieLike", b =>
                 {
                     b.HasOne("MpStream.Models.MovieEntity", "MovieEntity")
-                        .WithMany()
-                        .HasForeignKey("MovieEntityId")
+                        .WithOne("MovieLike")
+                        .HasForeignKey("MpStream.Models.MovieLike", "MovieEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -724,6 +741,8 @@ namespace MpStream.Migrations
 
             modelBuilder.Entity("MpStream.Models.MovieEntity", b =>
                 {
+                    b.Navigation("MovieComments");
+
                     b.Navigation("MovieLike");
 
                     b.Navigation("MovieWithGenres");

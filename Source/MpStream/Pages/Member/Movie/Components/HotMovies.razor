@@ -6,12 +6,22 @@
     </h1>
     <div class="text-sm mt-2 rounded">
         <div class="w-full">
-            @foreach (var eachMovie in MovieList.Take(5))
+            @foreach (var eachMovie in MovieList.Take(1))
             {
-                <div class="relative h-36 bg-gray-700 mb-1">
+            <a href="movie/view/@eachMovie.Id">
+                <div class="relative h-72 bg-gray-700 mb-1 hover:opacity-70 transition duration-500 ease-in hover:text-yellow-600">
+                    <img src="@eachMovie.PosterImage" class="absolute h-72 w-full object-cover object-top" />
+                    <div class="w-full bottom-0 bg-opacity-90 absolute p-2 bg-black text-white">@eachMovie.Title (@eachMovie.ReleaseYear)</div>
+                </div>
+            </a>
+            }
+            @foreach (var eachMovie in MovieList.Take(4).Skip(1))
+            {<a href="movie/view/@eachMovie.Id">
+                <div class="relative h-36 bg-gray-700 mb-1 hover:opacity-70 transition duration-500 ease-in">
                     <img src="@eachMovie.PosterImage" class="absolute h-36 w-full object-cover object-top" />
                     <div class="w-full bottom-0 bg-opacity-90 absolute p-2 bg-black text-white">@eachMovie.Title (@eachMovie.ReleaseYear)</div>
                 </div>
+            </a>
             }
         </div>
     </div>

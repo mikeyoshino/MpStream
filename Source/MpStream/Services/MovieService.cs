@@ -184,7 +184,11 @@ namespace MpStream.Services
             
             var movieDb = aDatabase.MovieEntity.SingleOrDefault(s => s.Id == Id);
             var genreDb = aDatabase.MovieWithGenres.Where(s => s.MovieEntityId == Id).ToList();
-            movieDb.Player = movieEntity.Player;
+            movieDb.TitleTH = movieEntity.TitleTH;
+            movieDb.PlayerOne = movieEntity.PlayerOne;
+            movieDb.PlayerTwo = movieEntity.PlayerTwo;
+            movieDb.PlayerThree = movieEntity.PlayerThree;
+            movieDb.PlayerFour = movieEntity.PlayerFour;
             movieDb.Title = movieEntity.Title;
             movieDb.Tag = movieEntity.Tag;
             movieDb.Sound = movieEntity.Sound;

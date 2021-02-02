@@ -6,6 +6,27 @@
         <h2>Streaming</h2>
     </div>
     <div class="w-12/12 h-96">
-        <iframe class="w-full h-full h-96" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        <iframe class="w-full h-full h-96" src="@EmbedUrl"></iframe>
+    </div>
+    <div class="flex relative px-10 pt-10">
+        <div class="absolute -mt-3 ml-4 bg-movieTitleBar p-1 text-xs">เลือกตัวเล่น</div>
+        <div class="border-2 border-movieBorderColor p-4 w-full rounded">
+            @if (!string.IsNullOrEmpty(MovieEntity.PlayerOne))
+            {
+                <button class="bg-gray-800 px-5 py-2 rounded m-1 hover:bg-gray-700 transition duration-500 ease-in-out" @onclick="PlayerOneClick">ตัวเล่น 1</button>
+            }
+            @if (!string.IsNullOrEmpty(MovieEntity.PlayerTwo))
+            {
+                <button class="bg-gray-800 px-5 py-2 rounded m-1 hover:bg-gray-700 transition duration-500 ease-in-out" @onclick="PlayerTwoClick">ตัวเล่น 2</button>
+            }
+            @if (!string.IsNullOrEmpty(MovieEntity.PlayerThree))
+            {
+                <button class="bg-gray-800 px-5 py-2 rounded m-1 hover:bg-gray-700 transition duration-500 ease-in-out" @onclick="PlayerThreeClick">ตัวเล่น 3</button>
+            }
+            @if (!string.IsNullOrEmpty(MovieEntity.PlayerFour))
+            {
+                <button class="bg-gray-800 px-5 py-2 rounded m-1 hover:bg-gray-700 transition duration-500 ease-in-out" @onclick="PlayerFourClick">ตัวเล่น 4</button>
+            }
+        </div>
     </div>
 </div>

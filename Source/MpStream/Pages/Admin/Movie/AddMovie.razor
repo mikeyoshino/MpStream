@@ -19,21 +19,33 @@
                         </div>
                         <div class="mb-5 w-4/12">
                             <label for="firstname" class="font-bold mb-1 text-gray-700 block">ชื่อไทย</label>
-                            <InputText @bind-Value="this.TitleTH" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                            <InputText @bind-Value="MovieEntity.TitleTH" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
                         </div>
                     </div>
                     <div class="mb-5">
                         <label for="firstname" class="font-bold mb-1 text-gray-700 h-32">เรื่องย่อ</label>
-                        <InputTextArea @bind-Value="MovieEntity.Description" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200 h-96"></InputTextArea>
+                        <InputTextArea @bind-Value="MovieEntity.Description" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200 h-72"></InputTextArea>
                     </div>
                     <div class="mb-5">
-                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ตัวเล่น</label>
-                        <InputTextArea @bind-Value="MovieEntity.Player" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputTextArea>
+                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ตัวเล่นที่หนึ่ง</label>
+                        <InputText @bind-Value="MovieEntity.PlayerOne" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                    </div>
+                    <div class="mb-5">
+                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ตัวเล่นที่สอง</label>
+                        <InputText @bind-Value="MovieEntity.PlayerTwo" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                    </div>
+                    <div class="mb-5">
+                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ตัวเล่นที่สาม</label>
+                        <InputText @bind-Value="MovieEntity.PlayerThree" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                    </div>
+                    <div class="mb-5">
+                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ตัวเล่นที่สี่</label>
+                        <InputText @bind-Value="MovieEntity.PlayerFour" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
                     </div>
                     <div class="mb-5">
                         <label for="firstname" class="font-bold mb-1 text-gray-700 block">เสียง</label>
                         <InputSelect @bind-Value="MovieEntity.Sound" class="focus:ring-1 focus:ring-blue-600 form-select w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200">
-                            @foreach (var eachChoice in soundChoices)
+                            @foreach (var eachChoice in Enum.GetValues(typeof(SoundChoices)))
                             {
                                 <option value="@eachChoice">@eachChoice</option>
                             }

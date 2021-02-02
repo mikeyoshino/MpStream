@@ -35,10 +35,11 @@ module.exports = {
             bodyBgColor: '#111111',
             filterBgColor: '#161616',
             sideBarFilterBgColor: '#191c23',
-            movieTitleBar: '#252525',
-            movieBorderColor: '#2e2e2e'
-            
-
+            movieTitleBar: '#1d1d1d',
+            movieBorderColor: '#2e2e2e',
+            commentInputBorder: '#323232',
+            commentInputBg: '#252525',
+            commentTextHeader: '#828282'
         },
         extend: {},
     },

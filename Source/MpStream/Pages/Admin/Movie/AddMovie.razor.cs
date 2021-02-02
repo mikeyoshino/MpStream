@@ -28,7 +28,13 @@ namespace MpStream.Pages.Admins
         public List<MovieGenreEntity> MovieGenres { get; private set; } = new List<MovieGenreEntity>();
         public List<string> GenreStringList { get; set; } = new List<string>();
         public List<string> SelectedGenreIds { get; set; } = new List<string>();
-        public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
+        public enum SoundChoices
+        {
+            พากย์ไทย,
+            ซับไทย,
+            พากย์ไทยซับไทย,
+            อังกฤษ
+        }
         public string ImageUrl { get; set; }
         public bool ApiLoadSpiner { get; set; } = false;
         public bool MoveSaveSpinner { get; set; } = false;

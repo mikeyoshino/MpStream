@@ -4,7 +4,7 @@
     @foreach (var relateMovie in RelateMovieList)
     {
         <div class="w-full">
-            <img class="shadow-lg object-cover w-full h-32 object-cover object-center" src="@relateMovie.PosterImage" />
+            <img class="shadow-lg w-full h-32 object-center object-cover hover:object-fill duration-700 hover:scale-90 transform" src="@relateMovie.PosterImage" />
             <a href="/movie/view/@relateMovie.Id">
                 <div class="flex mb-4 p-2">
                     <h2>@relateMovie.Title</h2>

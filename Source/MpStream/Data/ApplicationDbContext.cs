@@ -20,7 +20,6 @@ namespace MpStream.Data
         }
         public DbSet<MovieEntity> MovieEntity { get; set; }
         public DbSet<MovieGenreEntity> MovieGenreEntities { get; set; }
-        public DbSet<MoviePlayer> MoviePlayers { get; set; }
         public DbSet<MovieWithGenre> MovieWithGenres { get; set; }
         public DbSet<TvShowEntity> TvShowEntities { get; set; }
         public DbSet<TvShowGenre>  TvShowGenres { get; set; }
@@ -30,5 +29,6 @@ namespace MpStream.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<TvShowRegion> TvShowRegions { get; set; }
         public DbSet<MovieLike> MovieLikes { get; set; }
+        public DbSet<MovieComment> MovieComments { get; set; }
     }
 }

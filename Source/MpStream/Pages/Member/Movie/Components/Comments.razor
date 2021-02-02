@@ -1,8 +1,55 @@
 ﻿@namespace MpStream.Pages.Member.Movies
 
-<div class="w-11/12 bg-movieTitleBar rounded mt-10">
-    <div class="px-4 py-4 border-b-2 border-movieBorderColor">ความคิดเห็น</div>
-    <div class="p-4">
-        <div class="fb-comments" data-href="https://tailwindcss.com/@MovieEntity.Id" data-width="" data-numposts="5"></div>
+
+@if (IsDefaultComment)
+{
+    @if (MovieComents.Count != 0)
+    {
+        <div class="w-11/12 bg-movieTitleBar rounded mt-10 p-2">
+            <div class="px-4 py-4 border-b-2 border-movieBorderColor">ความคิดเห็น</div>
+            @foreach (var comment in MovieComents)
+            {
+                <div class="w-10/12 border border-solid border-commentInputBorder bg-commentInputBg m-2 p-3 rounded">
+                    <div class="flex">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path></svg>
+                        <p>คุณ: @comment.Name</p>
+                    </div>
+                    <div class="flex">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                        <p>@comment.Comment</p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="w-11/12 bg-movieTitleBar rounded mt-10">
+        <EditForm Model="MovieComment" OnValidSubmit="SubmitComment">
+            <div class="px-4 py-4 border-b-2 border-movieBorderColor">แสดงความคิดเห็น</div>
+            <div class="px-5 py-2">
+                <div class="mb-2">
+                    <label class="font-bold mb-1 text-sm text-commentTextHeader block">ชื่อผู้โพส</label>
+                    <InputText @bind-Value="MovieComment.Name" class="focus:ring-1 focus:ring-blue-600 w-full px-2 py-2 rounded shadow-sm focus:outline-none focus:shadow-outline text-white bg-commentInputBg font-medium border border-solid border-commentInputBorder"></InputText>
+                </div>
+                <div class="mb-2">
+                    <label class="font-bold mb-1 text-sm text-commentTextHeader block">อีเมล์</label>
+                    <InputText @bind-Value="MovieComment.Email" class="focus:ring-1 focus:ring-blue-600 w-full px-2 py-2 rounded shadow-sm focus:outline-none focus:shadow-outline text-white bg-commentInputBg font-medium border border-solid border-commentInputBorder"></InputText>
+                </div>
+                <div class="mb-5">
+                    <label class="font-bold mb-1 text-sm text-commentTextHeader block">ข้อความ</label>
+                    <InputTextArea @bind-Value="MovieComment.Comment" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-white bg-commentInputBg font-medium border border-solid border-commentInputBorder h-20"></InputTextArea>
+                </div>
+
+                <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline flex" value="Save">แสดงความเห็น</button>
+            </div>
+        </EditForm>
     </div>
-</div>
+}
+@if (IsFaceBookComment)
+{<div class="w-11/12 bg-movieTitleBar rounded mt-10">
+        <div class="px-4 py-4 border-b-2 border-movieBorderColor">ความคิดเห็น</div>
+        <div class="p-4">
+            <div class="fb-comments" data-href="https://tailwindcss.com/@MovieEntity.Id" data-width="" data-numposts="5"></div>
+        </div>
+    </div>
+}
