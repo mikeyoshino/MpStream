@@ -4,7 +4,7 @@ using MpStream.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MpStream.Pages.Member.TvShow
+namespace MpStream.Pages.Member.TvShows
 {
     public partial class Detail : ComponentBase
     {

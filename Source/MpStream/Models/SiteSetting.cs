@@ -12,6 +12,23 @@ namespace MpStream.Models
         public string TmdbApiKey { get; set; }
         public string TmdbApiKeyLanguage { get; set; }
         public bool AutoCompleteGenre { get; set; }
+
+
+        //Branner
+        //Single Movie 10/12
+        public string SingleMovieBanner { get; set; }
+        //Single Movie 2/12
+        public string SingleMovieSidebarBranner { get; set; }
+
+        //Home page branner
+        public string HomePageBranner { get; set; }
+
+
+        public bool TurnOnComment { get; set; }
+        public bool TurnOnFacebook { get; set; }
+        public bool TurnOnDefault { get; set; }
+
+        public int NumberOfMovieInMoviePage { get; set; }
     }
 
     [NotMapped]

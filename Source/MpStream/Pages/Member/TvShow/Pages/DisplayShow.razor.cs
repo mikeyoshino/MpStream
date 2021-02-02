@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MpStream.Pages.Members
+namespace MpStream.Pages.Member.TvShows
 {
     public partial class DisplayShow : ComponentBase
     {
