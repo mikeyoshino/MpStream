@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Admin\Movie\Components\" />
     <Folder Include="Pages\Member\TvShow\Components\" />
     <Folder Include="wwwroot\Posters\" />
   </ItemGroup>

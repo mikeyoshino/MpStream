@@ -31,7 +31,10 @@ namespace MpStream.Pages.Member.Movies
             {
                 var sessionKey = await LocalStorageService.KeyAsync(i);
                 var sessionVaule = await LocalStorageService.GetItemAsync<string>(sessionKey);
-                MovieIdList.Add(sessionKey, Convert.ToInt32(sessionVaule));
+                if (!sessionKey.Contains("Liked"))
+                {
+                    MovieIdList.Add(sessionKey, Convert.ToInt32(sessionVaule));
+                }
             }
             Movies = await MovieService.BookmarkMovies(MovieIdList);
             IsSpinner = false;

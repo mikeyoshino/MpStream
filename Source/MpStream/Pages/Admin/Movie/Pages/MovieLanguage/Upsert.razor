@@ -1,0 +1,59 @@
+﻿@namespace MpStream.Pages.Admin.MovieLanguages
+@page "/admin/movie/language"
+@page "/admin/movie/language/{LanguageId:int}"
+<EditForm Model="MovieLanguageModel" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <a href="/admin/movie" class="w-1/12 border border-gray-500 bg-gray-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-600 focus:outline-none focus:shadow-outline flex">
+        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"></path></svg>
+        <div>กลับ</div>
+    </a>
+    <div class="px-6 py-8">
+        @if (ProceedStatus.Contains(SuccessfullySave))
+        {
+            <div class="px-4 py-3 leading-normal text-green-700 bg-green-100 rounded-lg" role="alert">
+                <p>@SuccessfullySave</p>
+            </div>
+        }
+        @if (ProceedStatus.Contains(DuplicatedLang))
+        {
+            <div class="relative px-4 py-3 leading-normal text-red-700 bg-red-100 rounded-lg" role="alert">
+                <span class="absolute inset-y-0 left-0 flex items-center ml-4">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                </span>
+                <p class="ml-6">@DuplicatedLang</p>
+            </div>
+        }
+        <ValidationSummary />
+        <div class="mb-5">
+            <label for="firstname" class="font-bold mb-1 text-gray-700 block">ชื่อภาษา</label>
+            <InputText @bind-Value="MovieLanguageModel.LanguageName" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+            <div class="flex text-gray-400 text-xs pt-1">
+                <svg class="pr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+
+                <p>ตัวอย่าง พากย์ไทย ซับไทย บรรยายไทย พากย์ไทยซับไทย เป็นต้น</p>
+            </div>
+        </div>
+        <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline flex" value="Save">บันทึก</button>
+    </div>
+</EditForm>
+
+<div class="px-6 py-8">
+    <table class="w-full text-md bg-white shadow-md rounded mb-4">
+        <tbody>
+            <tr class="border-b">
+                <th class="text-left p-3 px-5">ชื่อภาษา</th>
+                <th></th>
+            </tr>
+            @foreach (var eachLang in MovieLanguages)
+            {
+                <tr class="border-b hover:bg-orange-100 bg-gray-100">
+                    <td class="w-10/12 p-4">@eachLang.LanguageName</td>
+                    <td class="w-2/12 p-4">
+                        <Button @onclick="() => Edit(eachLang.Id)" class="bg-green-800 text-white p-1 px-3 hover:bg-green-600">แก้ไข</Button>
+                        <Button @onclick="() => Remove(eachLang.Id)" class="bg-red-800 text-white p-1 px-3 hover:bg-red-600">ลบ</Button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

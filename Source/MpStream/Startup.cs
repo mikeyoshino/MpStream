@@ -37,6 +37,7 @@ namespace MpStream
             services.AddScoped<TvShowService>();
             services.AddScoped<LikeService>();
             services.AddScoped<CommentService>();
+            services.AddScoped<MovieVideoService>();
             services.AddBlazoredLocalStorage();
 
         }

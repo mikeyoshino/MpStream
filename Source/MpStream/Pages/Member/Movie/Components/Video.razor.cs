@@ -13,35 +13,35 @@ namespace MpStream.Pages.Member.Movies
         public MovieEntity MovieEntity { get; set; }
         public string EmbedUrl { get; set; }
 
-        protected override void OnInitialized()
-        {
-            EmbedUrl = MovieEntity.PlayerOne;
-        }
+        //protected override void OnInitialized()
+        //{
+        //    EmbedUrl = MovieEntity.PlayerOne;
+        //}
 
-        protected override async Task OnParametersSetAsync()
-        {
-            EmbedUrl = MovieEntity.PlayerOne;
-        }
+        //protected override async Task OnParametersSetAsync()
+        //{
+        //    EmbedUrl = MovieEntity.PlayerOne;
+        //}
 
-        private void PlayerOneClick()
-        {
-            EmbedUrl = string.Empty;
-            EmbedUrl = MovieEntity.PlayerOne;
-        }
-        private void PlayerTwoClick()
-        {
-            EmbedUrl = string.Empty;
-            EmbedUrl = MovieEntity.PlayerTwo;
-        }
-        private void PlayerThreeClick()
-        {
-            EmbedUrl = string.Empty;
-            EmbedUrl = MovieEntity.PlayerThree;
-        }
-        private void PlayerFourClick()
-        {
-            EmbedUrl = string.Empty;
-            EmbedUrl = MovieEntity.PlayerFour;
-        }
+        //private void PlayerOneClick()
+        //{
+        //    EmbedUrl = string.Empty;
+        //    EmbedUrl = MovieEntity.PlayerOne;
+        //}
+        //private void PlayerTwoClick()
+        //{
+        //    EmbedUrl = string.Empty;
+        //    EmbedUrl = MovieEntity.PlayerTwo;
+        //}
+        //private void PlayerThreeClick()
+        //{
+        //    EmbedUrl = string.Empty;
+        //    EmbedUrl = MovieEntity.PlayerThree;
+        //}
+        //private void PlayerFourClick()
+        //{
+        //    EmbedUrl = string.Empty;
+        //    EmbedUrl = MovieEntity.PlayerFour;
+        //}
     }
 }

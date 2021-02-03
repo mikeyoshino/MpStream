@@ -28,7 +28,6 @@ namespace MpStream.Pages.Member.Movies
         protected override async Task OnInitializedAsync()
         {
             MovieList = await MovieService.GetMovieListLimitPostNumber(PostNumber);
-            MouseEvent();
             MovieOnlyYears = await MovieService.MovieYears();
             PopulateYear();
         }
@@ -38,16 +37,6 @@ namespace MpStream.Pages.Member.Movies
             MovieList = await MovieService.GetMovieListLimitPostNumber(PostNumber);
         }
 
-        void MouseEvent()
-        {
-            foreach (var eachMovie in MovieList)
-            {
-                if (!MouseEventMapbyMovieId.ContainsKey(eachMovie.Id))
-                {
-                    MouseEventMapbyMovieId.Add(eachMovie.Id, false);
-                }
-            }
-        }
         void PopulateYear()
         {
             foreach (var eachyear in MovieOnlyYears)
@@ -57,15 +46,6 @@ namespace MpStream.Pages.Member.Movies
                     YearLists.Add(eachyear);
                 }
             }
-        }
-
-        void MouseOver(int Id)
-        {
-            MouseEventMapbyMovieId[Id] = true;
-        }
-        void MouseOut(int Id)
-        {
-            MouseEventMapbyMovieId[Id] = false;
         }
         void IsFilterClick(bool isClick)
         {

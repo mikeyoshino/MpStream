@@ -30,5 +30,8 @@ namespace MpStream.Data
         public DbSet<TvShowRegion> TvShowRegions { get; set; }
         public DbSet<MovieLike> MovieLikes { get; set; }
         public DbSet<MovieComment> MovieComments { get; set; }
+        public DbSet<MovieVideo> MovieVideos { get; set; }
+        public DbSet<MoviePlayer> MoviePlayers { get; set; }
+        public DbSet<MovieLanguage> MovieLanguages { get; set; }
     }
 }

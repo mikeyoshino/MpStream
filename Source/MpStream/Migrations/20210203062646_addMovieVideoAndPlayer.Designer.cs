@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MpStream.Data;
 
 namespace MpStream.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210203062646_addMovieVideoAndPlayer")]
+    partial class addMovieVideoAndPlayer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -374,7 +376,7 @@ namespace MpStream.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MovieLanguages");
+                    b.ToTable("MovieLanguage");
                 });
 
             modelBuilder.Entity("MpStream.Models.MovieLike", b =>
@@ -416,7 +418,7 @@ namespace MpStream.Migrations
 
                     b.HasIndex("MovieVideoId");
 
-                    b.ToTable("MoviePlayers");
+                    b.ToTable("MoviePlayer");
                 });
 
             modelBuilder.Entity("MpStream.Models.MovieVideo", b =>
@@ -442,7 +444,7 @@ namespace MpStream.Migrations
 
                     b.HasIndex("MovieLanguageId");
 
-                    b.ToTable("MovieVideos");
+                    b.ToTable("MovieVideo");
                 });
 
             modelBuilder.Entity("MpStream.Models.MovieWithGenre", b =>

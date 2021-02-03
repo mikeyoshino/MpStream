@@ -6,7 +6,7 @@
         @foreach (var eachMovie in MovieList.Take(6))
         {
         <div class="w-full md:w-1/3 lg:w-1/4 p-2 relative">
-            <a @onmouseover="() => MouseOver(eachMovie.Id)" href="/movie/view/@eachMovie" class="flex flex-col relative w-full border border-movieBorderColor card translate-3d-none-after rounded w-full overflow-hidden translate-3d-none-after">
+            <a @onmouseover="() => MouseOver(eachMovie.Id)" href="/movie/view/@eachMovie.Id" class="flex flex-col relative w-full border border-movieBorderColor card translate-3d-none-after rounded w-full overflow-hidden translate-3d-none-after">
                 <img class="object-fill h-72 md:76 duration-700 hover:scale-110 transform" src="@eachMovie.PosterImage" />
                 <div class="transition duration-500 z-10 ease-in-out absolute top-0 left-0 mt-5 ml-2 rounded-lg bg-yellow-900 p-1 px-2">
                     <div class="text-sm font-semibold text-yellow-100">

@@ -4,7 +4,7 @@ using MpStream.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MpStream.Pages.Admins
+namespace MpStream.Pages.Admin.Movies
 {
     public partial class Index : ComponentBase
     {

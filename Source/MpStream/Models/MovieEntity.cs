@@ -16,10 +16,7 @@ namespace MpStream.Models
         public string TitleTH { get; set; }
         public string PosterImage { get; set; }
         public ICollection<MovieWithGenre> MovieWithGenres { get; set; }
-        public string PlayerOne { get; set; }
-        public string PlayerTwo { get; set; }
-        public string PlayerThree { get; set; }
-        public string PlayerFour { get; set; }
+        public ICollection<MovieVideo> MovieVideos { get; set; }
         public string Tag { get; set; }
         public decimal Score { get; set; }
         public int Runtime { get; set; }
@@ -71,10 +68,45 @@ namespace MpStream.Models
     public class MovieComment
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Email { get; set; }
+        [Required]
         public string Comment { get; set; }
         public MovieEntity MovieEntity { get; set; }
         public int MovieEntityId { get; set; }
+    }
+
+    public class MovieVideo
+    {
+        public int Id { get; set; }
+        public MovieEntity MovieEntity { get; set; }
+        [Required]
+        public int MovieEntityId { get; set; }
+        public MovieLanguage MovieLanguage { get; set; }
+        [Required]
+        public int MovieLanguageId { get; set; }
+        [Required]
+        public string LanguageName { get; set; }
+        public ICollection<MoviePlayer> MoviePlayers { get; set; }
+    }
+
+    public class MoviePlayer
+    {
+        public int Id { get; set; }
+        [Required]
+        public string EembedLink { get; set; }
+        public MovieVideo MovieVideo { get; set; }
+        [Required]
+        public int MovieVideoId { get; set; }
+    }
+
+
+    public class MovieLanguage
+    {
+        public int Id { get; set; }
+        [Required]
+        public string LanguageName { get; set; }
+        public ICollection<MovieVideo> MovieVideos { get; set; }
     }
 }

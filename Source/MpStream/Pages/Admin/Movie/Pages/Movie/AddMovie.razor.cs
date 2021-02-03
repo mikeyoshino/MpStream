@@ -11,7 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace MpStream.Pages.Admins
+namespace MpStream.Pages.Admin.Movies
 {
     public partial class AddMovie : ComponentBase
     {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MpStream.Pages.Admin.Movie
+namespace MpStream.Pages.Admin.Movies
 {
     public partial class EditMovie : ComponentBase
     {

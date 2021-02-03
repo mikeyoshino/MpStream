@@ -28,7 +28,7 @@ namespace MpStream.Pages.Member.Movies
                 IsActiveBookmark = true;
             }
             ValueKey = await LocalStorageService.GetItemAsStringAsync(MovieEntity.Id + "Liked");
-            if (await LocalStorageService.ContainKeyAsync(MovieEntity.Id + "Liked") && ValueKey.Contains(MovieEntity.Id.ToString()))
+            if (await LocalStorageService.ContainKeyAsync(MovieEntity.Id + "Liked"))
             {
                 IsLiked = true;
             }
@@ -48,7 +48,7 @@ namespace MpStream.Pages.Member.Movies
         }
         async Task AddLike()
         {
-            if (await LocalStorageService.ContainKeyAsync(MovieEntity.Id + "Liked") && ValueKey.Contains(MovieEntity.Id.ToString()))
+            if (await LocalStorageService.ContainKeyAsync(MovieEntity.Id + "Liked"))
             {
                 //Show message that you liked already.
             }
