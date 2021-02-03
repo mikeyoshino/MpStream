@@ -36,54 +36,56 @@
 
                         </InputSelect>
                     </div>
-                    <div class="flex">
-                        <div class="mb-5 w-full mr-2">
-                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">คะแนน</label>
-                            <InputNumber @bind-Value="MovieEntity.Score" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputNumber>
-                        </div>
-                        <div class="mb-5 w-full mr-2">
-                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">จำนวนโหวต</label>
-                            <InputNumber @bind-Value="MovieEntity.Vote_count" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputNumber>
-                        </div>
-                        <div class="mb-5 w-full">
-                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">ปีที่ฉาย</label>
-                            <InputNumber @bind-Value="MovieEntity.ReleaseYear" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputNumber>
-                        </div>
-                    </div>
                     <div class="mb-5">
-                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ตัวอย่างหนัง</label>
-                        <InputText @bind-Value="MovieEntity.TrailerId" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
-                        <div class="flex text-gray-400 text-xs pt-1">
-                            <svg class="pr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-
-                            <p>ใส่ไอดี Youtube ตัวอย่าง youtube.com/watch?v=<div class="font-semibold">kOCkne-Bku</div>.</p>
-                        </div>
                     </div>
-                    <div class="mb-5">
-                        <label for="firstname" class="font-bold mb-1 text-gray-700 block">ป้าย</label>
-                        <InputText @bind-Value="MovieEntity.Tag" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
-                        <div class="flex text-gray-400 text-xs pt-1">
-                            <svg class="pr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-
-                            <p>คีย์เวิร์ดตามด้วย , เป็นต้น</p>
+                        <div class="flex">
+                            <div class="mb-5 w-full mr-2">
+                                <label for="firstname" class="font-bold mb-1 text-gray-700 block">คะแนน</label>
+                                <InputNumber @bind-Value="MovieEntity.Score" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputNumber>
+                            </div>
+                            <div class="mb-5 w-full mr-2">
+                                <label for="firstname" class="font-bold mb-1 text-gray-700 block">จำนวนโหวต</label>
+                                <InputNumber @bind-Value="MovieEntity.Vote_count" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputNumber>
+                            </div>
+                            <div class="mb-5 w-full">
+                                <label for="firstname" class="font-bold mb-1 text-gray-700 block">ปีที่ฉาย</label>
+                                <InputNumber @bind-Value="MovieEntity.ReleaseYear" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputNumber>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mt-5">
-                        <ValidationSummary />
-                        <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline flex" value="Save">
-                            @if (MoveSaveSpinner)
-                            {
-                                <div class="animate-spin" style="border-width: 0.3em; border-style: solid; border-color: rgb(52, 152, 219) rgb(243, 243, 243) rgb(243, 243, 243); border-image: initial; border-radius: 50%; width: 1.5em; height: 1.5em; display: inline-block;"></div>
-                            }
-                            else
-                            {
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            }
-                            <div class="ml-1 pr-2">บันทึก</div>
-                        </button>
+                        <div class="mb-5">
+                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">ตัวอย่างหนัง</label>
+                            <InputText @bind-Value="MovieEntity.TrailerId" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                            <div class="flex text-gray-400 text-xs pt-1">
+                                <svg class="pr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+
+                                <p>ใส่ไอดี Youtube ตัวอย่าง youtube.com/watch?v=<div class="font-semibold">kOCkne-Bku</div>.</p>
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <label for="firstname" class="font-bold mb-1 text-gray-700 block">ป้าย</label>
+                            <InputText @bind-Value="MovieEntity.Tag" class="focus:ring-1 focus:ring-blue-600 w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200"></InputText>
+                            <div class="flex text-gray-400 text-xs pt-1">
+                                <svg class="pr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+
+                                <p>คีย์เวิร์ดตามด้วย , เป็นต้น</p>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <ValidationSummary />
+                            <button type="submit" class="border border-green-500 bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline flex" value="Save">
+                                @if (MoveSaveSpinner)
+                                {
+                                    <div class="animate-spin" style="border-width: 0.3em; border-style: solid; border-color: rgb(52, 152, 219) rgb(243, 243, 243) rgb(243, 243, 243); border-image: initial; border-radius: 50%; width: 1.5em; height: 1.5em; display: inline-block;"></div>
+                                }
+                                else
+                                {
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                }
+                                <div class="ml-1 pr-2">บันทึก</div>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
             <div class="-mx-8 w-4/12 hidden lg:block">
                 <div class="font-weight-light w-full bg-blue-800 text-white py-2 px-3">Poster Image</div>
                 <div class="bg-white shadow-lg rounded">

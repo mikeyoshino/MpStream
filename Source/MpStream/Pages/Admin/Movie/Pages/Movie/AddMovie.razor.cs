@@ -31,13 +31,6 @@ namespace MpStream.Pages.Admin.Movies
         public List<string> GenreStringList { get; set; } = new List<string>();
         public List<string> SelectedGenreIds { get; set; } = new List<string>();
         public List<MovieLanguage> MovieLanguages { get; set; } = new List<MovieLanguage>();
-        public enum SoundChoices
-        {
-            พากย์ไทย,
-            ซับไทย,
-            พากย์ไทยซับไทย,
-            อังกฤษ
-        }
         public string ImageUrl { get; set; }
         public bool ApiLoadSpiner { get; set; } = false;
         public bool MoveSaveSpinner { get; set; } = false;
@@ -162,6 +155,11 @@ namespace MpStream.Pages.Admin.Movies
                 showStatusMessageApiRequest = "เกิดข้อผิดพลาด เช็คไอดีให้ถูกต้อง";
             }
             ApiLoadSpiner = false;
+        }
+
+        async Task AddVideo()
+        {
+
         }
     }
 }
