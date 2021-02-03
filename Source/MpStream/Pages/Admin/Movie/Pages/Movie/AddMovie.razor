@@ -29,9 +29,9 @@
                     <div class="mb-5">
                         <label for="firstname" class="font-bold mb-1 text-gray-700 block">เสียง</label>
                         <InputSelect @bind-Value="MovieEntity.Sound" class="focus:ring-1 focus:ring-blue-600 form-select w-full px-4 py-3 rounded shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium border border-solid border-gray-200">
-                            @foreach (var eachChoice in Enum.GetValues(typeof(SoundChoices)))
+                            @foreach (var eachLang in MovieLanguages)
                             {
-                                <option value="@eachChoice">@eachChoice</option>
+                                <option value="@eachLang.LanguageName">@eachLang.LanguageName</option>
                             }
 
                         </InputSelect>
@@ -103,9 +103,7 @@
                             }
                         </div>
 
-                        <label for="fileInput"
-                               type="button"
-                               class="mt-16 cursor-pointer inine-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium">
+                        <label for="fileInput" type="button" class="cursor-pointer inine-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium">
                             <svg xmlns="http://www.w3.org/2000/svg" class="inline-flex flex-shrink-0 w-6 h-6 -mt-1 mr-1" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
                                 <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />

@@ -28,8 +28,6 @@ namespace MpStream.Pages.Admin.Movies
         public int MovieId { get; set; }
         public string ImdbId { get; set; }
         public string PreviewImage { get; set; }
-        public List<string> soundChoices = new List<string>() { "พากย์ไทย", "ซับไทย", "พากย์ไทย-ซับไทย", "อังกฤษ" };
-        public string TitleTH { get; set; }
 
         protected override void OnInitialized()
         {
@@ -81,7 +79,11 @@ namespace MpStream.Pages.Admin.Movies
                 }
             }
             var result = MovieService.UpdateMovie(MovieId, MovieEntity, newSelectedList);
-            if (result) { NavBar.NavigateTo("admin/movie"); } else { NavBar.NavigateTo($"admin/movie/edit/{MovieId}"); Message = "Fail to update"; }
+            if (result) { 
+                NavBar.NavigateTo("admin/movie"); 
+            } else { 
+                NavBar.NavigateTo($"admin/movie/edit/{MovieId}"); 
+            }
         }
         public void FetchImdbApi(string Id)
         {

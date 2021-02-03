@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace MpStream.Pages.Admin.Movies
@@ -16,7 +15,6 @@ namespace MpStream.Pages.Admin.Movies
     public partial class AddMovie : ComponentBase
     {
         public string ImdbId { get; set; }
-        public string TitleTH {private get; set; }
         public string PreviewImage { get; set; }
         public MovieEntity MovieEntity { get; set; } = new MovieEntity();
         [Inject]
@@ -25,9 +23,14 @@ namespace MpStream.Pages.Admin.Movies
         public MovieGenreService MovieGenreService { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        [Inject]
+        public MovieVideoService MovieVideoService { get; set; }
+        [Inject]
+        public IWebHostEnvironment Environment { get; set; }
         public List<MovieGenreEntity> MovieGenres { get; private set; } = new List<MovieGenreEntity>();
         public List<string> GenreStringList { get; set; } = new List<string>();
         public List<string> SelectedGenreIds { get; set; } = new List<string>();
+        public List<MovieLanguage> MovieLanguages { get; set; } = new List<MovieLanguage>();
         public enum SoundChoices
         {
             พากย์ไทย,
@@ -39,13 +42,12 @@ namespace MpStream.Pages.Admin.Movies
         public bool ApiLoadSpiner { get; set; } = false;
         public bool MoveSaveSpinner { get; set; } = false;
         public string showStatusMessageApiRequest { get; set; }
-        [Inject]
-        public IWebHostEnvironment environment { get; set; } 
         IBrowserFile SelectedImage;
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             MovieGenres = MovieService.MovieGenreList();
+            MovieLanguages = await MovieVideoService.GetMovieLanguages();
         }
 
         async Task UploadImageOnchange(InputFileChangeEventArgs e)
@@ -67,7 +69,7 @@ namespace MpStream.Pages.Admin.Movies
                 Stream stream = SelectedImage.OpenReadStream();
                 var extension = Path.GetExtension(SelectedImage.Name);
                 var fileNameBasedOnDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-                var path = $"{environment.WebRootPath}\\posters\\{fileNameBasedOnDate + extension}";
+                var path = $"{Environment.WebRootPath}\\posters\\{fileNameBasedOnDate + extension}";
                 FileStream fileStream = File.Create(path);
                 await stream.CopyToAsync(fileStream);
                 fileStream.Close();
@@ -75,7 +77,7 @@ namespace MpStream.Pages.Admin.Movies
 
             } else if (PreviewImage != null)
             {
-                var path = $"{environment.WebRootPath}" + "\\" + "Posters";
+                var path = $"{Environment.WebRootPath}" + "\\" + "Posters";
                 var fileNameBasedOnDate = DateTime.Now.ToString("yyyyMMddHHmmss");
                 var apiImageUrl = $"https://image.tmdb.org/t/p/original/{PreviewImage}";
                 await MovieService.DownloadImageAsync(path, fileNameBasedOnDate, new Uri(apiImageUrl));
@@ -126,7 +128,7 @@ namespace MpStream.Pages.Admin.Movies
                 MovieEntity.Vote_count = movieDataTH.Vote_count;
                 MovieEntity.ReleaseYear = movieDataTH.Release_date.Year;
                 PreviewImage = movieDataTH.Poster_path;
-                TitleTH = movieDataTH.Title;
+                MovieEntity.TitleTH = movieDataTH.Title;
                 var movieDataEnglish = await MovieService.FetchTmdbApiEnglish(Id);
                 if (videoTrailer.Results.Length != 0)
                 {
@@ -159,10 +161,7 @@ namespace MpStream.Pages.Admin.Movies
             {
                 showStatusMessageApiRequest = "เกิดข้อผิดพลาด เช็คไอดีให้ถูกต้อง";
             }
-
             ApiLoadSpiner = false;
-
-
         }
     }
 }
